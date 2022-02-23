@@ -1,3 +1,4 @@
+import { Button, TextInput } from '@mantine/core'
 import { useState } from 'react'
 import { supabase } from '../utils/supabaseClient'
 
@@ -20,23 +21,21 @@ export default function Login() {
     <div>
       Sign in via magic link with your email below
       <div>
-        <input
+        <TextInput
           type="email"
           placeholder="Your email"
-          value={email}
+          required
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
       <div>
-        <button
-          onClick={(e) => {
-            e.preventDefault()
-            handleLogin(email)
-          }}
-          disabled={isLoading}
+        <Button
+          onClick={() => handleLogin(email)}
+          disabled={isLoading || email.length === 0}
+          loading={isLoading}
         >
-          <span>{isLoading ? 'Loading' : 'Send magic link'}</span>
-        </button>
+          Send magic link
+        </Button>
       </div>
     </div>
   )

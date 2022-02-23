@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mantine/core": "3.6.9",
+    "@mantine/hooks": "3.6.9",
+    "@mantine/next": "3.6.9",
     "@supabase/supabase-js": "1.30.3",
     "next": "12.1.0",
     "react": "17.0.2",
