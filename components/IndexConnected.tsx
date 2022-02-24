@@ -1,11 +1,17 @@
+import { Button } from '@mantine/core'
 import { Session, User } from '@supabase/supabase-js'
 import { useState, useEffect } from 'react'
 import { supabase } from '../utils/supabaseClient'
+import Gratitude from './Gratitude'
+
+export type Gratitude = {
+  for: string,
+  because: string
+}
 
 export default function Account({ session }: { session: Session }) {
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  // TODO: define the gratitude type
-  const [gratitudes, setGratitudes] = useState<any[] | null>(null)
+  const [gratitudes, setGratitudes] = useState<Gratitude[] | null>(null)
 
   useEffect(() => {
     getGratitudes()
@@ -27,10 +33,22 @@ export default function Account({ session }: { session: Session }) {
 
   return (
     <div>
-      Gratitudes: {JSON.stringify(gratitudes)}
-      <button onClick={() => supabase.auth.signOut()}>
+      {isLoading &&
+        // TODO: use loading overlay https://mantine.dev/core/loading-overlay/
+        <div>
+          is loading
+        </div>
+      }
+
+      <div>
+        {gratitudes?.map(gratitude => (
+          <Gratitude gratitude={gratitude} />
+        ))}
+      </div>
+
+      <Button onClick={() => supabase.auth.signOut()}>
         Sign Out
-      </button>
+      </Button>
     </div>
   )
 }
