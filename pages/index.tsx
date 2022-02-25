@@ -7,17 +7,13 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { Button } from '@mantine/core'
 import Link from 'next/link'
+import store from '../store'
 
-export default function Home() {
-  const [session, setSession] = useState<Session | null>(null)
+// TODO: if connected, redirect to /home
+// 
 
-  useEffect(() => {
-    setSession(supabase.auth.session())
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-    })
-  }, [])
+export default function Index() {
+  const session = store(state => state.session)
 
   const HeadElement = (<Head>
     <title>Gratitude</title>
@@ -40,6 +36,12 @@ export default function Home() {
 
   return (
     <div>
+      <Link href="/home" passHref>
+        <Button component="a">
+          Go to home (WIP)
+        </Button>
+      </Link>
+
       WIP
       {<IndexConnected key={session.user?.id} session={session} />}
       {HeadElement}

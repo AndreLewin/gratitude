@@ -1,4 +1,4 @@
-import { Button } from '@mantine/core'
+import { Button, Loader } from '@mantine/core'
 import { Session, User } from '@supabase/supabase-js'
 import { useState, useEffect } from 'react'
 import { supabase } from '../utils/supabaseClient'
@@ -44,9 +44,7 @@ export default function Account({ session }: { session: Session }) {
     <div>
       {isLoading &&
         // TODO: use loading overlay https://mantine.dev/core/loading-overlay/
-        <div>
-          is loading
-        </div>
+        <Loader />
       }
 
       <div>
