@@ -1,21 +1,15 @@
 import { Button } from "@mantine/core";
 import Link from "next/link";
+import RedirectIfNotAuthenticated from "../components/RedirectIfNotAuthenticated";
 
 export default function Home() {
-  // TODO: redirect if not authenticated
   return (
-    <div>
-
+    <RedirectIfNotAuthenticated>
       <Link href="/" passHref>
         <Button component="a">
           Go to index (WIP)
         </Button>
       </Link>
-
-    </div>
+    </RedirectIfNotAuthenticated>
   )
 }
-    // <div>
-    //   WIP
-    //   {<IndexConnected key={session.user?.id} session={session} />}
-    // </div>

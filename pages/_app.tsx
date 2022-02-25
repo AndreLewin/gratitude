@@ -2,11 +2,12 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { MantineProvider } from '@mantine/core'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from '../utils/supabaseClient'
 import store from '../store'
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [isInitialized, setIsInitialized] = useState<boolean>(false)
   const set = store(state => state.set)
 
   // authentication
@@ -25,7 +26,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         value: session ?? null
       })
     })
+    setIsInitialized(true)
   }, [])
+
+  if (!isInitialized) {
+    return <></>
+  }
 
   return (
     <>
