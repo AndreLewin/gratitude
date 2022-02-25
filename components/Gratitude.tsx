@@ -1,8 +1,25 @@
+import format from 'date-fns/format'
+import { useEffect, useState } from 'react'
 import { Gratitude } from './IndexConnected'
 
 export default function Gratidude({ gratitude }: { gratitude: Gratitude }) {
+  useEffect(() => {
+    console.log('gratitude | Gratitude.tsx l5', gratitude)
+
+  }, [])
+
+  const [formattedDate, setFormattedDate] = useState<string | null>("")
+  useEffect(() => {
+    setFormattedDate(format(new Date(gratitude.created_at), 'yyyy-MM-dd'))
+  }, [])
+
   return (
     <div className='gratitude-root'>
+      <div style={{ display: 'flex' }}>
+        <div>TODO: name</div>
+        <div>{formattedDate}</div>
+      </div>
+
       <div>
         <div><span className='for-because-words'>I am grateful for</span> {gratitude.for}</div>
         <div><span className='for-because-words'>Because</span> {gratitude.because}</div>

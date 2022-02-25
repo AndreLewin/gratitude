@@ -5,8 +5,14 @@ import { supabase } from '../utils/supabaseClient'
 import Gratitude from './Gratitude'
 
 export type Gratitude = {
+  id: string,
   for: string,
-  because: string
+  because: string,
+  created_at: string,
+  edited_at: string | null,
+  visibility: {
+    name: string
+  }
 }
 
 export default function Account({ session }: { session: Session }) {
@@ -23,10 +29,13 @@ export default function Account({ session }: { session: Session }) {
 
     const { data, error } = await supabase
       .from('gratitudes')
-      .select(`for, because`)
+      .select(`id, for, because, created_at, updated_at, visibility(id)`)
       .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
 
     if (error) console.error(error)
+    console.log('data | IndexConnected.tsx l30', data)
+
     setGratitudes(data ?? [])
     setIsLoading(false)
   }
@@ -42,7 +51,7 @@ export default function Account({ session }: { session: Session }) {
 
       <div>
         {gratitudes?.map(gratitude => (
-          <Gratitude gratitude={gratitude} />
+          <Gratitude gratitude={gratitude} key={gratitude.id} />
         ))}
       </div>
 
