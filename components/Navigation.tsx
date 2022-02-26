@@ -4,7 +4,7 @@ import store from '../store'
 import { supabase } from '../utils/supabaseClient'
 import { isNullish } from '../utils/typeChecks'
 
-export default function Navigation({ children }: { children: JSX.Element }) {
+export default function Navigation({ children }: { children: JSX.Element | JSX.Element[] }) {
   const session = store(state => state.session)
 
   return (

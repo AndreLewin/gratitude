@@ -1,6 +1,7 @@
-import { Button, Loader } from '@mantine/core'
-import { Session, User } from '@supabase/supabase-js'
+import { Loader } from '@mantine/core'
+import { User } from '@supabase/supabase-js'
 import { useState, useEffect } from 'react'
+import store from '../store'
 import { supabase } from '../utils/supabaseClient'
 import Gratitude from './Gratitude'
 
@@ -15,7 +16,8 @@ export type Gratitude = {
   }
 }
 
-export default function Account({ session }: { session: Session }) {
+export default function GratitudeList() {
+  const session = store(state => state.session)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [gratitudes, setGratitudes] = useState<Gratitude[] | null>(null)
 

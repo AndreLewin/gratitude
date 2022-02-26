@@ -24,7 +24,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     // will be triggered when sign in with magic link, or sign out with supabase.auth.signOut
     supabase.auth.onAuthStateChange((_event, session) => {
-      console.log("aaaa")
       set({
         property: 'session',
         value: session ?? null
