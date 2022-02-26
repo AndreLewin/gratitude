@@ -7,9 +7,8 @@ import { supabase } from '../utils/supabaseClient'
 import store from '../store'
 import { useRouter } from 'next/router'
 import { isNullish } from '../utils/typeChecks'
-import { sleep } from '../utils/sleep'
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps }: AppProps) {
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
   const set = store(state => state.set)
   const router = useRouter()
@@ -68,5 +67,3 @@ function MyApp({ Component, pageProps }: AppProps) {
     </>
   )
 }
-
-export default MyApp
