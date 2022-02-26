@@ -52,10 +52,6 @@ export default function Account({ session }: { session: Session }) {
           <Gratitude gratitude={gratitude} key={gratitude.id} />
         ))}
       </div>
-
-      <Button onClick={() => supabase.auth.signOut()}>
-        Sign Out
-      </Button>
     </div>
   )
 }

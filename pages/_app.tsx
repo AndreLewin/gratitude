@@ -26,6 +26,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         value: session ?? null
       })
     })
+
+    // TODO: if connected and going to /, redirect to /home
     setIsInitialized(true)
   }, [])
 
@@ -45,6 +47,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </MantineProvider>
       <Head>
+        <title>Gratitude</title>
+        <meta name="description" content="" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
     </>
