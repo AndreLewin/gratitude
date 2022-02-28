@@ -3,9 +3,8 @@ import Link from "next/link";
 import GratitudeList from "../components/GratitudeList";
 import Navigation from "../components/Navigation";
 import RedirectIfNotAuthenticated from "../components/RedirectIfNotAuthenticated";
-import store from "../store";
 
-export default function Home() {
+export default function OnlyMe() {
   return (
     <RedirectIfNotAuthenticated>
       <Navigation>

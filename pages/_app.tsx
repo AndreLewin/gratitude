@@ -30,15 +30,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       if (isNullish(session)) {
         router.push('/')
       } else {
-        router.push('home')
+        router.push('/only_me')
       }
     })
 
-    // if already authenticated and going to /, redirect to /home
+    // if already authenticated and going to /, redirect to /only_me
     // xxx flashing of the content of "/" (router.push does not block the client-side rendering)
     // ?! Move to own wrapper component to avoid flickering of the content of "/"
     if (!isNullish(supabaseSession) && router.pathname === '/') {
-      router.push('/home')
+      router.push('/only_me')
     }
 
     setIsInitialized(true)
