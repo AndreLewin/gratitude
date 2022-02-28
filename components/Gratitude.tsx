@@ -16,7 +16,7 @@ export default function Gratidude({ gratitude }: { gratitude: Gratitude }) {
       </div>
 
       <div>
-        <div><span className='for-because-words'>I am grateful for</span> {gratitude.for}</div>
+        <div><span className='for-because-words'>I am grateful for</span> {gratitude.fore}</div>
         <div><span className='for-because-words'>Because</span> {gratitude.because}</div>
       </div>
 

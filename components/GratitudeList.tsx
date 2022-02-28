@@ -7,7 +7,7 @@ import Gratitude from './Gratitude'
 
 export type Gratitude = {
   id: string,
-  for: string,
+  fore: string,
   because: string,
   created_at: string,
   edited_at: string | null,
@@ -31,7 +31,7 @@ export default function GratitudeList() {
 
     const { data, error } = await supabase
       .from('gratitudes')
-      .select(`id, for, because, created_at, updated_at, visibility(id)`)
+      .select(`id, fore, because, created_at, updated_at, visibility(id)`)
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 

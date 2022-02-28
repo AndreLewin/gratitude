@@ -1,7 +1,8 @@
 import { Button, Select, Textarea } from "@mantine/core"
+import { User } from "@supabase/supabase-js"
 import { useCallback, useMemo, useState } from "react"
-import store from "../store"
 import { visibilities } from "../utils/data"
+import { supabase } from "../utils/supabaseClient"
 
 
 export default function GratitudeForm({ closeModal }: { closeModal: Function }) {
@@ -13,12 +14,25 @@ export default function GratitudeForm({ closeModal }: { closeModal: Function }) 
     return usableVisibilities.map(v => { return { value: `${v.id}`, label: v.label } })
   }, [])
 
-  // "for" is a reserved variable
+  // "for" is a reserved variable, it also caused issues when making policies for RLS
   const [fore, setFore] = useState<string>("")
   const [because, setBecause] = useState<string>("")
 
-  const sendGratitudeMessage = useCallback<any>(() => {
-    console.log("todo call to save")
+  const user = supabase.auth.user() as User
+
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const sendGratitudeMessage = useCallback<any>(async () => {
+    setIsLoading(true)
+
+    const { data, error } = await supabase
+      .from('gratitudes')
+      .insert([
+        { user_id: user.id, fore, because, visibility_id: visibilityId },
+      ])
+
+    if (error) console.error(error)
+
     closeModal()
   }, [visibilityId, fore, because])
 
@@ -67,6 +81,7 @@ export default function GratitudeForm({ closeModal }: { closeModal: Function }) 
           radius="xl"
           disabled={fore.trim().length === 0}
           onClick={() => sendGratitudeMessage()}
+          loading={isLoading}
         >
           Send
         </Button>
