@@ -18,7 +18,7 @@ export default function GratitudeForm({ closeModal }: { closeModal: Function }) 
   const [fore, setFore] = useState<string>("")
   const [because, setBecause] = useState<string>("")
 
-  const user = supabase.auth.user() as User
+  const user = supabase.auth.user()!
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
 

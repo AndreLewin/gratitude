@@ -13,7 +13,8 @@ export type Gratitude = {
   edited_at: string | null,
   visibility: {
     name: string
-  }
+  },
+  user_id: string
 }
 
 export default function GratitudeList() {
@@ -27,11 +28,11 @@ export default function GratitudeList() {
 
   async function getGratitudes() {
     setIsLoading(true)
-    const user = supabase.auth.user() as User
+    const user = supabase.auth.user()!
 
     const { data, error } = await supabase
       .from('gratitudes')
-      .select(`id, fore, because, created_at, updated_at, visibility(id)`)
+      .select(`id, fore, because, created_at, updated_at, visibility(id), user_id`)
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 
