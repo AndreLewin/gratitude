@@ -1,12 +1,17 @@
 import { Button, Select, Textarea } from "@mantine/core"
-import { User } from "@supabase/supabase-js"
 import { useCallback, useMemo, useState } from "react"
 import { visibilities } from "../utils/data"
 import { supabase } from "../utils/supabaseClient"
+import { isNullish } from "../utils/typeChecks"
+import { Gratitude } from "./GratitudeList"
 
 
-export default function GratitudeForm({ closeModal }: { closeModal: Function }) {
-  const [visibilityId, setVisibilityId] = useState<number>(2)
+export default function GratitudeForm({ closeModal, gratitude }: { closeModal: Function, gratitude?: Gratitude }) {
+  const isCreating = useMemo<boolean>(() => {
+    return isNullish(gratitude)
+  }, [gratitude])
+
+  const [visibilityId, setVisibilityId] = useState<number>(gratitude?.visibility?.id ?? 2)
 
   // for some reason Mantine's Select only wants strings for the value
   const visibilityOptions = useMemo<{ value: string, label: string }[]>(() => {
@@ -15,24 +20,31 @@ export default function GratitudeForm({ closeModal }: { closeModal: Function }) 
   }, [])
 
   // "for" is a reserved variable, it also caused issues when making policies for RLS
-  const [fore, setFore] = useState<string>("")
-  const [because, setBecause] = useState<string>("")
+  const [fore, setFore] = useState<string>(gratitude?.fore ?? "")
+  const [because, setBecause] = useState<string>(gratitude?.because ?? "")
 
   const user = supabase.auth.user()!
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const sendGratitudeMessage = useCallback<any>(async () => {
+  const createGratitudeMessage = useCallback<any>(async () => {
     setIsLoading(true)
-
     const { data, error } = await supabase
-      .from('gratitudes')
+      .from("gratitudes")
       .insert([
         { user_id: user.id, fore, because, visibility_id: visibilityId },
       ])
-
     if (error) console.error(error)
+    closeModal()
+  }, [visibilityId, fore, because])
 
+  const updateGratitudeMessage = useCallback<any>(async () => {
+    setIsLoading(true)
+    const { data, error } = await supabase
+      .from("gratitudes")
+      .update({ fore, because, visibility_id: visibilityId })
+      .eq('id', gratitude?.id)
+    if (error) console.error(error)
     closeModal()
   }, [visibilityId, fore, because])
 
@@ -78,12 +90,12 @@ export default function GratitudeForm({ closeModal }: { closeModal: Function }) 
         }}
       >
         <Button
-          color="green"
+          color={isCreating ? "green" : "blue"}
           disabled={fore.trim().length === 0}
-          onClick={() => sendGratitudeMessage()}
+          onClick={isCreating ? createGratitudeMessage : updateGratitudeMessage}
           loading={isLoading}
         >
-          Send
+          {isCreating ? "Create" : "Update"}
         </Button>
       </div>
 

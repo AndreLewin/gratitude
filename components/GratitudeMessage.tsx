@@ -1,8 +1,9 @@
-import { ActionIcon, Text, Tooltip } from '@mantine/core'
+import { ActionIcon, Modal, Text, Tooltip } from '@mantine/core'
 import { useModals } from '@mantine/modals'
 import format from 'date-fns/format'
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../utils/supabaseClient'
+import GratitudeForm from './GratitudeForm'
 import { Gratitude } from './GratitudeList'
 
 export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }) {
@@ -13,9 +14,7 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
     setFormattedDate(format(new Date(gratitude.created_at), 'yyyy-MM-dd'))
   }, [])
 
-  const editGratitudeMessage = useCallback<any>(() => {
-    console.log("todo")
-  }, [])
+  const [isUpdateGratitudeModalOpened, setIsUpdateGratitudeModalOpened] = useState<boolean>(false)
 
   const modals = useModals()
 
@@ -79,13 +78,13 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
           {gratitude.user_id === user.id &&
             <div style={{ display: "flex" }}>
               <Tooltip label="Edit">
-                <ActionIcon variant="outline" radius={16} onClick={() => editGratitudeMessage()}>
+                <ActionIcon variant="outline" radius={16} onClick={() => setIsUpdateGratitudeModalOpened(true)}>
                   <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="m232.5 55.5l-32-32a12 12 0 0 0-17 0l-96 96A11.9 11.9 0 0 0 84 128v32a12 12 0 0 0 12 12h32a12.3 12.3 0 0 0 8.5-3.5l96-96a12 12 0 0 0 0-17ZM192 49l15 15l-11 11l-15-15Zm-69 99h-15v-15l56-56l15 15Zm105-19.4V208a20.1 20.1 0 0 1-20 20H48a20.1 20.1 0 0 1-20-20V48a20.1 20.1 0 0 1 20-20h79.4a12 12 0 0 1 0 24H52v152h152v-75.4a12 12 0 0 1 24 0Z"></path></svg>
                 </ActionIcon>
               </Tooltip>
               <div style={{ marginLeft: "6px" }} />
               <Tooltip label="Delete">
-                <ActionIcon variant="outline" radius={16} onClick={openDeleteModal}>
+                <ActionIcon variant="outline" radius={16} onClick={() => openDeleteModal()}>
                   <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="M216 48h-36V36a28.1 28.1 0 0 0-28-28h-48a28.1 28.1 0 0 0-28 28v12H40a12 12 0 0 0 0 24h4v136a20.1 20.1 0 0 0 20 20h128a20.1 20.1 0 0 0 20-20V72h4a12 12 0 0 0 0-24ZM100 36a4 4 0 0 1 4-4h48a4 4 0 0 1 4 4v12h-56Zm88 168H68V72h120Zm-72-100v64a12 12 0 0 1-24 0v-64a12 12 0 0 1 24 0Zm48 0v64a12 12 0 0 1-24 0v-64a12 12 0 0 1 24 0Z"></path></svg>
                 </ActionIcon>
               </Tooltip>
@@ -97,6 +96,15 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
         <div className="third-line"><span className='for-because-words'>Because</span> {gratitude.because}</div>
 
       </div>
+
+      <Modal
+        opened={isUpdateGratitudeModalOpened}
+        onClose={() => setIsUpdateGratitudeModalOpened(false)}
+        title="Update the message of gratitude"
+      >
+        <GratitudeForm closeModal={() => setIsUpdateGratitudeModalOpened(false)} gratitude={gratitude} />
+        {/* TODO: call function (given by parent) to remove deleted message from the list */}
+      </Modal>
 
       <style jsx>
         {`

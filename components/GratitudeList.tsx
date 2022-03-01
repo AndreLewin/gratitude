@@ -12,7 +12,7 @@ export type Gratitude = {
   created_at: string,
   edited_at: string | null,
   visibility: {
-    name: string
+    id: number
   },
   user_id: string
 }
