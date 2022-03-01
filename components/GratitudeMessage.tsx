@@ -6,7 +6,7 @@ import { supabase } from '../utils/supabaseClient'
 import GratitudeForm from './GratitudeForm'
 import { Gratitude } from './GratitudeList'
 
-export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }) {
+export default function GratidudeMessage({ gratitude, removeGratitude }: { gratitude: Gratitude, removeGratitude: Function }) {
   const user = supabase.auth.user()!
 
   const [formattedDate, setFormattedDate] = useState<string | null>("")
@@ -39,8 +39,8 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
       .from("gratitudes")
       .delete()
       .eq('id', gratitude.id)
-    if (error) console.error(error)
-    // TODO: call function (given by parent) to remove deleted message from the list
+    if (error) return console.error(error)
+    removeGratitude()
   }, [])
 
   return (

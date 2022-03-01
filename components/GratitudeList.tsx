@@ -1,5 +1,5 @@
 import { Loader } from '@mantine/core'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import store from '../store'
 import { supabase } from '../utils/supabaseClient'
 import GratitudeMessage from './GratitudeMessage'
@@ -19,7 +19,7 @@ export type Gratitude = {
 export default function GratitudeList() {
   const session = store(state => state.session)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [gratitudes, setGratitudes] = useState<Gratitude[] | null>(null)
+  const [gratitudes, setGratitudes] = useState<Gratitude[]>([])
 
   useEffect(() => {
     getGratitudes()
@@ -42,6 +42,11 @@ export default function GratitudeList() {
     setIsLoading(false)
   }
 
+  const removeGratitude = useCallback<any>((indexToRemove: number) => {
+    const newGratitudes = [...gratitudes.slice(0, indexToRemove), ...gratitudes.slice(indexToRemove + 1)]
+    setGratitudes(newGratitudes)
+  }, [gratitudes])
+
   return (
     <div>
       {isLoading &&
@@ -50,8 +55,12 @@ export default function GratitudeList() {
       }
 
       <div>
-        {gratitudes?.map(gratitude => (
-          <GratitudeMessage gratitude={gratitude} key={gratitude.id} />
+        {gratitudes?.map((gratitude, index) => (
+          <GratitudeMessage
+            gratitude={gratitude}
+            key={gratitude.id}
+            removeGratitude={() => removeGratitude(index)}
+          />
         ))}
       </div>
     </div>
