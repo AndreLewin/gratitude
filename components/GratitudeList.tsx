@@ -1,5 +1,4 @@
 import { Loader } from '@mantine/core'
-import { User } from '@supabase/supabase-js'
 import { useState, useEffect } from 'react'
 import store from '../store'
 import { supabase } from '../utils/supabaseClient'
