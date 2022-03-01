@@ -6,7 +6,7 @@ import { supabase } from '../utils/supabaseClient'
 import GratitudeForm from './GratitudeForm'
 import { Gratitude } from './GratitudeList'
 
-export default function GratidudeMessage({ gratitude, removeGratitude }: { gratitude: Gratitude, removeGratitude: Function }) {
+export default function GratidudeMessage({ gratitude, removeGratitude, editGratitude }: { gratitude: Gratitude, removeGratitude: Function, editGratitude: Function }) {
   const user = supabase.auth.user()!
 
   const [formattedDate, setFormattedDate] = useState<string | null>("")
@@ -102,8 +102,7 @@ export default function GratidudeMessage({ gratitude, removeGratitude }: { grati
         onClose={() => setIsUpdateGratitudeModalOpened(false)}
         title="Update the message of gratitude"
       >
-        <GratitudeForm closeModal={() => setIsUpdateGratitudeModalOpened(false)} gratitude={gratitude} />
-        {/* TODO: call function (given by parent) to remove deleted message from the list */}
+        <GratitudeForm closeModal={() => setIsUpdateGratitudeModalOpened(false)} gratitude={gratitude} editGratitude={editGratitude} />
       </Modal>
 
       <style jsx>

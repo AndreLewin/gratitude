@@ -6,7 +6,7 @@ import { isNullish } from "../utils/typeChecks"
 import { Gratitude } from "./GratitudeList"
 
 
-export default function GratitudeForm({ closeModal, gratitude }: { closeModal: Function, gratitude?: Gratitude }) {
+export default function GratitudeForm({ closeModal, gratitude, editGratitude }: { closeModal: Function, gratitude?: Gratitude, editGratitude?: Function }) {
   const isCreating = useMemo<boolean>(() => {
     return isNullish(gratitude)
   }, [gratitude])
@@ -34,8 +34,9 @@ export default function GratitudeForm({ closeModal, gratitude }: { closeModal: F
       .insert([
         { user_id: user.id, fore, because, visibility_id: visibilityId },
       ])
-    if (error) console.error(error)
+    if (error) return console.error(error)
     closeModal()
+    // TODO: redirect to page based on chosen visibility
   }, [visibilityId, fore, because])
 
   const updateGratitudeMessage = useCallback<any>(async () => {
@@ -44,9 +45,10 @@ export default function GratitudeForm({ closeModal, gratitude }: { closeModal: F
       .from("gratitudes")
       .update({ fore, because, visibility_id: visibilityId })
       .eq('id', gratitude?.id)
-    if (error) console.error(error)
+    if (error) return console.error(error)
     closeModal()
-  }, [visibilityId, fore, because])
+    editGratitude?.(data?.[0] ?? {})
+  }, [visibilityId, fore, because, editGratitude])
 
   return (
     <div>

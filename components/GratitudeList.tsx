@@ -47,6 +47,12 @@ export default function GratitudeList() {
     setGratitudes(newGratitudes)
   }, [gratitudes])
 
+  const editGratitude = useCallback<any>((indexToEdit: number, newGratitudeData: Partial<Gratitude>) => {
+    const newGratitudes = [...gratitudes]
+    newGratitudes[indexToEdit] = { ...newGratitudes[indexToEdit], ...newGratitudeData }
+    setGratitudes(newGratitudes)
+  }, [gratitudes])
+
   return (
     <div>
       {isLoading &&
@@ -60,6 +66,7 @@ export default function GratitudeList() {
             gratitude={gratitude}
             key={gratitude.id}
             removeGratitude={() => removeGratitude(index)}
+            editGratitude={(newGratitudeData: Partial<Gratitude>) => editGratitude(index, newGratitudeData)}
           />
         ))}
       </div>
