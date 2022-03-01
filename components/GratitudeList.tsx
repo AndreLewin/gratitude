@@ -3,7 +3,7 @@ import { User } from '@supabase/supabase-js'
 import { useState, useEffect } from 'react'
 import store from '../store'
 import { supabase } from '../utils/supabaseClient'
-import Gratitude from './Gratitude'
+import GratitudeMessage from './GratitudeMessage'
 
 export type Gratitude = {
   id: string,
@@ -51,7 +51,7 @@ export default function GratitudeList() {
 
       <div>
         {gratitudes?.map(gratitude => (
-          <Gratitude gratitude={gratitude} key={gratitude.id} />
+          <GratitudeMessage gratitude={gratitude} key={gratitude.id} />
         ))}
       </div>
     </div>

@@ -205,6 +205,11 @@
   resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-3.6.9.tgz#af0af815b5c0fc91c42cbd76530a2ff4a1d8f87b"
   integrity sha512-F3nwbph3nOrv6/zigSYqrsSdqavA5SR+8IxatGdoLjNe7w9XJxO7d557mh6/1kr9o69GY8+cUWyDJ5XYIrotYA==
 
+"@mantine/modals@3.6.9":
+  version "3.6.9"
+  resolved "https://registry.yarnpkg.com/@mantine/modals/-/modals-3.6.9.tgz#df8206bd5f140f8fe0cfe3ebb4cdc54c127fc5e7"
+  integrity sha512-iO0UPKdgpYYIUq6mhYCIPGDja3UBmbH5ziWBONQMZAxVM4woeHRV2TzMep2US8qO8ySRGFv41E1jKLVmo4O7fg==
+
 "@mantine/next@3.6.9":
   version "3.6.9"
   resolved "https://registry.yarnpkg.com/@mantine/next/-/next-3.6.9.tgz#5a59e762b6c10434937f5602585890e74c764d6d"
@@ -2545,7 +2550,7 @@ yaml@^1.7.2:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-1.10.2.tgz#2301c5ffbf12b467de8da2333a459e29e7920e4b"
   integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
 
-zustand@^3.7.0:
+zustand@3.7.0:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/zustand/-/zustand-3.7.0.tgz#a5c68fb06bdee9c63ad829de2432635be6d0ce69"
   integrity sha512-USzVzLGrvZ8VK1/sEsOAmeqa8N7D3OBdZskVaL7DL89Q4QLTYD053iIlZ5KDidyZ+Od80Dttin/f8ZulOLFFDQ==

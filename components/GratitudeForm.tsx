@@ -78,7 +78,7 @@ export default function GratitudeForm({ closeModal }: { closeModal: Function }) 
         }}
       >
         <Button
-          radius="xl"
+          color="green"
           disabled={fore.trim().length === 0}
           onClick={() => sendGratitudeMessage()}
           loading={isLoading}
