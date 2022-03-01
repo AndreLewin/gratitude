@@ -130,7 +130,9 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
           </div>
         )}
       </div>
-      {children}
+      <div style={{ padding: `20px` }}>
+        {children}
+      </div>
 
       <Modal
         opened={isGratitudeModalOpened}
