@@ -70,16 +70,30 @@ export default function Settings() {
         value={username ?? ``}
         onChange={(event) => setUsername(event.currentTarget.value)}
         label="Username"
+        description={`Your username will appear next to your messages, and you will get a custom profile link. Currently, your profile link is TODO`}
+        placeholder="Only letters (a-z A-Z), numbers (0-9) and underscores (_) are allowed. 15 characters max."
         maxRows={1}
         autosize
         {...(isUsernameValid ? {} : { error: `Only letters (a-z A-Z), numbers (0-9) and underscores (_) are allowed. 15 characters max.` })}
+        styles={{
+          description: {
+            fontSize: "14px !important"
+          }
+        }}
       />
 
       <Textarea
         value={bio ?? ``}
         onChange={(event) => setBio(event.currentTarget.value)}
-        label="Bio"
+        label="Bio & Socials"
+        description={`A small description of you and how you can be contacted (Facebook, Twitter, Discord etc.). Use it to help friends find you and to give some context to your messages. Be aware that everything you write here is public.`}
         maxRows={3}
+        style={{ marginTop: `20px` }}
+        styles={{
+          description: {
+            fontSize: "14px !important"
+          }
+        }}
       />
 
       <div style={{ marginTop: "20px" }} />
@@ -91,6 +105,13 @@ export default function Settings() {
       >
         Update
       </Button>
+
+      {/* TODO: Go to userpage ; tooltip: please choose a username before */}
+
+      <style jsx>
+        {`
+        `}
+      </style>
     </div>
   )
 }
