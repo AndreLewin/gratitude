@@ -1,4 +1,4 @@
-import { Loader } from '@mantine/core'
+import { LoadingOverlay } from '@mantine/core'
 import { useState, useEffect, useCallback } from 'react'
 import store from '../store'
 import { supabase } from '../utils/supabaseClient'
@@ -54,11 +54,8 @@ export default function GratitudeList() {
   }, [gratitudes])
 
   return (
-    <div>
-      {isLoading &&
-        // TODO: use loading overlay https://mantine.dev/core/loading-overlay/
-        <Loader />
-      }
+    <div style={{ position: "relative" }}>
+      <LoadingOverlay visible={isLoading} />
 
       <div>
         {gratitudes?.map((gratitude, index) => (

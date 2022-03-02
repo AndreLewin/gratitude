@@ -1,4 +1,4 @@
-import { Button, Loader, Textarea } from '@mantine/core'
+import { Button, LoadingOverlay, Textarea } from '@mantine/core'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import store from '../store'
 import { supabase } from '../utils/supabaseClient'
@@ -9,7 +9,7 @@ export default function Settings() {
   const [username, setUsername] = useState<string | null>(null)
   const [bio, setBio] = useState<string | null>(null)
 
-  const [isProfileLoading, setIsProfileLoading] = useState<boolean>(false)
+  const [isProfileLoading, setIsProfileLoading] = useState<boolean>(true)
 
   useEffect(() => {
     getProfile()
@@ -48,7 +48,7 @@ export default function Settings() {
     console.log("data | Settings.tsx l50", data)
     // TODO: notification "profile saved"
     setIsProfileUpdating(false)
-  }, [])
+  }, [username, bio])
 
   const isUsernameValid = useMemo<boolean>(() => {
     return /^[a-zA-Z0-9_]{0,15}$/.test(username ?? ``)
@@ -59,11 +59,8 @@ export default function Settings() {
   }, [isUsernameValid])
 
   return (
-    <div>
-      {isProfileLoading &&
-        // TODO: use loading overlay https://mantine.dev/core/loading-overlay/
-        <Loader />
-      }
+    <div style={{ position: "relative" }}>
+      <LoadingOverlay visible={isProfileLoading} />
 
       <Textarea
         data-autofocus
