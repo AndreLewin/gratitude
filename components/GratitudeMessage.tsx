@@ -12,7 +12,7 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
 
   const [formattedDate, setFormattedDate] = useState<string | null>("")
   useEffect(() => {
-    setFormattedDate(format(new Date(gratitude.created_at), 'yyyy-MM-dd'))
+    setFormattedDate(format(new Date(gratitude.created_at), "PP"))
   }, [])
 
   const [isUpdateGratitudeModalOpened, setIsUpdateGratitudeModalOpened] = useState<boolean>(false)
@@ -71,9 +71,14 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
           display: "flex",
           justifyContent: "space-between"
         }}>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <div>username</div>
-            <div>{formattedDate}</div>
+            <div style={{
+              fontSize: "15px",
+              opacity: 0.7,
+              marginLeft: "4px",
+              marginTop: "1px"
+            }}>{formattedDate}</div>
           </div>
 
           <div style={{ display: "flex", alignItems: "center" }}>
@@ -131,7 +136,7 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
       <style jsx>
         {`
           .for-because-words {
-            opacity: 0.7;
+            opacity: 0.5;
           }
         `}
       </style>
