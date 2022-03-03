@@ -13,3 +13,7 @@ export const visibilities = [
     label: "public"
   }
 ]
+
+export const ONLY_ME_VISIBILITY = 2
+export const FRIENDS_VISIBILITY = 3
+export const PUBLIC_VISIBILITY = 4
