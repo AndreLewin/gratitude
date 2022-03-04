@@ -6,14 +6,14 @@ import GratitudeMessage from './GratitudeMessage'
 
 export type Gratitude = {
   id: string,
+  created_at: string,
   fore: string,
   because: string,
-  created_at: string,
   edited_at: string | null,
-  visibility: {
-    id: number
-  },
-  user_id: string
+  visibility_id: number,
+  user_id: string,
+  profile_username: string | null,
+  profile_color: string | null
 }
 
 export default function GratitudeList() {
@@ -30,10 +30,10 @@ export default function GratitudeList() {
     const user = supabase.auth.user()!
 
     const { data, error } = await supabase
-      .from('gratitudes')
-      .select(`id, fore, because, created_at, updated_at, visibility(id), user_id`)
-      .eq('user_id', user.id)
+      .rpc('get_gratitudes_with_profile')
       .order('created_at', { ascending: false })
+      .eq('user_id', user.id)
+    // .limit(20)
 
     if (error) console.error(error)
     console.log('data | IndexConnected.tsx l30', data)
