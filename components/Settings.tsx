@@ -1,4 +1,4 @@
-import { Button, LoadingOverlay, Textarea } from '@mantine/core'
+import { Button, ColorInput, LoadingOverlay, Textarea } from '@mantine/core'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import store from '../store'
 import { supabase } from '../utils/supabaseClient'
@@ -8,6 +8,7 @@ export default function Settings() {
 
   const [username, setUsername] = useState<string | null>(null)
   const [bio, setBio] = useState<string | null>(null)
+  const [color, setColor] = useState<string | null>(null)
 
   const [isProfileLoading, setIsProfileLoading] = useState<boolean>(true)
 
@@ -21,7 +22,7 @@ export default function Settings() {
 
     const { data, error } = await supabase
       .from(`profiles`)
-      .select(`id, username, bio`)
+      .select(`id, username, bio, color`)
       .eq(`id`, user.id)
       .single()
 
@@ -29,6 +30,7 @@ export default function Settings() {
     setUsername(data?.username ?? null)
     setBio(data?.bio ?? null)
     setIsProfileLoading(false)
+    setColor(data?.color ?? null)
   }
 
   const [isProfileUpdating, setIsProfileUpdating] = useState<boolean>(false)
@@ -41,14 +43,15 @@ export default function Settings() {
       .upsert({
         id: user.id,
         username,
-        bio
+        bio,
+        color
       })
 
     if (error) return console.error(error)
     console.log("data | Settings.tsx l50", data)
     // TODO: notification "profile saved"
     setIsProfileUpdating(false)
-  }, [username, bio])
+  }, [username, bio, color])
 
   const isUsernameValid = useMemo<boolean>(() => {
     return /^[a-zA-Z0-9_]{0,15}$/.test(username ?? ``)
@@ -85,7 +88,7 @@ export default function Settings() {
         label="Bio & Socials"
         description={`A small description of you and how you can be contacted (Facebook, Twitter, Discord etc.). Use it to help friends find you and to give some context to your messages. Be aware that everything you write here is public.`}
         maxRows={3}
-        style={{ marginTop: `20px` }}
+        style={{ marginTop: `10px` }}
         styles={{
           description: {
             fontSize: "14px !important"
@@ -93,17 +96,28 @@ export default function Settings() {
         }}
       />
 
-      <div style={{ marginTop: "20px" }} />
+      <ColorInput
+        value={color ?? ``}
+        onChange={setColor}
+        label="Color"
+        description={`Your color will change the background of your messages.`}
+        style={{ marginTop: `10px` }}
+        styles={{
+          description: {
+            fontSize: "14px !important"
+          }
+        }}
+      />
+
       <Button
         color="blue"
         disabled={hasInvalidValue}
         onClick={updateProfile}
         loading={isProfileUpdating}
+        style={{ marginTop: `20px` }}
       >
         Update
       </Button>
-
-      {/* TODO: Go to userpage ; tooltip: please choose a username before */}
 
       <style jsx>
         {`

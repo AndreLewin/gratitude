@@ -1,9 +1,10 @@
 import { ActionIcon, Modal, Text, Tooltip } from '@mantine/core'
 import { useModals } from '@mantine/modals'
 import format from 'date-fns/format'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FRIENDS_VISIBILITY, ONLY_ME_VISIBILITY, PUBLIC_VISIBILITY } from '../utils/data'
 import { supabase } from '../utils/supabaseClient'
+import { isNullish } from '../utils/typeChecks'
 import GratitudeForm from './GratitudeForm'
 import { Gratitude } from './GratitudeList'
 
@@ -44,12 +45,22 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
     removeGratitude()
   }, [])
 
+  const backgroundColor = useMemo<string>(() => {
+    if (isNullish(gratitude.profile_color)) return `#ffffff`
+
+    const r = parseInt(gratitude.profile_color.slice(1, 3), 16)
+    const g = parseInt(gratitude.profile_color.slice(3, 5), 16)
+    const b = parseInt(gratitude.profile_color.slice(5, 7), 16)
+    return `rgba(${r},${g},${b}, 0.2)`
+  }, [gratitude.profile_color])
+
+
   return (
     <div style={{
       maxWidth: "600px",
       border: "1px solid gray",
       borderRadius: "5px",
-      background: gratitude.profile_color ?? "#ffffff",
+      background: backgroundColor,
       padding: "12px 12px 12px 12px",
       display: "flex"
     }}>

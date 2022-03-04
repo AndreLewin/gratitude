@@ -59,12 +59,15 @@ export default function GratitudeList() {
 
       <div>
         {gratitudes?.map((gratitude, index) => (
-          <GratitudeMessage
-            gratitude={gratitude}
-            key={gratitude.id}
-            removeGratitude={() => removeGratitude(index)}
-            editGratitude={(newGratitudeData: Partial<Gratitude>) => editGratitude(index, newGratitudeData)}
-          />
+          <>
+            <div style={{ marginTop: index === 0 ? 0 : "10px" }} />
+            <GratitudeMessage
+              gratitude={gratitude}
+              key={gratitude.id}
+              removeGratitude={() => removeGratitude(index)}
+              editGratitude={(newGratitudeData: Partial<Gratitude>) => editGratitude(index, newGratitudeData)}
+            />
+          </>
         ))}
       </div>
     </div>
