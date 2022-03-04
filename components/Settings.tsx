@@ -6,6 +6,10 @@ import { supabase } from '../utils/supabaseClient'
 export default function Settings() {
   const session = store(state => state.session)
 
+  // TODO: use "object" and "originalObject" instead to compare with less boilerplate
+  const [originalUsername, setOriginalUsername] = useState<string | null>(null)
+  const [originalBio, setOriginalBio] = useState<string | null>(null)
+  const [originalColor, setOriginalColor] = useState<string | null>(null)
   const [username, setUsername] = useState<string | null>(null)
   const [bio, setBio] = useState<string | null>(null)
   const [color, setColor] = useState<string | null>(null)
@@ -27,10 +31,14 @@ export default function Settings() {
       .single()
 
     if (error) return console.error(error)
+    setOriginalUsername(data?.username ?? null)
+    setOriginalBio(data?.bio ?? null)
+    setOriginalColor(data?.color ?? null)
     setUsername(data?.username ?? null)
     setBio(data?.bio ?? null)
-    setIsProfileLoading(false)
     setColor(data?.color ?? null)
+
+    setIsProfileLoading(false)
   }
 
   const [isProfileUpdating, setIsProfileUpdating] = useState<boolean>(false)
@@ -46,10 +54,15 @@ export default function Settings() {
         bio,
         color
       })
+      .single()
 
     if (error) return console.error(error)
     console.log("data | Settings.tsx l50", data)
-    // TODO: notification "profile saved"
+
+    setOriginalUsername(data?.username ?? null)
+    setOriginalBio(data?.bio ?? null)
+    setOriginalColor(data?.color ?? null)
+
     setIsProfileUpdating(false)
   }, [username, bio, color])
 
@@ -60,6 +73,10 @@ export default function Settings() {
   const hasInvalidValue = useMemo<boolean>(() => {
     return !isUsernameValid
   }, [isUsernameValid])
+
+  const isLocalValueChanged = useMemo<boolean>(() => {
+    return username !== originalUsername || bio !== originalBio || color !== originalColor
+  }, [username, bio, color, originalUsername, originalBio, originalColor])
 
   return (
     <div style={{ position: "relative" }}>
@@ -111,10 +128,10 @@ export default function Settings() {
 
       <Button
         color="blue"
-        disabled={hasInvalidValue}
+        disabled={hasInvalidValue || !isLocalValueChanged}
         onClick={updateProfile}
         loading={isProfileUpdating}
-        style={{ marginTop: `20px` }}
+        style={{ marginTop: `25px` }}
       >
         Update
       </Button>
