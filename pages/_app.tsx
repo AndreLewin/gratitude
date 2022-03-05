@@ -8,6 +8,7 @@ import store from '../store'
 import { useRouter } from 'next/router'
 import { isNullish } from '../utils/typeChecks'
 import { ModalsProvider } from '@mantine/modals'
+import { NotificationsProvider } from '@mantine/notifications'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
@@ -58,9 +59,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           colorScheme: 'light',
         }}
       >
-        <ModalsProvider>
-          <Component {...pageProps} />
-        </ModalsProvider>
+        <NotificationsProvider position="bottom-center">
+          <ModalsProvider>
+            <Component {...pageProps} />
+          </ModalsProvider>
+        </NotificationsProvider>
       </MantineProvider>
       <Head>
         <title>Gratitude</title>

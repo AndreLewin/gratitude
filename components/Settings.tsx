@@ -1,4 +1,5 @@
-import { Button, ColorInput, LoadingOverlay, Textarea } from '@mantine/core'
+import { Button, ColorInput, LoadingOverlay, Textarea, Notification } from '@mantine/core'
+import { useNotifications } from '@mantine/notifications'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import store from '../store'
 import { supabase } from '../utils/supabaseClient'
@@ -56,8 +57,14 @@ export default function Settings() {
       })
       .single()
 
+
     if (error) return console.error(error)
-    console.log("data | Settings.tsx l50", data)
+
+    notifications.showNotification({
+      message: "The changes have been saved ✅",
+      autoClose: 3000,
+      color: "green"
+    })
 
     setOriginalUsername(data?.username ?? null)
     setOriginalBio(data?.bio ?? null)
@@ -77,6 +84,8 @@ export default function Settings() {
   const isLocalValueChanged = useMemo<boolean>(() => {
     return username !== originalUsername || bio !== originalBio || color !== originalColor
   }, [username, bio, color, originalUsername, originalBio, originalColor])
+
+  const notifications = useNotifications()
 
   return (
     <div style={{ position: "relative" }}>
