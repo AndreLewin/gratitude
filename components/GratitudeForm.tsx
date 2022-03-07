@@ -11,7 +11,7 @@ export default function GratitudeForm({ closeModal, gratitude, editGratitude }: 
     return isNullish(gratitude)
   }, [gratitude])
 
-  const [visibilityId, setVisibilityId] = useState<number>(gratitude?.visibility?.id ?? 2)
+  const [visibilityId, setVisibilityId] = useState<number>(gratitude?.visibility_id ?? 2)
 
   // for some reason Mantine's Select only wants strings for the value
   const visibilityOptions = useMemo<{ value: string, label: string }[]>(() => {
