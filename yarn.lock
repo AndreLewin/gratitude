@@ -217,10 +217,10 @@
   dependencies:
     "@mantine/ssr" "3.6.9"
 
-"@mantine/notifications@^3.6.14":
-  version "3.6.14"
-  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-3.6.14.tgz#2e556d3c69e95ce3d797ec32b4205f2909beb9c6"
-  integrity sha512-vzhU0jXKlzVaCw0SP4smdVay2qNg6BBHbQy/FIh5jkCn5nDIPGu1h5P1lkcqXJgj3f68bB6jKz4zK8tIxAs36g==
+"@mantine/notifications@3.6.9":
+  version "3.6.9"
+  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-3.6.9.tgz#3df883fd27f41562c05f141b25d5bc3e64d5648f"
+  integrity sha512-vW6y3IIn503359q6QSm/XOpDUE+LmKy96zYrT8aNP7rUXkYOeWY2DMlpu8w/uRwSEGvrBc7wxk992HZyq64Ogw==
   dependencies:
     clsx "^1.1.1"
     react-transition-group "^4.4.2"
