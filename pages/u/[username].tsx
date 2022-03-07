@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import Navigation from "components/Navigation"
-import RedirectIfNotAuthenticated from "components/RedirectIfNotAuthenticated"
+// import RedirectIfNotAuthenticated from "components/RedirectIfNotAuthenticated"
 import { useCallback, useEffect, useState } from "react"
 import { Loader } from "@mantine/core"
 import Userpage from "components/Userpage"
@@ -39,10 +39,10 @@ export default function NPage() {
   }, [])
 
   return (
-    <RedirectIfNotAuthenticated>
-      <Navigation>
-        {userId === null ? <Loader /> : <Userpage userId={userId} />}
-      </Navigation>
-    </RedirectIfNotAuthenticated>
+    // <RedirectIfNotAuthenticated>
+    <Navigation>
+      {userId === null ? <Loader /> : <Userpage userId={userId} />}
+    </Navigation>
+    // </RedirectIfNotAuthenticated>
   )
 }

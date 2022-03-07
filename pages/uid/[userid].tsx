@@ -23,10 +23,10 @@ export default function UPage() {
   }, [router.query])
 
   return (
-    <RedirectIfNotAuthenticated>
-      <Navigation>
-        {userId === null ? <Loader /> : <Userpage userId={userId} />}
-      </Navigation>
-    </RedirectIfNotAuthenticated>
+    // <RedirectIfNotAuthenticated>
+    <Navigation>
+      {userId === null ? <Loader /> : <Userpage userId={userId} />}
+    </Navigation>
+    // </RedirectIfNotAuthenticated >
   )
 }

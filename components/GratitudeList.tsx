@@ -40,6 +40,9 @@ export default function GratitudeList({ mode }: { mode: string }) {
     } else if (mode === "public") {
 
       promise.eq("visibility_id", PUBLIC_VISIBILITY)
+    } else if (mode.match(/^user: /)) {
+      const userId = mode.substring(6, mode.length)
+      promise.eq("user_id", userId)
     }
     const { data, error } = await promise
 
