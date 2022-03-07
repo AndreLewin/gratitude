@@ -1,6 +1,6 @@
 import { Button, Select, Textarea } from "@mantine/core"
 import { useCallback, useMemo, useState } from "react"
-import { visibilities } from "../utils/data"
+import { visibilities } from "../data"
 import { supabase } from "../utils/supabaseClient"
 import { isNullish } from "../utils/typeChecks"
 import { Gratitude } from "./GratitudeList"

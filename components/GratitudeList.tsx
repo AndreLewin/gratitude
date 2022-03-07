@@ -1,7 +1,7 @@
 import { LoadingOverlay } from '@mantine/core'
 import { useState, useEffect, useCallback } from 'react'
 import store from '../store'
-import { PUBLIC_VISIBILITY } from '../utils/data'
+import { PUBLIC_VISIBILITY } from '../data'
 import { supabase } from '../utils/supabaseClient'
 import GratitudeMessage from './GratitudeMessage'
 
