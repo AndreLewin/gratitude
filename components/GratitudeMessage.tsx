@@ -1,6 +1,7 @@
 import { ActionIcon, Modal, Text, Tooltip } from '@mantine/core'
 import { useModals } from '@mantine/modals'
 import format from 'date-fns/format'
+import Link from 'next/link'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FRIENDS_VISIBILITY, ONLY_ME_VISIBILITY, PUBLIC_VISIBILITY } from '../data'
 import { supabase } from '../utils/supabaseClient'
@@ -70,11 +71,16 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
           justifyContent: "space-between"
         }}>
           <div style={{ display: "flex", alignItems: "center", marginTop: "-6px" }}>
-            <div style={{
-              fontWeight: 600
-            }}>
-              {gratitude.profile_username ?? "(Anonymous)"}
-            </div>
+            <Link
+              href={gratitude.profile_username ? `/u/${gratitude.profile_username}` : `/uid/${gratitude.user_id}`}
+            >
+              <div style={{
+                fontWeight: 600,
+                cursor: `pointer`
+              }}>
+                {gratitude.profile_username ?? "(Anonymous)"}
+              </div>
+            </Link>
             <div style={{
               fontSize: "15px",
               opacity: 0.7,
