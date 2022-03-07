@@ -1,6 +1,8 @@
-import { LoadingOverlay, Title, Text } from "@mantine/core"
-import { useEffect, useMemo, useState } from "react"
+import { LoadingOverlay, Title, Text, Button } from "@mantine/core"
+import { useModals } from "@mantine/modals"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { supabase } from "utils/supabaseClient"
+import { isNullish } from "utils/typeChecks"
 import GratitudeList from "./GratitudeList"
 
 export default function Userpage({ userId }: { userId: string }) {
@@ -40,6 +42,46 @@ export default function Userpage({ userId }: { userId: string }) {
     return `rgba(${r},${g},${b}, 0.2)`
   }, [color])
 
+  const user = supabase.auth.user()
+
+  const [isFriendRequestSent, setIsFriendRequestSent] = useState<boolean>(false)
+
+  // TODO: on mount, check if a friend request already exists (from user 1 to user 2 or reverse)
+  // https://supabase.com/docs/reference/javascript/select
+
+  const modals = useModals()
+  const openCancelFriendRequestModal = () => {
+    modals.openConfirmModal({
+      title: `Are you sure you want to cancel your friend request${isNullish(username) ? `` : ` with ${username}`}?`,
+      labels: { confirm: "Cancel friend request", cancel: "Do nothing" },
+      confirmProps: { color: "red" },
+      onCancel: () => { },
+      onConfirm: () => deleteFriendRequest()
+    });
+  }
+
+  const createFriendRequest = useCallback<any>(async () => {
+    const { error } = await supabase
+      .from('friend_requests')
+      .insert([
+        { user_id_1: user?.id, user_id_2: userId },
+      ], { returning: "minimal" })
+    if (error) return console.error(error)
+    setIsFriendRequestSent(true)
+  }, [user])
+
+  const deleteFriendRequest = useCallback<any>(async () => {
+    const { error } = await supabase
+      .from('friend_requests')
+      .delete({ returning: "minimal" })
+      .match({ user_id_1: user?.id, user_id_2: userId })
+    if (error) return console.error(error)
+    setIsFriendRequestSent(false)
+  }, [])
+
+  // TODO
+  const [isFriend, setIsFriend] = useState<boolean>(false)
+
   return (
     <div style={{ position: "relative" }}>
       <LoadingOverlay visible={isUserpageLoading} />
@@ -53,6 +95,14 @@ export default function Userpage({ userId }: { userId: string }) {
       >
         {username && <Title order={2}>{username}</Title>}
         {bio && <Text>{bio}</Text>}
+
+        <Button
+          variant={isFriendRequestSent ? `light` : `filled`}
+          onClick={isFriendRequestSent ? openCancelFriendRequestModal : createFriendRequest}
+          style={{ marginTop: `10px` }}
+        >
+          {isFriendRequestSent ? `Friend request pending...` : `Send friend request`}
+        </Button>
       </div>
 
       <GratitudeList mode={`user: ${userId}`} />

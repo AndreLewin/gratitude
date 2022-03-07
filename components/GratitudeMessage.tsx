@@ -20,7 +20,6 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
   const [isUpdateGratitudeModalOpened, setIsUpdateGratitudeModalOpened] = useState<boolean>(false)
 
   const modals = useModals()
-
   const openDeleteModal = () => {
     modals.openConfirmModal({
       title: "Are you sure you want to delete this message?",
