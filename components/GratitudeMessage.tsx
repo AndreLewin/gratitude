@@ -73,7 +73,7 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
             <div style={{
               fontWeight: 600
             }}>
-              {gratitude.profile_username}
+              {gratitude.profile_username ?? "(Anonymous)"}
             </div>
             <div style={{
               fontSize: "15px",

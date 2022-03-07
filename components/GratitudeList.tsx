@@ -1,6 +1,7 @@
 import { LoadingOverlay } from '@mantine/core'
 import { useState, useEffect, useCallback } from 'react'
 import store from '../store'
+import { PUBLIC_VISIBILITY } from '../utils/data'
 import { supabase } from '../utils/supabaseClient'
 import GratitudeMessage from './GratitudeMessage'
 
@@ -16,7 +17,7 @@ export type Gratitude = {
   profile_color: string | null
 }
 
-export default function GratitudeList() {
+export default function GratitudeList({ mode }: { mode: string }) {
   const session = store(state => state.session)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [gratitudes, setGratitudes] = useState<Gratitude[]>([])
@@ -29,11 +30,21 @@ export default function GratitudeList() {
     setIsLoading(true)
     const user = supabase.auth.user()!
 
-    const { data, error } = await supabase
-      .rpc('get_gratitudes_with_profile')
-      .order('created_at', { ascending: false })
-      .eq('user_id', user.id)
-    // .limit(20)
+    const promise = supabase.rpc('get_gratitudes_with_profile')
+    promise.order('created_at', { ascending: false })
+
+    if (mode === "only_me") {
+      promise.eq("user_id", user.id)
+    } else if (mode === "friends") {
+
+    } else if (mode === "public") {
+
+      promise.eq("visibility_id", PUBLIC_VISIBILITY)
+    }
+    const { data, error } = await promise
+
+    // TODO: limit
+    // TODO: infinite scrolling
 
     if (error) console.error(error)
     console.log('data | IndexConnected.tsx l30', data)
@@ -59,15 +70,14 @@ export default function GratitudeList() {
 
       <div>
         {gratitudes?.map((gratitude, index) => (
-          <>
+          <div key={`gm-${gratitude.id}`}>
             <div style={{ marginTop: index === 0 ? 0 : "10px" }} />
             <GratitudeMessage
               gratitude={gratitude}
-              key={gratitude.id}
               removeGratitude={() => removeGratitude(index)}
               editGratitude={(newGratitudeData: Partial<Gratitude>) => editGratitude(index, newGratitudeData)}
             />
-          </>
+          </div>
         ))}
       </div>
     </div>

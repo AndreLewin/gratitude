@@ -6,7 +6,7 @@ export default function OnlyMe() {
   return (
     <RedirectIfNotAuthenticated>
       <Navigation>
-        <GratitudeList />
+        <GratitudeList mode={"only_me"} />
       </Navigation>
     </RedirectIfNotAuthenticated>
   )

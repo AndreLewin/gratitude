@@ -29,15 +29,14 @@ export default function Settings() {
       .from(`profiles`)
       .select(`id, username, bio, color`)
       .eq(`id`, user.id)
-      .single()
 
     if (error) return console.error(error)
-    setOriginalUsername(data?.username ?? null)
-    setOriginalBio(data?.bio ?? null)
-    setOriginalColor(data?.color ?? null)
-    setUsername(data?.username ?? null)
-    setBio(data?.bio ?? null)
-    setColor(data?.color ?? null)
+    setOriginalUsername(data?.[0]?.username ?? null)
+    setOriginalBio(data?.[0]?.bio ?? null)
+    setOriginalColor(data?.[0]?.color ?? null)
+    setUsername(data?.[0]?.username ?? null)
+    setBio(data?.[0]?.bio ?? null)
+    setColor(data?.[0]?.color ?? null)
 
     setIsProfileLoading(false)
   }
@@ -55,7 +54,6 @@ export default function Settings() {
         bio,
         color
       })
-      .single()
 
 
     if (error) return console.error(error)
@@ -66,9 +64,9 @@ export default function Settings() {
       color: "green"
     })
 
-    setOriginalUsername(data?.username ?? null)
-    setOriginalBio(data?.bio ?? null)
-    setOriginalColor(data?.color ?? null)
+    setOriginalUsername(data?.[0]?.username ?? null)
+    setOriginalBio(data?.[0]?.bio ?? null)
+    setOriginalColor(data?.[0]?.color ?? null)
 
     setIsProfileUpdating(false)
   }, [username, bio, color])
