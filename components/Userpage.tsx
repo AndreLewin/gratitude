@@ -45,9 +45,24 @@ export default function Userpage({ userId }: { userId: string }) {
   const user = supabase.auth.user()
 
   const [isFriendRequestSent, setIsFriendRequestSent] = useState<boolean>(false)
+  const [isCheckingIfFriendRequestAlreadySent, setIsCheckingIfFriendRequestAlreadySent] = useState<boolean>(true)
 
-  // TODO: on mount, check if a friend request already exists (from user 1 to user 2 or reverse)
-  // https://supabase.com/docs/reference/javascript/select
+  // check if a friend request already exists (from user 1 to user 2 or reverse)
+  useEffect(() => {
+    checkIfFriendRequestAlreadySent()
+  }, [])
+
+  const checkIfFriendRequestAlreadySent = useCallback<any>(async () => {
+    const { data, error } = await supabase
+      .from(`friend_requests`)
+      .select(`user_id_2`)
+      .eq(`user_id_1`, user?.id)
+      .eq(`user_id_2`, userId)
+      .single()
+    if (error) return console.error(error)
+    setIsFriendRequestSent(!isNullish(data))
+    setIsCheckingIfFriendRequestAlreadySent(false)
+  }, [])
 
   const modals = useModals()
   const openCancelFriendRequestModal = () => {
@@ -96,13 +111,16 @@ export default function Userpage({ userId }: { userId: string }) {
         {username && <Title order={2}>{username}</Title>}
         {bio && <Text>{bio}</Text>}
 
-        <Button
-          variant={isFriendRequestSent ? `light` : `filled`}
-          onClick={isFriendRequestSent ? openCancelFriendRequestModal : createFriendRequest}
-          style={{ marginTop: `10px` }}
-        >
-          {isFriendRequestSent ? `Friend request pending...` : `Send friend request`}
-        </Button>
+        {!isCheckingIfFriendRequestAlreadySent &&
+          <Button
+            variant={isFriendRequestSent ? `light` : `filled`}
+            onClick={isFriendRequestSent ? openCancelFriendRequestModal : createFriendRequest}
+            style={{ marginTop: `10px` }}
+          >
+            {isFriendRequestSent ? `Friend request pending...` : `Send friend request`}
+          </Button>
+        }
+
       </div>
 
       <GratitudeList mode={`user: ${userId}`} />
