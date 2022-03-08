@@ -55,12 +55,12 @@ export default function Userpage({ userId }: { userId: string }) {
   const checkIfFriendRequestAlreadySent = useCallback<any>(async () => {
     const { data, error } = await supabase
       .from(`friend_requests`)
-      .select(`user_id_2`)
+      .select(`id`)
       .eq(`user_id_1`, user?.id)
       .eq(`user_id_2`, userId)
-      .single()
+      .limit(1)
     if (error) return console.error(error)
-    setIsFriendRequestSent(!isNullish(data))
+    setIsFriendRequestSent(data?.length === 1)
     setIsCheckingIfFriendRequestAlreadySent(false)
   }, [])
 
