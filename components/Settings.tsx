@@ -1,8 +1,9 @@
 import { Button, ColorInput, LoadingOverlay, Textarea, Notification } from '@mantine/core'
 import { useNotifications } from '@mantine/notifications'
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, ChangeEvent } from 'react'
 import store from '../store'
 import { supabase } from '../utils/supabaseClient'
+import { useDebouncedValue } from '@mantine/hooks'
 
 export default function Settings() {
   const session = store(state => state.session)
@@ -92,6 +93,54 @@ export default function Settings() {
 
   const notifications = useNotifications()
 
+  const [isUsernameAlreadyUsed, setIsUsernameAlreadyUsed] = useState<boolean>(false)
+  const [isCheckingIfTheUsernameIsAlreadyUsed, setIsCheckingIfTheUsernameIsAlreadyUsed] = useState<boolean>(false)
+
+  const [debouncedUsername] = useDebouncedValue(username, 550);
+
+  // TODO: avoid trigger at loading and after save (when originalUsername is changed)
+  // we could transform the useEffect into a useCallback, and use the function in changeLocalUsername
+  // but then we would not be able to use the clean-up function of useEffect,
+  // which we need to avoid using the results of an outdated promise...
+  useEffect(() => {
+    console.log("debouncedUsername | Settings.tsx l104", debouncedUsername)
+
+
+    if (debouncedUsername === `` || debouncedUsername === originalUsername) {
+      setIsCheckingIfTheUsernameIsAlreadyUsed(false)
+      setIsUsernameAlreadyUsed(false)
+      return
+    }
+
+    let didCancel = false
+
+    const check = async () => {
+      const { data, error } = await supabase
+        .from(`profiles`)
+        .select(`id`)
+        .eq(`username`, debouncedUsername)
+        .limit(1)
+      if (error) return console.error(error)
+      if (!didCancel) {
+        setIsCheckingIfTheUsernameIsAlreadyUsed(false)
+        setIsUsernameAlreadyUsed(data?.length >= 1)
+      }
+    }
+
+    check()
+
+    // avoid the risk of the first promise resolving after the second promise resolves
+    // https://overreacted.io/a-complete-guide-to-useeffect/#speaking-of-race-conditions
+    return () => {
+      didCancel = true
+    }
+  }, [debouncedUsername, originalUsername])
+
+  const changeLocalUsername = useCallback<any>((event: ChangeEvent<HTMLTextAreaElement>) => {
+    setIsCheckingIfTheUsernameIsAlreadyUsed(true)
+    setUsername(event.currentTarget.value)
+  }, [])
+
   return (
     <div style={{ position: "relative" }}>
       <LoadingOverlay visible={isProfileLoading} />
@@ -99,10 +148,11 @@ export default function Settings() {
       <Textarea
         data-autofocus
         value={username ?? ``}
-        onChange={(event) => setUsername(event.currentTarget.value)}
+        onChange={changeLocalUsername}
         label="Username"
         description={`Your username will appear next to your messages, and you will get a custom profile link. Currently, your profile link is TODO`}
         placeholder="Only letters (a-z A-Z), numbers (0-9) and underscores (_) are allowed. 15 characters max."
+        error={!isCheckingIfTheUsernameIsAlreadyUsed && isUsernameAlreadyUsed ? `This username is already used` : ``}
         maxRows={1}
         autosize
         {...(isUsernameValid ? {} : { error: `Only letters (a-z A-Z), numbers (0-9) and underscores (_) are allowed. 15 characters max.` })}
@@ -142,7 +192,7 @@ export default function Settings() {
 
       <Button
         color="blue"
-        disabled={hasInvalidValue || !isLocalValueChanged}
+        disabled={hasInvalidValue || !isLocalValueChanged || isCheckingIfTheUsernameIsAlreadyUsed || isUsernameAlreadyUsed}
         onClick={updateProfile}
         loading={isProfileUpdating}
         style={{ marginTop: `25px` }}
