@@ -50,7 +50,9 @@ export default function Settings() {
       .from(`profiles`)
       .upsert({
         id: user.id,
-        username,
+        // empty string must be converted to null because the field is UNIQUE
+        // (you can have several null values, but not several empty values)
+        username: username === `` ? null : username,
         bio,
         color
       })
@@ -75,9 +77,14 @@ export default function Settings() {
     return /^[a-zA-Z0-9_]{0,15}$/.test(username ?? ``)
   }, [username])
 
+  const isColorValid = useMemo<boolean>(() => {
+    if (color === null) return true
+    return /^#[0-9A-Fa-f]{6}$/.test(color)
+  }, [color])
+
   const hasInvalidValue = useMemo<boolean>(() => {
-    return !isUsernameValid
-  }, [isUsernameValid])
+    return !isUsernameValid || !isColorValid
+  }, [isUsernameValid, isColorValid])
 
   const isLocalValueChanged = useMemo<boolean>(() => {
     return username !== originalUsername || bio !== originalBio || color !== originalColor
