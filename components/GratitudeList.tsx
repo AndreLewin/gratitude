@@ -4,6 +4,7 @@ import store from '../store'
 import { PUBLIC_VISIBILITY } from '../data'
 import { supabase } from '../utils/supabaseClient'
 import GratitudeMessage from './GratitudeMessage'
+import { Profile } from './Settings'
 
 export type Gratitude = {
   id: string,
@@ -12,9 +13,7 @@ export type Gratitude = {
   because: string,
   edited_at: string | null,
   visibility_id: number,
-  user_id: string,
-  profile_username: string | null,
-  profile_color: string | null
+  profile: Profile
 }
 
 export default function GratitudeList({ mode }: { mode: string }) {
@@ -30,7 +29,14 @@ export default function GratitudeList({ mode }: { mode: string }) {
     setIsLoading(true)
     const user = supabase.auth.user()!
 
-    const promise = supabase.rpc('get_gratitudes_with_profile')
+    // const promise = supabase.rpc('get_gratitudes_with_profile')
+    const promise = supabase
+      .from('gratitudes')
+      .select(`
+        *,
+        profile:profiles(*)
+      `)
+
     promise.order('created_at', { ascending: false })
 
     if (mode === "only_me") {

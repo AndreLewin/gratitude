@@ -5,6 +5,13 @@ import store from '../store'
 import { supabase } from '../utils/supabaseClient'
 import { useDebouncedValue } from '@mantine/hooks'
 
+export type Profile = {
+  id: string,
+  username: null | string,
+  bio: null | string,
+  color: null | string
+}
+
 export default function Settings() {
   const session = store(state => state.session)
 

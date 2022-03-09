@@ -46,13 +46,13 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
   }, [])
 
   const backgroundColor = useMemo<string>(() => {
-    if (isNullish(gratitude.profile_color)) return `#ffffff`
+    if (isNullish(gratitude.profile.color)) return `#ffffff`
 
-    const r = parseInt(gratitude.profile_color.slice(1, 3), 16)
-    const g = parseInt(gratitude.profile_color.slice(3, 5), 16)
-    const b = parseInt(gratitude.profile_color.slice(5, 7), 16)
+    const r = parseInt(gratitude.profile.color.slice(1, 3), 16)
+    const g = parseInt(gratitude.profile.color.slice(3, 5), 16)
+    const b = parseInt(gratitude.profile.color.slice(5, 7), 16)
     return `rgba(${r},${g},${b}, 0.2)`
-  }, [gratitude.profile_color])
+  }, [gratitude.profile.color])
 
 
   return (
@@ -71,13 +71,13 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
         }}>
           <div style={{ display: "flex", alignItems: "center", marginTop: "-6px" }}>
             <Link
-              href={gratitude.profile_username ? `/u/${gratitude.profile_username}` : `/uid/${gratitude.user_id}`}
+              href={gratitude.profile.username ? `/u/${gratitude.profile.username}` : `/uid/${gratitude.profile.id}`}
             >
               <div style={{
                 fontWeight: 600,
                 cursor: `pointer`
               }}>
-                {gratitude.profile_username ?? "(Anonymous)"}
+                {gratitude.profile.username ?? "(Anonymous)"}
               </div>
             </Link>
             <div style={{
@@ -109,7 +109,7 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
               }
             </div>
 
-            {gratitude.user_id === user.id &&
+            {gratitude.profile.id === user.id &&
 
               <div style={{ marginLeft: "10px", display: "flex" }}>
                 <Tooltip label="Edit">
