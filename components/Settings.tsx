@@ -88,7 +88,7 @@ export default function Settings() {
   }, [isUsernameValid, isColorValid])
 
   const isLocalValueChanged = useMemo<boolean>(() => {
-    return username !== originalUsername || bio !== originalBio || color !== originalColor
+    return (username ?? ``) !== (originalUsername ?? ``) || (bio ?? ``) !== (originalBio ?? ``) || (color ?? ``) !== (originalColor ?? ``)
   }, [username, bio, color, originalUsername, originalBio, originalColor])
 
   const notifications = useNotifications()
@@ -98,15 +98,8 @@ export default function Settings() {
 
   const [debouncedUsername] = useDebouncedValue(username, 550);
 
-  // TODO: avoid trigger at loading and after save (when originalUsername is changed)
-  // we could transform the useEffect into a useCallback, and use the function in changeLocalUsername
-  // but then we would not be able to use the clean-up function of useEffect,
-  // which we need to avoid using the results of an outdated promise...
   useEffect(() => {
-    console.log("debouncedUsername | Settings.tsx l104", debouncedUsername)
-
-
-    if (debouncedUsername === `` || debouncedUsername === originalUsername) {
+    if ((debouncedUsername ?? ``) === `` || debouncedUsername === originalUsername) {
       setIsCheckingIfTheUsernameIsAlreadyUsed(false)
       setIsUsernameAlreadyUsed(false)
       return
