@@ -54,10 +54,13 @@ export default function Userpage({ userId }: { userId: string }) {
 
   const checkIfFriendRequestAlreadySent = useCallback<any>(async () => {
     const { data, error } = await supabase
-      .from(`friend_requests`)
+      .from(`friendships`)
       .select(`id`)
-      .eq(`user_id_1`, user?.id)
-      .eq(`user_id_2`, userId)
+      .match({
+        user_id_1: user?.id,
+        user_id_2: userId,
+        is_accepted: false
+      })
       .limit(1)
     if (error) return console.error(error)
     setIsFriendRequestSent(data?.length === 1)
@@ -77,7 +80,7 @@ export default function Userpage({ userId }: { userId: string }) {
 
   const createFriendRequest = useCallback<any>(async () => {
     const { error } = await supabase
-      .from('friend_requests')
+      .from(`friendships`)
       .insert([
         { user_id_1: user?.id, user_id_2: userId },
       ], { returning: "minimal" })
@@ -87,7 +90,7 @@ export default function Userpage({ userId }: { userId: string }) {
 
   const deleteFriendRequest = useCallback<any>(async () => {
     const { error } = await supabase
-      .from('friend_requests')
+      .from(`friendships`)
       .delete({ returning: "minimal" })
       .match({ user_id_1: user?.id, user_id_2: userId })
     if (error) return console.error(error)
