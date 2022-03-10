@@ -7,7 +7,7 @@ import Userpage from "components/Userpage"
 import { supabase } from "utils/supabaseClient"
 
 export default function NPage() {
-  const [userId, setUserId] = useState<string | null>(null)
+  const [username, setUsername] = useState<string | null>(null)
   const router = useRouter()
 
   useEffect(() => {
@@ -16,33 +16,18 @@ export default function NPage() {
     if (!router.isReady) return
 
     const { username } = router.query
-    if (typeof username !== "string" || userId === "") {
+    if (typeof username !== "string" || username === "") {
       router.push('/')
     } else {
-      fetchUserId(username)
+      setUsername(username)
     }
   }, [router.query])
-
-  const fetchUserId = useCallback<any>(async (username: string) => {
-    const { data, error } = await supabase
-      .from(`profiles`)
-      .select(`id`)
-      .eq(`username`, username)
-      .single()
-
-    if (error) {
-      router.push('/')
-      return console.error(error)
-    }
-
-    setUserId(data?.id ?? null)
-  }, [])
 
   return (
     // <RedirectIfNotAuthenticated>
     <Navigation>
-      {userId === null ? <Loader /> : <Userpage userId={userId} />}
+      {username === null ? <Loader /> : <Userpage username={username} />}
     </Navigation>
-    // </RedirectIfNotAuthenticated>
+    // </RedirectIfNotAuthenticated >
   )
 }
