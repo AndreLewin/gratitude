@@ -75,7 +75,8 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
             >
               <div style={{
                 fontWeight: 600,
-                cursor: `pointer`
+                cursor: `pointer`,
+                color: `rgb(29, 155, 240)`
               }}>
                 {gratitude.profile.username ?? "(Anonymous)"}
               </div>

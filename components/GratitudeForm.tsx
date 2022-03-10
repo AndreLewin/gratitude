@@ -94,7 +94,7 @@ export default function GratitudeForm({ closeModal, gratitude, editGratitude }: 
         }}
       >
         <Button
-          color={isCreating ? "green" : "blue"}
+          color={isCreating ? "teal" : "blue"}
           disabled={fore.trim().length === 0}
           onClick={isCreating ? createGratitudeMessage : updateGratitudeMessage}
           loading={isLoading}

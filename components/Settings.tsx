@@ -71,7 +71,7 @@ export default function Settings() {
     notifications.showNotification({
       message: "The changes have been saved ✅",
       autoClose: 3000,
-      color: "green"
+      color: "teal"
     })
 
     setOriginalUsername(data?.[0]?.username ?? null)
