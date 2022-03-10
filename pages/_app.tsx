@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 import { isNullish } from '../utils/typeChecks'
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
+import NextNProgress from 'nextjs-progressbar'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
@@ -52,6 +53,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
+      {/* the progress animation is not very good :/ */}
+      <NextNProgress showOnShallow={false} startPosition={0.85} height={2} />
       <MantineProvider
         withGlobalStyles
         withNormalizeCSS
