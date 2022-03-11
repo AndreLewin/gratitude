@@ -1,10 +1,8 @@
 import { useRouter } from "next/router"
-import Navigation from "components/Navigation"
 // import RedirectIfNotAuthenticated from "components/RedirectIfNotAuthenticated"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Loader } from "@mantine/core"
 import Userpage from "components/Userpage"
-import { supabase } from "utils/supabaseClient"
 
 export default function NPage() {
   const [username, setUsername] = useState<string | null>(null)
@@ -24,10 +22,8 @@ export default function NPage() {
   }, [router.query])
 
   return (
-    // <RedirectIfNotAuthenticated>
-    <Navigation>
+    <>
       {username === null ? <Loader /> : <Userpage username={username} />}
-    </Navigation>
-    // </RedirectIfNotAuthenticated >
+    </>
   )
 }

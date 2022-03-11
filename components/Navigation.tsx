@@ -2,7 +2,7 @@ import { ActionIcon, Button, Modal } from '@mantine/core'
 import { useModals } from '@mantine/modals'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import store from '../store'
 import { supabase } from '../utils/supabaseClient'
 import { isNullish } from '../utils/typeChecks'
@@ -27,6 +27,11 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
       onConfirm: () => supabase.auth.signOut(),
     });
   }
+
+  useEffect(() => {
+    console.log("navigation loaded")
+  }, [])
+
 
   // TODO: change to button to be able to add text?
   // svg icons come from https://icones.js.org/collection/ph

@@ -10,8 +10,11 @@ import { isNullish } from '../utils/typeChecks'
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
 import NextNProgress from 'nextjs-progressbar'
+import Navigation from 'components/Navigation'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  // xxx using zustand for storing the session is not useful
+  // it can already be accessed everywhere by importing 
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
   const set = store(state => state.set)
   const router = useRouter()
@@ -47,6 +50,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     setIsInitialized(true)
   }, [])
 
+  // avoid displaying anything before eventual redirection
   if (!isInitialized) {
     return <></>
   }
@@ -64,7 +68,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       >
         <NotificationsProvider position="bottom-center">
           <ModalsProvider>
-            <Component {...pageProps} />
+            <Navigation>
+              <Component {...pageProps} />
+            </Navigation>
           </ModalsProvider>
         </NotificationsProvider>
       </MantineProvider>
