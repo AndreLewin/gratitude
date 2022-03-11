@@ -57,9 +57,6 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
 
   return (
     <div style={{
-      maxWidth: "600px",
-      border: "1px solid gray",
-      borderRadius: "5px",
       background: backgroundColor,
       padding: "12px 12px 12px 12px",
       display: "flex"

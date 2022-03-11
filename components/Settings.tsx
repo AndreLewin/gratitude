@@ -142,7 +142,7 @@ export default function Settings() {
   }, [])
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", margin: `20px 20px 20px 20px` }}>
       <LoadingOverlay visible={isProfileLoading} />
 
       <Textarea

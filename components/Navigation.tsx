@@ -35,7 +35,7 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
       <div className='navbar-container'>
         <div>
           <Link href='/' passHref>
-            <ActionIcon color="cyan" component='a'>
+            <ActionIcon color="blue" component='a'>
               {pathname === "/" ? (
                 <svg viewBox="0 0 256 256"><path fill="currentColor" d="M217 35.1a15.9 15.9 0 0 0-14.8-1.7C188.2 38.9 159.8 48 128 48s-60.2-9.1-74.2-14.6A16 16 0 0 0 32 48.3V104c0 35.8 9.7 69.5 27.2 95s42.6 41 68.8 41s50.7-14.5 68.8-41s27.2-59.2 27.2-95V48.3a15.9 15.9 0 0 0-7-13.2ZM80.1 133.3a8 8 0 0 1-11.3.7a8 8 0 0 1-.6-11.3a31.8 31.8 0 0 1 47.6 0a8 8 0 0 1-.6 11.3a8.1 8.1 0 0 1-5.3 2a8 8 0 0 1-6-2.7a16 16 0 0 0-23.8 0Zm78.9 49.4a56.3 56.3 0 0 1-62 0a8.1 8.1 0 0 1-2.2-11.1a8 8 0 0 1 11.1-2.3a39.8 39.8 0 0 0 44.2 0a8 8 0 0 1 11.1 2.3a8.1 8.1 0 0 1-2.2 11.1Zm28.2-48.7a8.1 8.1 0 0 1-5.3 2a8 8 0 0 1-6-2.7a16 16 0 0 0-23.8 0a8 8 0 0 1-11.3.7a8 8 0 0 1-.6-11.3a31.8 31.8 0 0 1 47.6 0a8 8 0 0 1-.6 11.3Z"></path></svg>
               ) : (
@@ -46,7 +46,7 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
         </div>
         <div>
           <Link href='/only_me' passHref>
-            <ActionIcon color="cyan" component='a'>
+            <ActionIcon color="blue" component='a'>
               {pathname === "/only_me" ? (
                 <svg viewBox="0 0 256 256"><path fill="currentColor" d="M208 80h-36V52a44 44 0 0 0-88 0v28H48a16 16 0 0 0-16 16v112a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V96a16 16 0 0 0-16-16ZM100 52a28 28 0 0 1 56 0v28h-56Z"></path></svg>
               ) : (
@@ -57,7 +57,7 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
         </div>
         <div>
           <Link href='/friends' passHref>
-            <ActionIcon color="cyan" component='a'>
+            <ActionIcon color="blue" component='a'>
               {pathname === "/friends" ? (
                 <svg viewBox="0 0 256 256"><path fill="currentColor" d="M64 140a7.9 7.9 0 0 1-8 8H12a8.2 8.2 0 0 1-7.2-4.4a8.2 8.2 0 0 1 .8-8.4A67.8 67.8 0 0 1 33 113.5a40 40 0 1 1 66.3-37a8.1 8.1 0 0 1-3.8 8.4a64.3 64.3 0 0 0-27.8 33.8A61.6 61.6 0 0 0 64 140Zm186.4-4.8a67.8 67.8 0 0 0-27.4-21.7a40 40 0 1 0-66.3-37a8.1 8.1 0 0 0 3.8 8.4a64 64 0 0 1 27.8 33.8A61.6 61.6 0 0 1 192 140a7.9 7.9 0 0 0 8 8h44a8 8 0 0 0 6.4-12.8Zm-93.2 42.9a48 48 0 1 0-58.4 0a72.1 72.1 0 0 0-35.6 34.4a7.8 7.8 0 0 0 .5 7.7a7.8 7.8 0 0 0 6.7 3.8h115.2a7.8 7.8 0 0 0 6.7-3.8a7.8 7.8 0 0 0 .5-7.7a72.1 72.1 0 0 0-35.6-34.4Z"></path></svg>
               ) : (
@@ -68,7 +68,7 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
         </div>
         <div>
           <Link href='/public' passHref>
-            <ActionIcon color="cyan" component='a'>
+            <ActionIcon color="blue" component='a'>
               {pathname === "/public" ? (
                 <svg viewBox="0 0 256 256"><path fill="currentColor" d="m225.9 163.2l.3-1a103.7 103.7 0 0 0 0-68.4l-.3-1A104.4 104.4 0 0 0 128 24a104.2 104.2 0 0 0-97.9 68.8l-.3 1a103.7 103.7 0 0 0 0 68.4l.3 1A104.2 104.2 0 0 0 128 232a104.2 104.2 0 0 0 97.9-68.8ZM128 45.6A108.6 108.6 0 0 1 153.5 88h-51A108.6 108.6 0 0 1 128 45.6ZM102.5 168h51a108.6 108.6 0 0 1-25.5 42.4a108.6 108.6 0 0 1-25.5-42.4Zm-4.2-16a126.4 126.4 0 0 1 0-48h59.4a127.6 127.6 0 0 1 2.3 24a126.8 126.8 0 0 1-2.3 24Zm75.7-48h38.7a88.9 88.9 0 0 1 0 48H174a145 145 0 0 0 0-48Zm32.4-16h-36a128.7 128.7 0 0 0-24.1-46.1A88.6 88.6 0 0 1 206.4 88Zm-60.1 126.1a128.7 128.7 0 0 0 24.1-46.1h36a88.3 88.3 0 0 1-60.1 46.1Z"></path></svg>
               ) : (
@@ -79,7 +79,7 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
         </div>
         <div>
           <Link href='/calendar' passHref>
-            <ActionIcon color="cyan" component='a'>
+            <ActionIcon color="blue" component='a'>
               {pathname === "/calendar" ? (
                 <svg viewBox="0 0 256 256"><path fill="currentColor" d="M208 32h-24v-8a8 8 0 0 0-16 0v8H88v-8a8 8 0 0 0-16 0v8H48a16 16 0 0 0-16 16v160a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16Zm0 48H48V48h24v8a8 8 0 0 0 16 0v-8h80v8a8 8 0 0 0 16 0v-8h24Z"></path></svg>
               ) : (
@@ -90,7 +90,7 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
         </div>
         <div>
           <Link href='/friendships' passHref>
-            <ActionIcon color="cyan" component='a'>
+            <ActionIcon color="blue" component='a'>
               {pathname === "/friendships" ? (
                 <svg viewBox="0 0 256 256"><path fill="currentColor" d="M256 136a8 8 0 0 1-8 8h-16v16a8 8 0 0 1-16 0v-16h-16a8 8 0 0 1 0-16h16v-16a8 8 0 0 1 16 0v16h16a8 8 0 0 1 8 8Zm-111.9 21.6a68 68 0 1 0-72.2 0a118.4 118.4 0 0 0-55.8 37.3a7.8 7.8 0 0 0-1.1 8.5a7.9 7.9 0 0 0 7.2 4.6h171.6a7.9 7.9 0 0 0 7.2-4.6a7.8 7.8 0 0 0-1.1-8.5a118.4 118.4 0 0 0-55.8-37.3Z"></path></svg>
               ) : (
@@ -101,7 +101,7 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
         </div>
         <div>
           <Link href='/settings' passHref>
-            <ActionIcon color="cyan" component='a'>
+            <ActionIcon color="blue" component='a'>
               {pathname === "/settings" ? (
                 <svg viewBox="0 0 256 256"><path fill="currentColor" d="m234.8 150.4l-14.9-19.8c.1-1.8 0-3.7 0-5.1l14.9-19.9a7.8 7.8 0 0 0 1.3-6.9a114.8 114.8 0 0 0-10.9-26.4a8.2 8.2 0 0 0-5.8-4l-24.5-3.5l-3.7-3.7l-3.5-24.5a8.2 8.2 0 0 0-4-5.8a114.8 114.8 0 0 0-26.4-10.9a7.8 7.8 0 0 0-6.9 1.3L130.6 36h-5.2l-19.8-14.8a7.8 7.8 0 0 0-6.9-1.3a114.8 114.8 0 0 0-26.4 10.9a8.2 8.2 0 0 0-4 5.8l-3.5 24.5l-3.7 3.7l-24.5 3.5a8.2 8.2 0 0 0-5.8 4a114.8 114.8 0 0 0-10.9 26.4a7.8 7.8 0 0 0 1.3 6.9l14.9 19.8v5.1l-14.9 19.9a7.8 7.8 0 0 0-1.3 6.9a114.8 114.8 0 0 0 10.9 26.4a8.2 8.2 0 0 0 5.8 4l24.5 3.5l3.7 3.7l3.5 24.5a8.2 8.2 0 0 0 4 5.8a114.8 114.8 0 0 0 26.4 10.9a7.6 7.6 0 0 0 2.1.3a7.7 7.7 0 0 0 4.8-1.6l19.8-14.8h5.2l19.8 14.8a7.8 7.8 0 0 0 6.9 1.3a114.8 114.8 0 0 0 26.4-10.9a8.2 8.2 0 0 0 4-5.8l3.5-24.6c1.2-1.2 2.6-2.5 3.6-3.6l24.6-3.5a8.2 8.2 0 0 0 5.8-4a114.8 114.8 0 0 0 10.9-26.4a7.8 7.8 0 0 0-1.3-6.9ZM128 172a44 44 0 1 1 44-44a44 44 0 0 1-44 44Z"></path></svg>
               ) : (
@@ -111,7 +111,7 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
           </Link>
         </div>
         <div>
-          <ActionIcon onClick={() => setIsGratitudeModalOpened(true)} color="cyan" component='a'>
+          <ActionIcon onClick={() => setIsGratitudeModalOpened(true)} color="blue" component='a'>
             <svg viewBox="0 0 256 256"><path fill="currentColor" d="M216 204h-91l75.5-75.5l26.3-26.4a19.8 19.8 0 0 0 0-28.2l-44.7-44.7a19.9 19.9 0 0 0-28.2 0l-120 120a19.8 19.8 0 0 0-5.9 14.1V208a20.1 20.1 0 0 0 20 20h168a12 12 0 0 0 0-24ZM61 156l75-75l11 11l-75 75Zm103-47l11 11l-75 75l-11-11Zm4-60l39 39l-15 15l-39-39ZM52 181l11.5 11.5L75 204H52Z"></path></svg>
           </ActionIcon>
         </div>
@@ -120,7 +120,7 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
             <Link href='/login' passHref>
               <Button
                 leftIcon={<svg viewBox="0 0 256 256" height="20px" width="20px"><path fill="currentColor" d="m144.5 136.5l-42 42A12 12 0 0 1 94 182a12.2 12.2 0 0 1-8.5-3.5a12 12 0 0 1 0-17L107 140H24a12 12 0 0 1 0-24h83L85.5 94.5a12 12 0 0 1 17-17l42 42a12 12 0 0 1 0 17ZM192 28h-56a12 12 0 0 0 0 24h52v152h-52a12 12 0 0 0 0 24h56a20.1 20.1 0 0 0 20-20V48a20.1 20.1 0 0 0-20-20Z"></path></svg>}
-                color="cyan"
+                color="blue"
                 component="a"
               >
                 Log In
@@ -139,9 +139,8 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
           </div>
         )}
       </div>
-      <div style={{ padding: `20px` }}>
-        {children}
-      </div>
+
+      {children}
 
       <Modal
         opened={isGratitudeModalOpened}
@@ -158,7 +157,7 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
             display: flex;
             height: 44px;
             width: 100%;
-            background: #afcae0;
+            background: lightgray;
             align-items: center;
           }
 

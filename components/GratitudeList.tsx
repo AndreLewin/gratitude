@@ -79,8 +79,7 @@ export default function GratitudeList({ mode }: { mode: string }) {
 
       <div>
         {gratitudes?.map((gratitude, index) => (
-          <div key={`gm-${gratitude.id}`}>
-            <div style={{ marginTop: index === 0 ? 0 : "10px" }} />
+          <div key={`gm-${gratitude.id}`} style={{ marginTop: `10px` }}>
             <GratitudeMessage
               gratitude={gratitude}
               removeGratitude={() => removeGratitude(index)}
