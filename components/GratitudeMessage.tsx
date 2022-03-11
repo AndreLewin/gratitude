@@ -128,7 +128,9 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
         </div>
 
         <div className="second-line"><span className='for-because-words'>I am grateful for</span> {gratitude.fore}</div>
-        <div className="third-line"><span className='for-because-words'>Because</span> {gratitude.because}</div>
+        {(gratitude.because ?? ``).length > 0 &&
+          <div className="third-line"><span className='for-because-words'>Because</span> {gratitude.because}</div>
+        }
 
       </div>
 
