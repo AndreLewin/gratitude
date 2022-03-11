@@ -124,7 +124,7 @@ export default function Userpage({ userId, username }: { userId?: string, userna
         <div style={{ display: `flex`, justifyContent: `space-between` }}>
           {profile?.username && <Title order={2}>{profile?.username}</Title>}
 
-          {!isCheckingFriendshipStatus &&
+          {!isCheckingFriendshipStatus && (user?.id !== profile?.id) &&
             <>
               {!isFriendRequestSent && !isFriendRequestIncoming && !isFriend &&
                 <Button onClick={createFriendRequest}>
