@@ -125,7 +125,7 @@ export default function Userpage({ userId, username }: { userId?: string, userna
           {profile?.username && <Title order={2}>{profile?.username}</Title>}
 
           {!isCheckingFriendshipStatus && (user?.id !== profile?.id) &&
-            <>
+            <div style={{ display: `flex` }}>
               {!isFriendRequestSent && !isFriendRequestIncoming && !isFriend &&
                 <Button onClick={createFriendRequest}>
                   {`Send friend request`}
@@ -155,7 +155,7 @@ export default function Userpage({ userId, username }: { userId?: string, userna
                   {`Unfriend`}
                 </Button>
               }
-            </>
+            </div>
           }
         </div>
 
