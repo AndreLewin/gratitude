@@ -11,6 +11,7 @@ import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
 import NextNProgress from 'nextjs-progressbar'
 import Navigation from 'components/Navigation'
+import Notifier from 'components/Notifier'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   // xxx using zustand for storing the session is not useful
@@ -68,9 +69,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       >
         <NotificationsProvider position="bottom-center">
           <ModalsProvider>
-            <Navigation>
-              <Component {...pageProps} />
-            </Navigation>
+            <Notifier>
+              <Navigation>
+                <Component {...pageProps} />
+              </Navigation>
+            </Notifier>
           </ModalsProvider>
         </NotificationsProvider>
       </MantineProvider>
