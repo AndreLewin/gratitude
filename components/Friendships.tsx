@@ -5,12 +5,13 @@ import { supabase } from 'utils/supabaseClient'
 import store from '../store'
 import { Profile } from './Settings'
 
-type Friendship = {
+export type Friendship = {
   id: number,
   user_id_1: string,
   profile_1: Profile,
   user_id_2: string,
-  profile_2: Profile
+  profile_2: Profile,
+  is_accepted: boolean
 }
 
 export default function Friendships() {
