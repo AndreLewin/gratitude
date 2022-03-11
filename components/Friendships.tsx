@@ -97,12 +97,22 @@ export default function Friendships() {
     setIsFriendsLoading(false)
   }, [])
 
-  const friendsFormatted = useMemo<{ friendId: string, friendProfile: Profile }[]>(() => {
+  const friendsFormatted = useMemo<{ friendId: string, friendProfile: Profile, friendshipId: number }[]>(() => {
     return friends.map(f => ({
       friendId: f.user_id_1 === user.id ? f.user_id_2 : f.user_id_1,
-      friendProfile: f.user_id_1 === user.id ? f.profile_2 : f.profile_1
+      friendProfile: f.user_id_1 === user.id ? f.profile_2 : f.profile_1,
+      friendshipId: f.id
     }))
   }, [friends])
+
+  const removeFriend = useCallback<any>(async (friendshipId: number) => {
+    const { data, error } = await supabase
+      .from(`friendships`)
+      .delete()
+      .match({ id: friendshipId })
+    if (error) return console.error(error)
+    getFriends()
+  }, [sentFriendRequests])
 
   return (
     <div style={{ position: "relative" }}>
@@ -177,7 +187,7 @@ export default function Friendships() {
                 </Link>
                 <Button
                   color="red"
-                  onClick={() => cancelSentFriendRequest(fr.friendProfile)}
+                  onClick={() => removeFriend(fr.friendshipId)}
                   style={{ marginLeft: `10px` }}
                 >
                   Remove
