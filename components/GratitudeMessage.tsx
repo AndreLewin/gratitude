@@ -10,7 +10,7 @@ import GratitudeForm from './GratitudeForm'
 import { Gratitude } from './GratitudeList'
 
 export default function GratidudeMessage({ gratitude, removeGratitude, editGratitude }: { gratitude: Gratitude, removeGratitude: Function, editGratitude: Function }) {
-  const user = supabase.auth.user()!
+  const user = supabase.auth.user()
 
   const [formattedDate, setFormattedDate] = useState<string | null>("")
   useEffect(() => {
@@ -107,7 +107,7 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
               }
             </div>
 
-            {gratitude.profile.id === user.id &&
+            {gratitude.profile.id === user?.id &&
 
               <div style={{ marginLeft: "10px", display: "flex" }}>
                 <Tooltip label="Edit">
