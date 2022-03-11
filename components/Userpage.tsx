@@ -122,65 +122,45 @@ export default function Userpage({ userId, username }: { userId?: string, userna
           background: backgroundColor
         }}
       >
-        {profile?.username && <Title order={2}>{profile?.username}</Title>}
+        <div style={{ display: `flex`, justifyContent: `space-between` }}>
+          {profile?.username && <Title order={2}>{profile?.username}</Title>}
+
+          {!isCheckingFriendshipStatus &&
+            <>
+              {!isFriendRequestSent && !isFriendRequestIncoming && !isFriend &&
+                <Button onClick={createFriendRequest}>
+                  {`Send friend request`}
+                </Button>
+              }
+
+              {isFriendRequestSent &&
+                <Button variant={`outline`} onClick={deleteFriendship}>
+                  {`Cancel friend request`}
+                </Button>
+              }
+
+              {isFriendRequestIncoming &&
+                <Button color={`red`} onClick={deleteFriendship}>
+                  {`Refuse friend request`}
+                </Button>
+              }
+
+              {isFriendRequestIncoming &&
+                <Button color={`teal`} onClick={acceptFriendship} style={{ marginLeft: `10px` }}>
+                  {`Accept friend request`}
+                </Button>
+              }
+
+              {isFriend &&
+                <Button color={`red`} onClick={deleteFriendship}>
+                  {`Unfriend`}
+                </Button>
+              }
+            </>
+          }
+        </div>
+
         {profile?.bio && <Text>{profile?.bio}</Text>}
-
-        {!isCheckingFriendshipStatus &&
-          <>
-            {!isFriendRequestSent && !isFriendRequestIncoming && !isFriend &&
-              <Button
-                variant={`filled`}
-                onClick={createFriendRequest}
-                style={{ marginTop: `10px` }}
-              >
-                {`Send friend request`}
-              </Button>
-            }
-
-            {isFriendRequestSent &&
-              <Button
-                variant={`outline`}
-                onClick={deleteFriendship}
-                style={{ marginTop: `10px` }}
-              >
-                {`Cancel friend request`}
-              </Button>
-            }
-
-            {isFriendRequestIncoming &&
-              <Button
-                variant={`filled`}
-                color={`red`}
-                onClick={deleteFriendship}
-                style={{ marginTop: `10px` }}
-              >
-                {`Refuse friend request`}
-              </Button>
-            }
-
-            {isFriendRequestIncoming &&
-              <Button
-                variant={`filled`}
-                color={`teal`}
-                onClick={acceptFriendship}
-                style={{ marginTop: `10px`, marginLeft: `10px` }}
-              >
-                {`Accept friend request`}
-              </Button>
-            }
-
-            {isFriend &&
-              <Button
-                variant={`filled`}
-                color={`red`}
-                onClick={deleteFriendship}
-                style={{ marginTop: `10px` }}
-              >
-                {`Unfriend`}
-              </Button>
-            }
-          </>
-        }
       </div>
 
       {profile?.id &&
