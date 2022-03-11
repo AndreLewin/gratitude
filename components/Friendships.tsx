@@ -116,7 +116,7 @@ export default function Friendships() {
   }, [sentFriendRequests])
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", padding: `20px` }}>
       <LoadingOverlay visible={isIncomingFriendRequestsLoading || isSentFriendRequestsLoading || isFriendsLoading} />
 
       {incomingFriendRequests.length > 0 &&
@@ -197,6 +197,10 @@ export default function Friendships() {
             ))
           }
         </div>
+      }
+
+      {!isFriendsLoading && friends.length === 0 &&
+        <Text>You don't seem to have any friend. You can send a friend request to a user from their profile page. You can reach it by clicking on their name on their messages.</Text>
       }
 
       <style jsx>
