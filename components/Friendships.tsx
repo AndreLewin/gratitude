@@ -126,7 +126,7 @@ export default function Friendships() {
             incomingFriendRequests.map(iFR => (
               <div key={`iFR-${iFR.user_id_1}`} className="friend-request-card">
                 <Link href={iFR.profile_1.username ? `/u/${iFR.profile_1.username}` : `/uid/${iFR.profile_1.id}`}>
-                  <div style={{ fontWeight: 600, cursor: `pointer`, color: `rgb(29, 155, 240)` }}>
+                  <div style={{ fontWeight: 600, cursor: `pointer`, color: `#1c7ed6` }}>
                     {iFR.profile_1.username ?? "(Anonymous)"}
                   </div>
                 </Link>
@@ -157,7 +157,7 @@ export default function Friendships() {
             sentFriendRequests.map(sFR => (
               <div key={`sFR-${sFR.user_id_2}`} className="friend-request-card">
                 <Link href={sFR.profile_2.username ? `/u/${sFR.profile_2.username}` : `/uid/${sFR.profile_2.id}`}>
-                  <div style={{ fontWeight: 600, cursor: `pointer`, color: `rgb(29, 155, 240)` }}>
+                  <div style={{ fontWeight: 600, cursor: `pointer`, color: `#1c7ed6` }}>
                     {sFR.profile_2.username ?? "(Anonymous)"}
                   </div>
                 </Link>
@@ -182,7 +182,7 @@ export default function Friendships() {
             friendsFormatted.map(fr => (
               <div key={`fr-${fr.friendId}`} className="friend-request-card">
                 <Link href={fr.friendProfile.username ? `/u/${fr.friendProfile.username}` : `/uid/${fr.friendProfile.id}`}>
-                  <div style={{ fontWeight: 600, cursor: `pointer`, color: `rgb(29, 155, 240)` }}>
+                  <div style={{ fontWeight: 600, cursor: `pointer`, color: `#1c7ed6` }}>
                     {fr.friendProfile.username ?? "(Anonymous)"}
                   </div>
                 </Link>
@@ -199,7 +199,7 @@ export default function Friendships() {
         </div>
       }
 
-      {!isFriendsLoading && friends.length === 0 &&
+      {!isFriendsLoading && friends.length === 0 && incomingFriendRequests.length === 0 && sentFriendRequests.length === 0 &&
         <Text>You don't seem to have any friend. You can send a friend request to a user from their profile page. You can reach it by clicking on their name on their messages.</Text>
       }
 
