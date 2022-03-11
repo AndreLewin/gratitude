@@ -188,61 +188,61 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@mantine/core@3.6.9":
-  version "3.6.9"
-  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-3.6.9.tgz#7c7852c2c4076f52976f5072631ce37416dda644"
-  integrity sha512-OtRrXWKJm+uh6uPwmj8hEuUZ0tz0UEOJrAVJ8151omuDlmXCSwQ80lRuowUCtYtbWl5Hf0YZeNrJcUY4eXFceQ==
+"@mantine/core@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-4.0.0.tgz#39d7499bd9d0356132823f6075f56e1696743dec"
+  integrity sha512-aWwfv8d1Eqx0nqjoZZwbK17gWfQeukCRXfysusC15WHzq8R7Q5QkZzhxU6wBlzObIvLZvWy64uApcY8QxiXr5A==
   dependencies:
-    "@mantine/styles" "3.6.9"
+    "@mantine/styles" "4.0.0"
     "@popperjs/core" "^2.9.3"
     "@radix-ui/react-scroll-area" "^0.1.1"
     clsx "^1.1.1"
     react-popper "^2.2.5"
     react-textarea-autosize "^8.3.2"
 
-"@mantine/hooks@3.6.9":
-  version "3.6.9"
-  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-3.6.9.tgz#af0af815b5c0fc91c42cbd76530a2ff4a1d8f87b"
-  integrity sha512-F3nwbph3nOrv6/zigSYqrsSdqavA5SR+8IxatGdoLjNe7w9XJxO7d557mh6/1kr9o69GY8+cUWyDJ5XYIrotYA==
+"@mantine/hooks@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-4.0.0.tgz#8fc00aae0ffb8a817c3dc63fa2d9879440618633"
+  integrity sha512-wYOv28mJdzLNK4Q112o18XglkNN0WkMioSh5lEE+V2nBrxhTu/vlfFkiC21HZXKBJ1lyy22nIvSUA2jz82W3lg==
 
-"@mantine/modals@3.6.9":
-  version "3.6.9"
-  resolved "https://registry.yarnpkg.com/@mantine/modals/-/modals-3.6.9.tgz#df8206bd5f140f8fe0cfe3ebb4cdc54c127fc5e7"
-  integrity sha512-iO0UPKdgpYYIUq6mhYCIPGDja3UBmbH5ziWBONQMZAxVM4woeHRV2TzMep2US8qO8ySRGFv41E1jKLVmo4O7fg==
+"@mantine/modals@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@mantine/modals/-/modals-4.0.0.tgz#55c142f0b32b78ca56792b7528c45be5f4d07b8c"
+  integrity sha512-EidX7BEA7oWYTlP8gxVXVO5QIG0fR/lxi/SeonbRuj0P88J8VcbGt5f/tH+dOQoH794Eg3760/iTvd5bQZEHeQ==
 
-"@mantine/next@3.6.9":
-  version "3.6.9"
-  resolved "https://registry.yarnpkg.com/@mantine/next/-/next-3.6.9.tgz#5a59e762b6c10434937f5602585890e74c764d6d"
-  integrity sha512-JXncigqSPHdHGsNsPKfWCLaCimulb+w/r7ua67MzSZwXGRlO1YSyUsAkEzdooREXCDD/YqukLyBUDpCxF9xitQ==
+"@mantine/next@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@mantine/next/-/next-4.0.0.tgz#c8751a38f341a81c011312137b157ce76ab80155"
+  integrity sha512-i51Arv34mvAdaYKqpzN+WClmsoD9YpdqcTGP//oLSljR8vIBMl0PUPVJbeuLjFZ859t8WiCo+oQolP41qi48tg==
   dependencies:
-    "@mantine/ssr" "3.6.9"
+    "@mantine/ssr" "4.0.0"
 
-"@mantine/notifications@3.6.9":
-  version "3.6.9"
-  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-3.6.9.tgz#3df883fd27f41562c05f141b25d5bc3e64d5648f"
-  integrity sha512-vW6y3IIn503359q6QSm/XOpDUE+LmKy96zYrT8aNP7rUXkYOeWY2DMlpu8w/uRwSEGvrBc7wxk992HZyq64Ogw==
+"@mantine/notifications@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-4.0.0.tgz#2e4caed2f541e01cbf71e173ea5b7c1a259dffdb"
+  integrity sha512-4WVYp4Qws1N5QzoGETQvc4kn3qxC54JfZ+VLCUekrtlUnud9t5Z0uYjCxR+RdDGmq/QuIRahWnQDIYEmFEmcXQ==
   dependencies:
     clsx "^1.1.1"
     react-transition-group "^4.4.2"
 
-"@mantine/ssr@3.6.9":
-  version "3.6.9"
-  resolved "https://registry.yarnpkg.com/@mantine/ssr/-/ssr-3.6.9.tgz#9ae883fc38cb5356ef03171339e7ce494b66ae04"
-  integrity sha512-Bw2PjGqd9LG/y8G6p9vtY//Qtgf5T8yjxYbnhsFSIeXQeuI1yhFzkU5jDHyXBuqfaezbRgObECejtgLF+osaVw==
+"@mantine/ssr@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@mantine/ssr/-/ssr-4.0.0.tgz#9b259960c882eaf157cd3ac7b0a1a93f467e4600"
+  integrity sha512-tf1xsF3kVa9BH1+hSLy/zsXt5oMIqwieG0u0vToRPfqordXrCLNgvQJG/9MYipP0BLoJtTg3QYk/hGc6AmxbfA==
   dependencies:
     "@emotion/cache" "^11.7.1"
     "@emotion/react" "^11.7.1"
     "@emotion/serialize" "^1.0.2"
     "@emotion/server" "^11.4.0"
     "@emotion/utils" "^1.0.0"
-    "@mantine/styles" "3.6.9"
+    "@mantine/styles" "4.0.0"
     csstype "^3.0.9"
     html-react-parser "^1.3.0"
 
-"@mantine/styles@3.6.9":
-  version "3.6.9"
-  resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-3.6.9.tgz#b9d45900de820e40bba1cf4c40e0ff1a7ff849e6"
-  integrity sha512-gvdvEeVHeUqwb2nONWiOZ7+0ml6DPDvLFvrsmvrznjrNk+eofFWX2kCvGK8cYDgIvg8UmyTB49MFByMiL1Hq+A==
+"@mantine/styles@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-4.0.0.tgz#ba2db06e96c1ea8e693c1b810cddc7a379e1c71b"
+  integrity sha512-wsOCu9heyc2NMLYZfWMa+3K4QmlyTGJB52hiHHbu84KPlvNoAXAeh6dpB37eM9MySLPJnWEEXfiA3x26rmgesQ==
   dependencies:
     "@emotion/cache" "^11.7.1"
     "@emotion/react" "^11.7.1"
@@ -1836,7 +1836,7 @@ next@12.1.0:
     "@next/swc-win32-ia32-msvc" "12.1.0"
     "@next/swc-win32-x64-msvc" "12.1.0"
 
-nextjs-progressbar@^0.0.14:
+nextjs-progressbar@0.0.14:
   version "0.0.14"
   resolved "https://registry.yarnpkg.com/nextjs-progressbar/-/nextjs-progressbar-0.0.14.tgz#cc2630ee4e9dec598314394bd0fffb0cbfc40444"
   integrity sha512-AXYXHDN6M52AwFnGqH/vlwyo0gbC9zM7QS/4ryOTI0RUqfze5FJl8uSrxKJMzK6hGFdDeQXcZoWsLGXeCVtTwg==
