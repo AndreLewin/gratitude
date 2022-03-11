@@ -26,7 +26,7 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
       centered: true,
       children: (
         <div style={{ opacity: 0.7 }}>
-          I am grateful for: {gratitude.fore}. Because {gratitude.because}
+          I am grateful for: {gratitude.fore} because {gratitude.because}
         </div>
       ),
       labels: { confirm: "Delete", cancel: "Cancel" },
@@ -129,7 +129,7 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
 
         <div className="second-line"><span className='for-because-words'>I am grateful for</span> {gratitude.fore}</div>
         {(gratitude.because ?? ``).length > 0 &&
-          <div className="third-line"><span className='for-because-words'>Because</span> {gratitude.because}</div>
+          <div className="third-line"><span className='for-because-words'>because</span> {gratitude.because}</div>
         }
 
       </div>

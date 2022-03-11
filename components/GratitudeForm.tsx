@@ -80,7 +80,7 @@ export default function GratitudeForm({ closeModal, gratitude, editGratitude }: 
         value={because}
         onChange={(event) => setBecause(event.currentTarget.value)}
         placeholder="it gave me energy, people care about me, nice things are free ..."
-        label="Because"
+        label="because"
         maxRows={2}
         autosize
       />
