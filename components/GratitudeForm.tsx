@@ -45,7 +45,7 @@ export default function GratitudeForm({ closeModal, gratitude, editGratitude }: 
       .from("gratitudes")
       .update({ fore, because, visibility_id: visibilityId })
       .eq('id', gratitude?.id)
-      .select(`id, fore, because, created_at, updated_at, visibility(id), user_id`)
+      .select(`id, fore, because, created_at, updated_at, visibility_id, user_id`)
 
     if (error) return console.error(error)
     closeModal()
