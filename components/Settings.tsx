@@ -1,7 +1,6 @@
-import { Button, ColorInput, LoadingOverlay, Textarea, Notification } from '@mantine/core'
+import { Button, ColorInput, LoadingOverlay, Textarea } from '@mantine/core'
 import { useNotifications } from '@mantine/notifications'
 import { useState, useEffect, useCallback, useMemo, ChangeEvent } from 'react'
-import store from '../store'
 import { supabase } from '../utils/supabaseClient'
 import { useDebouncedValue } from '@mantine/hooks'
 
@@ -13,8 +12,6 @@ export type Profile = {
 }
 
 export default function Settings() {
-  const session = store(state => state.session)
-
   // TODO: use "object" and "originalObject" instead to compare with less boilerplate
   const [originalUsername, setOriginalUsername] = useState<string | null>(null)
   const [originalBio, setOriginalBio] = useState<string | null>(null)
@@ -27,7 +24,7 @@ export default function Settings() {
 
   useEffect(() => {
     getProfile()
-  }, [session])
+  }, [])
 
   async function getProfile() {
     setIsProfileLoading(true)

@@ -1,20 +1,20 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import store from "../store";
+import { supabase } from "utils/supabaseClient";
 
 export default function RedirectIfNotAuthenticated({ children }: { children: JSX.Element }) {
-  const session = store(state => state.session)
+  const user = supabase.auth.user()
   const router = useRouter()
 
   // we want to redirect only from the client side
   // (where we can know if the user going to the link is authenticated (see _app.tsx))
   useEffect(() => {
-    if (session === null) {
+    if (user === null) {
       router.push('/')
     }
   }, [])
 
-  if (session === null) {
+  if (user === null) {
     return null
     // return (<></>)
   } else {

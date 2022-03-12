@@ -4,7 +4,6 @@ import Head from 'next/head'
 import { MantineProvider } from '@mantine/core'
 import { useEffect, useState } from 'react'
 import { supabase } from '../utils/supabaseClient'
-import store from '../store'
 import { useRouter } from 'next/router'
 import { isNullish } from '../utils/typeChecks'
 import { ModalsProvider } from '@mantine/modals'
@@ -14,26 +13,17 @@ import Navigation from 'components/Navigation'
 import Notifier from 'components/Notifier'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  // xxx using zustand for storing the session is not useful
-  // it can already be accessed everywhere by importing 
+  const user = supabase.auth.user()
+
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
-  const set = store(state => state.set)
   const router = useRouter()
 
   useEffect(() => {
     // if the user has already authenticated in the browser
     const supabaseSession = supabase.auth.session()
-    set({
-      property: 'session',
-      value: supabaseSession ?? null
-    })
 
     // will be triggered when sign in with magic link, or sign out with supabase.auth.signOut
     supabase.auth.onAuthStateChange((_event, session) => {
-      set({
-        property: 'session',
-        value: session ?? null
-      })
       if (isNullish(session)) {
         router.push('/')
       } else {

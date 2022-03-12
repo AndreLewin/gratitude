@@ -1,6 +1,5 @@
 import { LoadingOverlay } from '@mantine/core'
 import { useState, useEffect, useCallback } from 'react'
-import store from '../store'
 import { supabase } from '../utils/supabaseClient'
 import GratitudeMessage from './GratitudeMessage'
 import { Profile } from './Settings'
@@ -17,13 +16,12 @@ export type Gratitude = {
 }
 
 export default function GratitudeList({ mode }: { mode: string }) {
-  const session = store(state => state.session)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [gratitudes, setGratitudes] = useState<Gratitude[]>([])
 
   useEffect(() => {
     getGratitudes()
-  }, [session])
+  }, [])
 
   async function getGratitudes() {
     setIsLoading(true)

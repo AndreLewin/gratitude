@@ -2,7 +2,6 @@ import { LoadingOverlay, Title, Text, Button } from '@mantine/core'
 import Link from 'next/link'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { supabase } from 'utils/supabaseClient'
-import store from '../store'
 import { Profile } from './Settings'
 
 export type Friendship = {
@@ -15,7 +14,6 @@ export type Friendship = {
 }
 
 export default function Friendships() {
-  const session = store(state => state.session)
   const user = supabase.auth.user()!
 
   const [isIncomingFriendRequestsLoading, setIsIncomingFriendRequestsLoading] = useState<boolean>(true)
@@ -29,7 +27,7 @@ export default function Friendships() {
     getIncomingFriendRequests()
     getSentFriendRequests()
     getFriends()
-  }, [session])
+  }, [])
 
   const getIncomingFriendRequests = useCallback<any>(async () => {
     const { data, error } = await supabase
