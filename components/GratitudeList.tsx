@@ -1,10 +1,10 @@
 import { LoadingOverlay } from '@mantine/core'
 import { useState, useEffect, useCallback } from 'react'
 import store from '../store'
-import { PUBLIC_VISIBILITY } from '../data'
 import { supabase } from '../utils/supabaseClient'
 import GratitudeMessage from './GratitudeMessage'
 import { Profile } from './Settings'
+import { getFriendsUserIds } from 'helpers/supabase'
 
 export type Gratitude = {
   id: string,
@@ -39,13 +39,16 @@ export default function GratitudeList({ mode }: { mode: string }) {
 
     promise.order('created_at', { ascending: false })
 
+    // the pages filter only on the user_id (the visibility_id is handled by RLS)
     if (mode === "only_me") {
       promise.eq("user_id", user.id)
     } else if (mode === "friends") {
-
+      // note: using a custom psql function for fetching gratitude messages of friends would make formatting the response to match the other calls too complicated
+      // instead, we fetch the list of friends in a different call
+      const friendsUserIds = await getFriendsUserIds(user.id)
+      promise.in("user_id", friendsUserIds)
     } else if (mode === "public") {
-
-      promise.eq("visibility_id", PUBLIC_VISIBILITY)
+      // no need to filter
     } else if (mode.match(/^user: /)) {
       const userId = mode.substring(6, mode.length)
       promise.eq("user_id", userId)
