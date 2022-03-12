@@ -60,6 +60,7 @@ export default function Friendships() {
       .match({ id: friendRequestId, is_accepted: false })
     if (error) return console.error(error)
     setIncomingFriendRequests(incomingFriendRequests.filter(sFR => sFR.id !== friendRequestId))
+    getFriends()
   }, [incomingFriendRequests])
 
   const getSentFriendRequests = useCallback<any>(async () => {
