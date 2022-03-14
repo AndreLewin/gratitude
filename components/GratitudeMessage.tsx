@@ -3,11 +3,11 @@ import { useModals } from '@mantine/modals'
 import format from 'date-fns/format'
 import Link from 'next/link'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Gratitude } from 'store'
 import { FRIENDS_VISIBILITY, ONLY_ME_VISIBILITY, PUBLIC_VISIBILITY } from '../data'
 import { supabase } from '../utils/supabaseClient'
 import { isNullish } from '../utils/typeChecks'
 import GratitudeForm from './GratitudeForm'
-import { Gratitude } from './GratitudeList'
 
 export default function GratidudeMessage({ gratitude, removeGratitude, editGratitude }: { gratitude: Gratitude, removeGratitude: Function, editGratitude: Function }) {
   const user = supabase.auth.user()

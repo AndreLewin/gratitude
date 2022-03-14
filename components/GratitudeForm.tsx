@@ -1,10 +1,9 @@
 import { Button, Select, Textarea } from "@mantine/core"
 import { useCallback, useMemo, useState } from "react"
+import { Gratitude } from "store"
 import { visibilities } from "../data"
 import { supabase } from "../utils/supabaseClient"
 import { isNullish } from "../utils/typeChecks"
-import { Gratitude } from "./GratitudeList"
-
 
 export default function GratitudeForm({ closeModal, gratitude, editGratitude }: { closeModal: Function, gratitude?: Gratitude, editGratitude?: Function }) {
   const isCreating = useMemo<boolean>(() => {
