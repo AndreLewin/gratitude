@@ -3,6 +3,7 @@ import { useModals } from '@mantine/modals'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import store from 'store'
 import { supabase } from '../utils/supabaseClient'
 import { isNullish } from '../utils/typeChecks'
 import GratitudeForm from './GratitudeForm'
@@ -17,6 +18,8 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
 
   const modals = useModals()
 
+  const reset = store(state => state.reset)
+
   const openLogOutModal = () => {
     modals.openConfirmModal({
       title: "Are you sure you want to log out?",
@@ -24,7 +27,11 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
       labels: { confirm: "Log Out", cancel: "Cancel" },
       confirmProps: { color: "blue" },
       onCancel: () => { },
-      onConfirm: () => supabase.auth.signOut(),
+      onConfirm: () => {
+        // TODO: redirect to a logout page instead to avoid reactive UI changes due to user/session and store
+        supabase.auth.signOut()
+        reset()
+      },
     });
   }
 

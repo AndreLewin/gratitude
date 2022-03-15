@@ -14,6 +14,12 @@ export type Gratitude = {
   profile: Profile
 }
 
+// note: it's a factory function so the ref of arrays and objects are not kept
+const getDefaultStoreValues: () => any = () => ({
+  mode: "public",
+  gratitudes: []
+})
+
 type Store = {
   // set: <Property extends keyof Store>({
   //   property,
@@ -23,6 +29,7 @@ type Store = {
   //   value: Store[Property]
   // }) => void
   set: SetState<Store>
+  reset: () => void
   mode: string
   gratitudes: Gratitude[]
   getGratitudes: (userId: string) => void
@@ -31,6 +38,7 @@ type Store = {
 }
 
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
+  // // that's how you would do an universal setter on a store that does not provide "set"
   // set: <Property extends keyof Store>({
   //   property,
   //   value
@@ -42,8 +50,9 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
   //   set(state => ({ [property]: value }))
   // },
   set: (partial) => set(partial),
-  mode: "public",
-  gratitudes: [],
+  reset: () => set(getDefaultStoreValues()),
+  mode: getDefaultStoreValues().mode,
+  gratitudes: getDefaultStoreValues().gratitudes,
   getGratitudes: async (userId) => {
     const { mode } = get()
 
