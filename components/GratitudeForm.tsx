@@ -5,7 +5,7 @@ import { visibilities } from "../data"
 import { supabase } from "../utils/supabaseClient"
 import { isNullish } from "../utils/typeChecks"
 
-export default function GratitudeForm({ closeModal, gratitude, editGratitude }: { closeModal: Function, gratitude?: Gratitude, editGratitude?: Function }) {
+export default function GratitudeForm({ closeModal, gratitude }: { closeModal: Function, gratitude?: Gratitude }) {
   const isCreating = useMemo<boolean>(() => {
     return isNullish(gratitude)
   }, [gratitude])
@@ -36,11 +36,13 @@ export default function GratitudeForm({ closeModal, gratitude, editGratitude }: 
         { user_id: user.id, fore, because, visibility_id: visibilityId },
       ])
     if (error) return console.error(error)
+    // we could also add the new gratitude message locally
+    // but if an other new message has been added by someone else, we want to display that message too
     await getGratitudes(user.id)
     closeModal()
-    // TODO: redirect to page based on chosen visibility
   }, [visibilityId, fore, because])
 
+  const editLocalGratitude = store(state => state.editLocalGratitude)
   const updateGratitudeMessage = useCallback<any>(async () => {
     setIsLoading(true)
     const { data, error } = await supabase
@@ -51,8 +53,8 @@ export default function GratitudeForm({ closeModal, gratitude, editGratitude }: 
 
     if (error) return console.error(error)
     closeModal()
-    editGratitude?.(data?.[0] ?? {})
-  }, [visibilityId, fore, because, editGratitude])
+    editLocalGratitude(data?.[0]?.id ?? -1, data?.[0])
+  }, [visibilityId, fore, because])
 
   return (
     <div>

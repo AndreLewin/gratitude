@@ -2,7 +2,7 @@ import { LoadingOverlay } from '@mantine/core'
 import { useState, useEffect } from 'react'
 import { supabase } from '../utils/supabaseClient'
 import GratitudeMessage from './GratitudeMessage'
-import store, { Gratitude } from 'store'
+import store from 'store'
 
 export default function GratitudeList({ mode }: { mode: string }) {
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -10,8 +10,6 @@ export default function GratitudeList({ mode }: { mode: string }) {
   const set = store(state => state.set)
   const gratitudes = store(state => state.gratitudes)
   const getGratitudes = store(state => state.getGratitudes)
-  const removeLocalGratitude = store(state => state.removeLocalGratitude)
-  const editLocalGratitude = store(state => state.editLocalGratitude)
 
   useEffect(() => {
     set({ mode })
@@ -30,13 +28,9 @@ export default function GratitudeList({ mode }: { mode: string }) {
     <div style={{ position: "relative" }}>
       <LoadingOverlay visible={isLoading} />
       <div>
-        {gratitudes?.map((gratitude, index) => (
+        {gratitudes?.map((gratitude) => (
           <div key={`gm-${gratitude.id}`} style={{ marginTop: `10px` }}>
-            <GratitudeMessage
-              gratitude={gratitude}
-              removeGratitude={() => removeLocalGratitude(index)}
-              editGratitude={(newGratitudeData: Partial<Gratitude>) => editLocalGratitude(index, newGratitudeData)}
-            />
+            <GratitudeMessage gratitude={gratitude} />
           </div>
         ))}
       </div>

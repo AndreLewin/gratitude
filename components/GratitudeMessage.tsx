@@ -3,13 +3,15 @@ import { useModals } from '@mantine/modals'
 import format from 'date-fns/format'
 import Link from 'next/link'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Gratitude } from 'store'
+import store, { Gratitude } from 'store'
 import { FRIENDS_VISIBILITY, ONLY_ME_VISIBILITY, PUBLIC_VISIBILITY } from '../data'
 import { supabase } from '../utils/supabaseClient'
 import { isNullish } from '../utils/typeChecks'
 import GratitudeForm from './GratitudeForm'
 
-export default function GratidudeMessage({ gratitude, removeGratitude, editGratitude }: { gratitude: Gratitude, removeGratitude: Function, editGratitude: Function }) {
+export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }) {
+  const removeLocalGratitude = store(state => state.removeLocalGratitude)
+
   const user = supabase.auth.user()
 
   const [formattedDate, setFormattedDate] = useState<string | null>("")
@@ -42,7 +44,7 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
       .delete()
       .eq('id', gratitude.id)
     if (error) return console.error(error)
-    removeGratitude()
+    removeLocalGratitude(data?.[0]?.id ?? -1)
   }, [])
 
   const backgroundColor = useMemo<string>(() => {
@@ -139,7 +141,7 @@ export default function GratidudeMessage({ gratitude, removeGratitude, editGrati
         onClose={() => setIsUpdateGratitudeModalOpened(false)}
         title="Update the message of gratitude"
       >
-        <GratitudeForm closeModal={() => setIsUpdateGratitudeModalOpened(false)} gratitude={gratitude} editGratitude={editGratitude} />
+        <GratitudeForm closeModal={() => setIsUpdateGratitudeModalOpened(false)} gratitude={gratitude} />
       </Modal>
 
       <style jsx>

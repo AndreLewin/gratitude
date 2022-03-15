@@ -5,7 +5,7 @@ import { supabase } from 'utils/supabaseClient'
 import { getFriendsUserIds } from 'helpers/supabase'
 
 export type Gratitude = {
-  id: string,
+  id: number,
   created_at: string,
   fore: string,
   because: string,
@@ -26,7 +26,7 @@ type Store = {
   mode: string
   gratitudes: Gratitude[]
   getGratitudes: (userId: string) => void
-  removeLocalGratitude: (indexToRemove: number) => void
+  removeLocalGratitude: (gratitudeIdToRemove: number) => void
   editLocalGratitude: (indexToEdit: number, newGratitudeData: Partial<Gratitude>) => void
 }
 
@@ -81,13 +81,17 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
 
     set({ gratitudes: data ?? [] })
   },
-  removeLocalGratitude: (indexToRemove) => {
+  removeLocalGratitude: (gratitudeIdToRemove) => {
     const { gratitudes } = get()
+    const indexToRemove = gratitudes.findIndex(g => g.id === gratitudeIdToRemove)
+    if (indexToRemove === -1) return
     const newGratitudes = [...gratitudes.slice(0, indexToRemove), ...gratitudes.slice(indexToRemove + 1)]
     set({ gratitudes: newGratitudes })
   },
-  editLocalGratitude: (indexToEdit, newGratitudeData) => {
+  editLocalGratitude: (gratitudeIdToEdit, newGratitudeData) => {
     const { gratitudes } = get()
+    const indexToEdit = gratitudes.findIndex(g => g.id === gratitudeIdToEdit)
+    if (indexToEdit === -1) return
     // necessary because get() does not do a deepClone of the gratitude themselves
     // so if we modify a property of a gratitude, React sees the same ref to the gratitude,
     // and visually nothing is updated
