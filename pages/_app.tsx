@@ -13,8 +13,6 @@ import Navigation from 'components/Navigation'
 import Notifier from 'components/Notifier'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const user = supabase.auth.user()
-
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
   const router = useRouter()
 
