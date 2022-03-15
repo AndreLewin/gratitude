@@ -7,26 +7,28 @@ import store, { Gratitude } from 'store'
 export default function GratitudeList({ mode }: { mode: string }) {
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
+  const set = store(state => state.set)
   const gratitudes = store(state => state.gratitudes)
   const getGratitudes = store(state => state.getGratitudes)
   const removeLocalGratitude = store(state => state.removeLocalGratitude)
   const editLocalGratitude = store(state => state.editLocalGratitude)
 
   useEffect(() => {
+    set({ mode })
+    set({ gratitudes: [] })
     fetchGratitudes()
   }, [])
 
   const fetchGratitudes = async () => {
     setIsLoading(true)
     const user = supabase.auth.user()!
-    await getGratitudes(user.id, mode)
+    await getGratitudes(user.id)
     setIsLoading(false)
   }
 
   return (
     <div style={{ position: "relative" }}>
       <LoadingOverlay visible={isLoading} />
-
       <div>
         {gratitudes?.map((gratitude, index) => (
           <div key={`gm-${gratitude.id}`} style={{ marginTop: `10px` }}>

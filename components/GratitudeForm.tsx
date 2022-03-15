@@ -1,6 +1,6 @@
 import { Button, Select, Textarea } from "@mantine/core"
 import { useCallback, useMemo, useState } from "react"
-import { Gratitude } from "store"
+import store, { Gratitude } from "store"
 import { visibilities } from "../data"
 import { supabase } from "../utils/supabaseClient"
 import { isNullish } from "../utils/typeChecks"
@@ -26,6 +26,8 @@ export default function GratitudeForm({ closeModal, gratitude, editGratitude }: 
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  const getGratitudes = store(state => state.getGratitudes)
+
   const createGratitudeMessage = useCallback<any>(async () => {
     setIsLoading(true)
     const { data, error } = await supabase
@@ -34,6 +36,7 @@ export default function GratitudeForm({ closeModal, gratitude, editGratitude }: 
         { user_id: user.id, fore, because, visibility_id: visibilityId },
       ])
     if (error) return console.error(error)
+    await getGratitudes(user.id)
     closeModal()
     // TODO: redirect to page based on chosen visibility
   }, [visibilityId, fore, because])

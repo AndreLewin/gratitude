@@ -15,32 +15,38 @@ export type Gratitude = {
 }
 
 type Store = {
-  set: <Property extends keyof Store>({
-    property,
-    value
-  }: {
-    property: Property,
-    value: Store[Property]
-  }) => void
+  // set: <Property extends keyof Store>({
+  //   property,
+  //   value
+  // }: {
+  //   property: Property,
+  //   value: Store[Property]
+  // }) => void
+  set: SetState<Store>
+  mode: string
   gratitudes: Gratitude[]
-  getGratitudes: (userId: string, mode: string) => void
+  getGratitudes: (userId: string) => void
   removeLocalGratitude: (indexToRemove: number) => void
   editLocalGratitude: (indexToEdit: number, newGratitudeData: Partial<Gratitude>) => void
 }
 
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
-  set: <Property extends keyof Store>({
-    property,
-    value
-  }: {
-    property: Property,
-    value: Store[Property]
-  }) => {
-    // @ts-ignore
-    set(state => ({ [property]: value }))
-  },
+  // set: <Property extends keyof Store>({
+  //   property,
+  //   value
+  // }: {
+  //   property: Property,
+  //   value: Store[Property]
+  // }) => {
+  //   // @ts-ignore
+  //   set(state => ({ [property]: value }))
+  // },
+  set: (partial) => set(partial),
+  mode: "public",
   gratitudes: [],
-  getGratitudes: async (userId, mode) => {
+  getGratitudes: async (userId) => {
+    const { mode } = get()
+
     // const promise = supabase.rpc('get_gratitudes_with_profile')
     const promise = supabase
       .from('gratitudes')
