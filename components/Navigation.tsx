@@ -121,29 +121,14 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
             <svg viewBox="0 0 256 256"><path fill="currentColor" d="M216 204h-91l75.5-75.5l26.3-26.4a19.8 19.8 0 0 0 0-28.2l-44.7-44.7a19.9 19.9 0 0 0-28.2 0l-120 120a19.8 19.8 0 0 0-5.9 14.1V208a20.1 20.1 0 0 0 20 20h168a12 12 0 0 0 0-24ZM61 156l75-75l11 11l-75 75Zm103-47l11 11l-75 75l-11-11Zm4-60l39 39l-15 15l-39-39ZM52 181l11.5 11.5L75 204H52Z"></path></svg>
           </ActionIcon>
         </div>
-        {isNullish(user) ? (
-          <div>
-            <Link href='/login' passHref>
-              <Button
-                leftIcon={<svg viewBox="0 0 256 256" height="20px" width="20px"><path fill="currentColor" d="m144.5 136.5l-42 42A12 12 0 0 1 94 182a12.2 12.2 0 0 1-8.5-3.5a12 12 0 0 1 0-17L107 140H24a12 12 0 0 1 0-24h83L85.5 94.5a12 12 0 0 1 17-17l42 42a12 12 0 0 1 0 17ZM192 28h-56a12 12 0 0 0 0 24h52v152h-52a12 12 0 0 0 0 24h56a20.1 20.1 0 0 0 20-20V48a20.1 20.1 0 0 0-20-20Z"></path></svg>}
-                color="blue"
-                component="a"
-              >
-                Log In
-              </Button>
-            </Link>
-
-          </div>
-        ) : (
-          <div>
-            <Button
-              leftIcon={<svg viewBox="0 0 256 256" height="20px" width="20px"><path fill="currentColor" d="m224.5 136.5l-42 42a12 12 0 0 1-8.5 3.5a12.2 12.2 0 0 1-8.5-3.5a12 12 0 0 1 0-17L187 140h-83a12 12 0 0 1 0-24h83l-21.5-21.5a12 12 0 0 1 17-17l42 42a12 12 0 0 1 0 17ZM104 204H52V52h52a12 12 0 0 0 0-24H48a20.1 20.1 0 0 0-20 20v160a20.1 20.1 0 0 0 20 20h56a12 12 0 0 0 0-24Z"></path></svg>}
-              onClick={() => openLogOutModal()}
-            >
-              Log Out
-            </Button>
-          </div>
-        )}
+        <div>
+          <Button
+            leftIcon={<svg viewBox="0 0 256 256" height="20px" width="20px"><path fill="currentColor" d="m224.5 136.5l-42 42a12 12 0 0 1-8.5 3.5a12.2 12.2 0 0 1-8.5-3.5a12 12 0 0 1 0-17L187 140h-83a12 12 0 0 1 0-24h83l-21.5-21.5a12 12 0 0 1 17-17l42 42a12 12 0 0 1 0 17ZM104 204H52V52h52a12 12 0 0 0 0-24H48a20.1 20.1 0 0 0-20 20v160a20.1 20.1 0 0 0 20 20h56a12 12 0 0 0 0-24Z"></path></svg>}
+            onClick={() => openLogOutModal()}
+          >
+            Logout
+          </Button>
+        </div>
       </div>
 
       {children}

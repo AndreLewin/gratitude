@@ -15,6 +15,7 @@ import Notifier from 'components/Notifier'
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
   const router = useRouter()
+  const user = supabase.auth.user()
 
   useEffect(() => {
     // if the user has already authenticated in the browser
@@ -58,9 +59,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <NotificationsProvider position="bottom-center">
           <ModalsProvider>
             <Notifier>
-              <Navigation>
+              {user === null ?
                 <Component {...pageProps} />
-              </Navigation>
+                :
+                <Navigation>
+                  <Component {...pageProps} />
+                </Navigation>
+              }
             </Notifier>
           </ModalsProvider>
         </NotificationsProvider>

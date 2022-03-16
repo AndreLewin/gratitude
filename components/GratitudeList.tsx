@@ -19,8 +19,8 @@ export default function GratitudeList({ mode }: { mode: string }) {
 
   const fetchGratitudes = async () => {
     setIsLoading(true)
-    const user = supabase.auth.user()!
-    await getGratitudes(user.id)
+    const user = supabase.auth.user()
+    await getGratitudes(user?.id ?? null)
     setIsLoading(false)
   }
 

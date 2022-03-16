@@ -32,7 +32,7 @@ type Store = {
   reset: () => void
   mode: string
   gratitudes: Gratitude[]
-  getGratitudes: (userId: string) => void
+  getGratitudes: (userId: string | null) => void
   removeLocalGratitude: (gratitudeIdToRemove: number) => void
   editLocalGratitude: (indexToEdit: number, newGratitudeData: Partial<Gratitude>) => void
 }
@@ -68,11 +68,11 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
 
     // the pages filter only on the user_id (the visibility_id is handled by RLS)
     if (mode === "only_me") {
-      promise.eq("user_id", userId)
+      promise.eq("user_id", userId as string)
     } else if (mode === "friends") {
       // note: using a custom psql function for fetching gratitude messages of friends would make formatting the response to match the other calls too complicated
       // instead, we fetch the list of friends in a different call
-      const friendsUserIds = await getFriendsUserIds(userId)
+      const friendsUserIds = await getFriendsUserIds(userId as string)
       promise.in("user_id", friendsUserIds)
     } else if (mode === "public") {
       // no need to filter
