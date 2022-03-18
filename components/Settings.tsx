@@ -147,7 +147,7 @@ export default function Settings() {
         value={username ?? ``}
         onChange={changeLocalUsername}
         label="Username"
-        description={`Your username will appear next to your messages, and you will get a custom profile link. Currently, your profile link is TODO`}
+        description={`Your username will appear next to your messages, and you will get a custom link to your public page.`}
         placeholder="Only letters (a-z A-Z), numbers (0-9) and underscores (_) are allowed. 15 characters max."
         error={!isCheckingIfTheUsernameIsAlreadyUsed && isUsernameAlreadyUsed ? `This username is already used` : ``}
         maxRows={1}

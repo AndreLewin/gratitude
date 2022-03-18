@@ -1,4 +1,5 @@
 import { LoadingOverlay, Title, Text, Button } from '@mantine/core'
+import { getProfileLink } from 'helpers'
 import Link from 'next/link'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { supabase } from 'utils/supabaseClient'
@@ -124,10 +125,10 @@ export default function Friendships() {
           {
             incomingFriendRequests.map(iFR => (
               <div key={`iFR-${iFR.user_id_1}`} className="friend-request-card">
-                <Link href={iFR.profile_1.username ? `/u/${iFR.profile_1.username}` : `/uid/${iFR.profile_1.id}`}>
-                  <div style={{ fontWeight: 600, cursor: `pointer`, color: `#1c7ed6` }}>
+                <Link href={getProfileLink(iFR.profile_1)} passHref>
+                  <a style={{ fontWeight: 600, cursor: `pointer`, color: `#1c7ed6` }}>
                     {iFR.profile_1.username ?? "(Anonymous)"}
-                  </div>
+                  </a>
                 </Link>
                 <Button
                   color="red"
@@ -155,10 +156,10 @@ export default function Friendships() {
           {
             sentFriendRequests.map(sFR => (
               <div key={`sFR-${sFR.user_id_2}`} className="friend-request-card">
-                <Link href={sFR.profile_2.username ? `/u/${sFR.profile_2.username}` : `/uid/${sFR.profile_2.id}`}>
-                  <div style={{ fontWeight: 600, cursor: `pointer`, color: `#1c7ed6` }}>
+                <Link href={getProfileLink(sFR.profile_2)} passHref>
+                  <a style={{ fontWeight: 600, cursor: `pointer`, color: `#1c7ed6` }}>
                     {sFR.profile_2.username ?? "(Anonymous)"}
-                  </div>
+                  </a>
                 </Link>
                 <Button
                   color="red"
@@ -180,10 +181,10 @@ export default function Friendships() {
           {
             friendsFormatted.map(fr => (
               <div key={`fr-${fr.friendId}`} className="friend-request-card">
-                <Link href={fr.friendProfile.username ? `/u/${fr.friendProfile.username}` : `/uid/${fr.friendProfile.id}`}>
-                  <div style={{ fontWeight: 600, cursor: `pointer`, color: `#1c7ed6` }}>
+                <Link href={getProfileLink(fr.friendProfile)} passHref>
+                  <a style={{ fontWeight: 600, cursor: `pointer`, color: `#1c7ed6` }}>
                     {fr.friendProfile.username ?? "(Anonymous)"}
-                  </div>
+                  </a>
                 </Link>
                 <Button
                   color="red"

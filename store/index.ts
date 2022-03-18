@@ -17,7 +17,8 @@ export type Gratitude = {
 // note: it's a factory function so the ref of arrays and objects are not kept
 const getDefaultStoreValues: () => any = () => ({
   mode: "public",
-  gratitudes: []
+  gratitudes: [],
+  profile: null
 })
 
 type Store = {
@@ -30,11 +31,14 @@ type Store = {
   // }) => void
   set: SetState<Store>
   reset: () => void
+  // display mode of the gratitude messages (public, only_me, user, etc.)
   mode: string
   gratitudes: Gratitude[]
   getGratitudes: (userId: string | null) => void
   removeLocalGratitude: (gratitudeIdToRemove: number) => void
   editLocalGratitude: (indexToEdit: number, newGratitudeData: Partial<Gratitude>) => void
+  // profile of the connected user
+  profile: Profile | null
 }
 
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
@@ -107,7 +111,8 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     const newGratitudes = JSON.parse(JSON.stringify(gratitudes))
     newGratitudes[indexToEdit] = { ...newGratitudes[indexToEdit], ...newGratitudeData }
     set({ gratitudes: newGratitudes })
-  }
+  },
+  profile: null
 }))
 
 export default store;

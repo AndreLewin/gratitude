@@ -1,6 +1,7 @@
 import { ActionIcon, Modal, Text, Tooltip } from '@mantine/core'
 import { useModals } from '@mantine/modals'
 import format from 'date-fns/format'
+import { getProfileLink } from 'helpers'
 import Link from 'next/link'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import store, { Gratitude } from 'store'
@@ -69,16 +70,14 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
           justifyContent: "space-between"
         }}>
           <div style={{ display: "flex", alignItems: "center", marginTop: "-6px" }}>
-            <Link
-              href={gratitude.profile.username ? `/u/${gratitude.profile.username}` : `/uid/${gratitude.profile.id}`}
-            >
-              <div style={{
+            <Link href={getProfileLink(gratitude.profile)} passHref>
+              <a style={{
                 fontWeight: 600,
                 cursor: `pointer`,
                 color: `#1c7ed6`
               }}>
                 {gratitude.profile.username ?? "(Anonymous)"}
-              </div>
+              </a>
             </Link>
             <div style={{
               fontSize: "15px",

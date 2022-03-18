@@ -36,11 +36,11 @@ export default function Notifier({ children }: { children: JSX.Element | JSX.Ele
 
     if (hasIncomingFriendRequest && router.pathname !== `/friendships`) {
       const friendRequestsToReviewNode = (
-        <Link href='/friendships'>
-          <div style={{ fontWeight: 600, cursor: `pointer`, color: `#1c7ed6` }} onClick={closeFriendRequestNotification}>
+        <Link href='/friendships' passHref>
+          <a style={{ fontWeight: 600, cursor: `pointer`, color: `#1c7ed6` }} onClick={closeFriendRequestNotification}>
             {hasSeveralIncomingFriendRequests ? `You have friend requests to review` : `You have a friend request to review`}
 
-          </div>
+          </a>
         </Link>
       )
 

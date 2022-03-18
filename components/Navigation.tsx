@@ -1,13 +1,16 @@
 import { ActionIcon, Button, Modal, Tooltip } from '@mantine/core'
 import { useModals } from '@mantine/modals'
+import { getProfileLink } from 'helpers'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import store from 'store'
 import { supabase } from '../utils/supabaseClient'
 import GratitudeForm from './GratitudeForm'
 
 export default function Navigation({ children }: { children: JSX.Element | JSX.Element[] }) {
-  const user = supabase.auth.user()
+  // the navigation is displayed only in the user is connected
+  const user = supabase.auth.user()!
 
   const router = useRouter()
   const pathname = router.pathname
@@ -26,6 +29,22 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
       onConfirm: () => { router.push("/logout") }
     });
   }
+
+  useEffect(() => {
+    fetchProfile()
+  }, [])
+
+  const set = store(state => state.set)
+  const profile = store(state => state.profile)
+
+  const fetchProfile = useCallback<any>(async () => {
+    const { data, error } = await supabase
+      .from(`profiles`)
+      .select(`*`)
+      .eq(`id`, user.id)
+    if (error) return console.error(error)
+    set({ profile: data?.[0] ?? null })
+  }, [])
 
   // TODO: change to button to be able to add text?
   // svg icons come from https://icones.js.org/collection/ph
@@ -94,9 +113,9 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
           </div>
           <div style={{ display: "flex" }}>
             <Tooltip label="Your public page">
-              <Link href='/settings' passHref>
+              <Link href={profile ? getProfileLink(profile) : ''} passHref>
                 <ActionIcon color="blue" component='a'>
-                  {pathname === "/settings" ? (
+                  {pathname === (profile ? getProfileLink(profile) : '/404') ? (
                     <svg viewBox="0 0 256 256"><path fill="currentColor" d="M172 120a44 44 0 1 1-44-44a44 44 0 0 1 44 44Zm52-72v160a16 16 0 0 1-16 16H48a16 16 0 0 1-16-16V48a16 16 0 0 1 16-16h160a16 16 0 0 1 16 16Zm-16 160V48H48v160h3.7a80.7 80.7 0 0 1 26-38.2a76.8 76.8 0 0 1 9-6.3a59.9 59.9 0 0 0 82.6 0a76.8 76.8 0 0 1 9 6.3a80.7 80.7 0 0 1 26 38.2Z"></path></svg>
                   ) : (
                     <svg viewBox="0 0 256 256"><path fill="currentColor" d="M208 28H48a20.1 20.1 0 0 0-20 20v160a20.1 20.1 0 0 0 20 20h160a20.1 20.1 0 0 0 20-20V48a20.1 20.1 0 0 0-20-20Zm-4 24v144.2a82.4 82.4 0 0 0-39.1-39.6a52 52 0 1 0-73.8 0A82.4 82.4 0 0 0 52 196.2V52Zm-104 68a28 28 0 1 1 28 28a28.1 28.1 0 0 1-28-28Zm28 52a59.4 59.4 0 0 1 37.7 13.3a61.7 61.7 0 0 1 15.4 18.7H74.9a61.7 61.7 0 0 1 15.4-18.7A59.4 59.4 0 0 1 128 172Z"></path></svg>
