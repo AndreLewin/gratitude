@@ -171,11 +171,6 @@ export default function Settings() {
         }}
       />
 
-      {JSON.stringify(hasInvalidValue)}
-      {JSON.stringify(isLocalValueChanged)}
-      {JSON.stringify(isCheckingIfTheUsernameIsAlreadyUsed)}
-      {JSON.stringify(isUsernameAlreadyUsed)}
-
       <Button
         color="blue"
         disabled={hasInvalidValue || !isLocalValueChanged || isCheckingIfTheUsernameIsAlreadyUsed || isUsernameAlreadyUsed}

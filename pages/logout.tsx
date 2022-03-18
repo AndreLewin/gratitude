@@ -8,7 +8,7 @@ export default function Logout() {
   useEffect(() => {
     reset()
     supabase.auth.signOut()
-    // redirecting to home already handle by supabase.auth.onAuthStateChange
+    // redirecting to home already handled by supabase.auth.onAuthStateChange
   }, [])
 
   return (<></>)
