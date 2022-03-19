@@ -165,9 +165,9 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
           </div>
           <div style={{ display: "flex" }}>
             <Tooltip label="Updates">
-              <Link href='/' passHref>
+              <Link href='/updates' passHref>
                 <ActionIcon color="blue" component='a'>
-                  {pathname === "/" ? (
+                  {pathname === "/updates" ? (
                     <svg viewBox="0 0 256 256"><path fill="currentColor" d="M216 48H56a16 16 0 0 0-16 16v120a8 8 0 0 1-16 0V88a8 8 0 0 0-16 0v96a24 24 0 0 0 24 24h176a24.1 24.1 0 0 0 24-24V64a16 16 0 0 0-16-16Zm-40 104H96a8 8 0 0 1 0-16h80a8 8 0 0 1 0 16Zm0-32H96a8 8 0 0 1 0-16h80a8 8 0 0 1 0 16Z"></path></svg>
                   ) : (
                     <svg viewBox="0 0 256 256"><path fill="currentColor" d="M92 108a12 12 0 0 1 12-12h72a12 12 0 0 1 0 24h-72a12 12 0 0 1-12-12Zm12 52h72a12 12 0 0 0 0-24h-72a12 12 0 0 0 0 24Zm132-96v120a28.1 28.1 0 0 1-28 28H36a32.1 32.1 0 0 1-32-32V88a12 12 0 0 1 24 0v92a8 8 0 0 0 16 0V64a20.1 20.1 0 0 1 20-20h152a20.1 20.1 0 0 1 20 20Zm-24 4H68v112a35 35 0 0 1-1 8h141a4 4 0 0 0 4-4Z"></path></svg>
