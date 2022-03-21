@@ -131,8 +131,8 @@ export default function Index() {
         <a className="link" href="https://github.com/AndreLewin/gratitude" target="_blank" rel="noopener noreferrer">
           GitHub (TODO: icon to the two external links)
         </a>
-        <a className="link" href="" target="_blank" rel="noopener noreferrer">
-          Contact (TODO: mail link)
+        <a className="link" href="mailto:063e8ewjr@mozmail.com?subject=Gratitude journaling website" target="_blank" rel="noopener noreferrer">
+          Contact
         </a>
       </footer>
 
@@ -162,6 +162,7 @@ export default function Index() {
             white-space: nowrap;
             margin: 5px 15px 5px 15px;
             color: #E7E7E7;
+            font-weight: 600;
           }
         `}
       </style>
