@@ -52,7 +52,7 @@ you can send messages to only your friends
 
 */
 
-import { Button } from "@mantine/core";
+import { ActionIcon, Button } from "@mantine/core";
 import Link from "next/link";
 
 
@@ -116,23 +116,35 @@ export default function Index() {
         }
       </div>
       <footer className="footer">
-        <a className="link" href="/" target="_blank" rel="noopener noreferrer">
-          Index (TODO: use Link so it is faster)
-        </a>
-        <a className="link" href="/terms" target="_blank" rel="noopener noreferrer">
-          Terms & Privacy (TODO: page) (TODO: add the footer to the public pages)
-        </a>
-        <a className="link" href="/faq" target="_blank" rel="noopener noreferrer">
-          Frequently Asked Questions
-        </a>
-        <a className="link" href="/updates" target="_blank" rel="noopener noreferrer">
-          Updates
-        </a>
+        <Link href='/'>
+          <a className="link">
+            Home
+          </a>
+        </Link>
+        <Link href='/terms_and_privacy'>
+          <a className="link">
+            <svg className="icon" viewBox="0 0 256 256"><path fill="currentColor" d="M53.9 34.6a8 8 0 0 0-11.8 10.8l19.2 21.1C25 88.8 9.4 123.2 8.7 124.8a8.2 8.2 0 0 0 0 6.5c.3.7 8.8 19.5 27.6 38.4c25.1 25 56.8 38.3 91.7 38.3a128.6 128.6 0 0 0 52.1-10.8l22 24.2a8 8 0 0 0 5.9 2.6a8.2 8.2 0 0 0 5.4-2.1a7.9 7.9 0 0 0 .5-11.3Zm47.3 75.9l41.7 45.8A31.6 31.6 0 0 1 128 160a32 32 0 0 1-26.8-49.5ZM128 192c-30.8 0-57.7-11.2-79.9-33.3A128.3 128.3 0 0 1 25 128c4.7-8.8 19.8-33.5 47.3-49.4l18 19.8a48 48 0 0 0 63.6 70l14.7 16.2A112.1 112.1 0 0 1 128 192Zm119.3-60.7c-.4.9-10.5 23.3-33.4 43.8a8.1 8.1 0 0 1-5.3 2a7.6 7.6 0 0 1-5.9-2.7a8 8 0 0 1 .6-11.3A131 131 0 0 0 231 128a130.3 130.3 0 0 0-23.1-30.8C185.7 75.2 158.8 64 128 64a112.9 112.9 0 0 0-19.4 1.6a8.1 8.1 0 0 1-9.2-6.6a8 8 0 0 1 6.6-9.2a132.4 132.4 0 0 1 22-1.8c34.9 0 66.6 13.3 91.7 38.3c18.8 18.9 27.3 37.7 27.6 38.5a8.2 8.2 0 0 1 0 6.5ZM134 96.6a8 8 0 0 1 3-15.8a48.3 48.3 0 0 1 38.8 42.7a8 8 0 0 1-7.2 8.7h-.8a7.9 7.9 0 0 1-7.9-7.2A32.2 32.2 0 0 0 134 96.6Z"></path></svg>
+            Terms & Privacy (TODO: page) (TODO: add the footer to the public pages)
+          </a>
+        </Link>
+        <Link href='/faq'>
+          <a className="link">
+            Frequently Asked Questions
+          </a>
+        </Link>
+        <Link href='/updates'>
+          <a className="link">
+            Updates
+          </a>
+        </Link>
+        <Link href="mailto:063e8ewjr@mozmail.com?subject=Gratitude journaling website">
+          <a className="link">
+            Contact
+          </a>
+        </Link>
         <a className="link" href="https://github.com/AndreLewin/gratitude" target="_blank" rel="noopener noreferrer">
-          GitHub (TODO: icon to the two external links)
-        </a>
-        <a className="link" href="mailto:063e8ewjr@mozmail.com?subject=Gratitude journaling website" target="_blank" rel="noopener noreferrer">
-          Contact
+          <svg className="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .297c-6.62 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
+          GitHub
         </a>
       </footer>
 
@@ -163,6 +175,13 @@ export default function Index() {
             margin: 5px 15px 5px 15px;
             color: #E7E7E7;
             font-weight: 600;
+          }
+
+          .icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            margin-bottom: -2px;
           }
         `}
       </style>
