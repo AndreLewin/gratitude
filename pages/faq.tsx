@@ -28,7 +28,7 @@ export default function Faq() {
       <style jsx>
         {`
           .container {
-            padding: 20px;            
+            padding: 30px;            
           }
 
           .container > :not(:first-child) {

@@ -42,7 +42,7 @@ export default function Updates() {
       <style jsx>
         {`
           .container {
-            padding: 20px;            
+            padding: 30px;            
           }
         `}
       </style>
