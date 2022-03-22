@@ -12,12 +12,14 @@ import NextNProgress from 'nextjs-progressbar'
 import Navigation from 'components/Navigation'
 import Notifier from 'components/Notifier'
 import Footer from 'components/Footer'
+import Header from 'components/Header'
 
 const PAGES_WITH_FOOTER: string[] = [
   "/",
   "/terms_and_privacy",
   "/faq",
-  "/updates"
+  "/updates",
+  "/login"
 ]
 
 export default function MyApp({ Component, pageProps }: AppProps) {
@@ -69,7 +71,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <NotificationsProvider position="bottom-center">
           <ModalsProvider>
             <Notifier>
-              <div className="content-and-footer-parent">
+              <div className="header-content-footer">
+                {user === null && <Header />}
                 <div className="content">
                   {user === null ?
                     <Component {...pageProps} />
@@ -93,7 +96,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
       <style jsx>
         {`
-          .content-and-footer-parent {
+          .header-content-footer {
             min-height: 100vh;
             display: flex;
             flex-direction: column;

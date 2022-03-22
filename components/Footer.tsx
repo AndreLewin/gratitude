@@ -50,7 +50,7 @@ export default function Footer() {
           .link {
             white-space: nowrap;
             margin: 5px 15px 5px 15px;
-            color: #E7E7E7;
+            color: white;
             font-weight: 600;
           }
 
