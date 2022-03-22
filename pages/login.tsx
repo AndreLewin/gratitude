@@ -22,6 +22,7 @@ export default function Login() {
       Sign in via magic link with your email below
       <div>
         <TextInput
+          autoComplete="on"
           type="email"
           placeholder="Your email"
           required
