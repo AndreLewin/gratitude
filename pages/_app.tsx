@@ -11,6 +11,14 @@ import { NotificationsProvider } from '@mantine/notifications'
 import NextNProgress from 'nextjs-progressbar'
 import Navigation from 'components/Navigation'
 import Notifier from 'components/Notifier'
+import Footer from 'components/Footer'
+
+const PAGES_WITH_FOOTER: string[] = [
+  "/",
+  "/terms_and_privacy",
+  "/faq",
+  "/updates"
+]
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
@@ -45,6 +53,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     return <></>
   }
 
+  // TODO: move connected RedirectIfNotAuthenticated here?
+
   return (
     <>
       {/* the progress animation is not very good :/ */}
@@ -59,13 +69,18 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <NotificationsProvider position="bottom-center">
           <ModalsProvider>
             <Notifier>
-              {user === null ?
-                <Component {...pageProps} />
-                :
-                <Navigation>
-                  <Component {...pageProps} />
-                </Navigation>
-              }
+              <div className="content-and-footer-parent">
+                <div className="content">
+                  {user === null ?
+                    <Component {...pageProps} />
+                    :
+                    <Navigation>
+                      <Component {...pageProps} />
+                    </Navigation>
+                  }
+                </div>
+                {PAGES_WITH_FOOTER.includes(router.pathname) && <Footer />}
+              </div>
             </Notifier>
           </ModalsProvider>
         </NotificationsProvider>
@@ -75,6 +90,20 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <meta name="description" content="" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <style jsx>
+        {`
+          .content-and-footer-parent {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+          }
+
+          .content {
+            flex-grow: 1;
+          }
+        `}
+      </style>
     </>
   )
 }

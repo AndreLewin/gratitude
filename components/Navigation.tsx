@@ -138,7 +138,7 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
             </Tooltip>
           </div>
           <div style={{ display: "flex" }}>
-            <Tooltip label="Website presentation">
+            <Tooltip label="Website presentation (Home)">
               <Link href='/' passHref>
                 <ActionIcon color="blue" component='a'>
                   {pathname === "/" ? (
