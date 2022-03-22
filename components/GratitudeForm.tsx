@@ -1,4 +1,5 @@
 import { Button, Select, Textarea } from "@mantine/core"
+import Link from "next/link"
 import { useCallback, useMemo, useState } from "react"
 import store, { Gratitude } from "store"
 import { visibilities } from "../data"
@@ -88,6 +89,10 @@ export default function GratitudeForm({ closeModal, gratitude }: { closeModal: F
         maxRows={2}
         autosize
       />
+
+      <div style={{ marginTop: `15px` }}>
+        Need a tip? Check the <Link href='/faq'><a style={{ color: `blue` }} onClick={() => closeModal()}>frequently asked questions</a></Link>.
+      </div>
 
       <div
         style={{

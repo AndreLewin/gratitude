@@ -9,14 +9,14 @@ export default function Footer() {
             Home
           </a>
         </Link>
-        <Link href='/terms_and_privacy'>
-          <a className="link">
-            Terms & Privacy
-          </a>
-        </Link>
         <Link href='/faq'>
           <a className="link">
             Frequently Asked Questions
+          </a>
+        </Link>
+        <Link href='/terms_and_privacy'>
+          <a className="link">
+            Terms & Privacy
           </a>
         </Link>
         <Link href='/updates'>
