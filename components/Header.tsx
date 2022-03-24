@@ -6,7 +6,7 @@ export default function Header() {
       <header style={{ marginTop: "-10px" }}>
         <Link href="/" passHref>
           <a className="link center" style={{ marginBottom: "-5px" }}>
-            Gratitude journal, social
+            ✨ Gratitude journal, social
           </a>
         </Link>
         <div style={{ marginTop: "10px" }}>

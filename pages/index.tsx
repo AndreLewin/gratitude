@@ -12,7 +12,7 @@ export default function Index() {
             <div className="title">Be more satisfied in your life</div>
             <div className="description">
               <a style={{ textDecoration: "underline" }} href="https://en.wikipedia.org/wiki/Gratitude_journal" target="_blank" rel="noopener noreferrer">Gratitude journaling</a> is the act to write down what you are grateful for. It <a style={{ textDecoration: "underline" }} href="https://greatergood.berkeley.edu/pdfs/GratitudePDFs/6Emmons-BlessingsBurdens.pdf" target="_blank" rel="noopener noreferrer">has shown</a>
-              &nbsp;to bring emotional and interpersonal benefits. It's probably the easiest way to have a more fulfilling life in the long term. ✨
+              &nbsp;to bring emotional and interpersonal benefits. It's probably the easiest way to have a more fulfilling life in the long term. 🙂
             </div>
           </div>
         </div>
