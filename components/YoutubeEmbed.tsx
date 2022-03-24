@@ -21,6 +21,8 @@ export default function YoutubeEmbed({ embedId }: { embedId: string }) {
             padding-bottom: 56.25%;
             position: relative;
             height: 0;
+
+            background: black;
           }
 
           .video-responsive iframe {
