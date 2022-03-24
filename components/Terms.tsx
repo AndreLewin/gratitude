@@ -10,7 +10,7 @@ export default function Terms() {
       <div className="term">➡️ Do not post adult themed content publicly.</div>
       <div className="explain">Keep those private.</div>
       <div className="term">➡️ Do not enter absolutely confidential information.</div>
-      <div className="explain">Even if we do our best, the internet will never be as trustworthy and secretive as pen and paper.</div>
+      <div className="explain">Even if we do our best, the internet will never be as secretive as a trustworthy pen and paper.</div>
 
       <style jsx>
         {`
