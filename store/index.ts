@@ -34,7 +34,7 @@ type Store = {
   // display mode of the gratitude messages (public, only_me, user, etc.)
   mode: string
   gratitudes: Gratitude[]
-  getGratitudes: (userId: string | null) => void
+  getGratitudes: (userId: string | null, firstIndex?: number) => void
   removeLocalGratitude: (gratitudeIdToRemove: number) => void
   editLocalGratitude: (indexToEdit: number, newGratitudeData: Partial<Gratitude>) => void
   // profile of the connected user
@@ -57,7 +57,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
   reset: () => set(getDefaultStoreValues()),
   mode: getDefaultStoreValues().mode,
   gratitudes: getDefaultStoreValues().gratitudes,
-  getGratitudes: async (userId) => {
+  getGratitudes: async (userId, firstIndex = 0) => {
     const { mode } = get()
 
     // const promise = supabase.rpc('get_gratitudes_with_profile')
@@ -67,6 +67,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
         *,
         profile:profiles(*)
       `)
+      .range(firstIndex, firstIndex + 7 - 1)
 
     promise.order('created_at', { ascending: false })
 
@@ -86,13 +87,23 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     }
     const { data, error } = await promise
 
-    // TODO: limit
-    // TODO: infinite scrolling
-
     if (error) console.error(error)
     console.log('data | IndexConnected.tsx l30', data)
 
-    set({ gratitudes: data ?? [] })
+    // don't add gratitudes that were already fetched
+    let { gratitudes: oldGratitudes } = get()
+    oldGratitudes = JSON.parse(JSON.stringify(oldGratitudes))
+    const oldGratitudesId = oldGratitudes.map(g => g.id)
+    const newSetOfGratitudes = oldGratitudes
+
+    const fetchedGratitudes = (data ?? []) as Gratitude[]
+    fetchedGratitudes.forEach(gratitude => {
+      if (!oldGratitudesId.includes(gratitude.id)) {
+        newSetOfGratitudes.push(gratitude)
+      }
+    })
+
+    set({ gratitudes: newSetOfGratitudes })
   },
   removeLocalGratitude: (gratitudeIdToRemove) => {
     const { gratitudes } = get()
