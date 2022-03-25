@@ -11,6 +11,7 @@ export default function GratitudeList({ mode }: { mode: string }) {
   const set = store(state => state.set)
   const gratitudes = store(state => state.gratitudes)
   const getGratitudes = store(state => state.getGratitudes)
+  const gratitudesCount = store(state => state.gratitudesCount)
 
   useEffect(() => {
     set({ mode })
@@ -39,31 +40,39 @@ export default function GratitudeList({ mode }: { mode: string }) {
 
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/35572#issuecomment-493942129
   const containerRef = useRef() as React.MutableRefObject<HTMLInputElement>
-  const [ref, observer] = useIntersection({
+  const [intersectionRef, observer] = useIntersection({
     root: containerRef.current,
     threshold: 1,
   })
 
+  const areSomeGratitudesYetToBeFetched = useMemo<boolean>(() => {
+    return numberOfFetchedGratitudes < (gratitudesCount ?? - 1)
+  }, [gratitudesCount, numberOfFetchedGratitudes])
+
   useEffect(() => {
     if (!observer?.isIntersecting) return
+    if (!areSomeGratitudesYetToBeFetched) return
     fetchNextGratitudes(numberOfFetchedGratitudes)
-  }, [observer?.isIntersecting])
+  }, [observer?.isIntersecting, areSomeGratitudesYetToBeFetched])
 
   return (
     <div style={{ position: "relative" }}>
       <LoadingOverlay visible={isLoading} />
       <div>
         {gratitudes?.map((gratitude, index) => (
-          <div ref={ref} key={`gm-${gratitude.id}`} style={{ marginTop: `10px` }}>
-            <GratitudeMessage gratitude={gratitude} />
-            <div onClick={() => fetchNextGratitudes(index + 1)}>fetch three next ones {observer?.isIntersecting ? "true" : "false"}</div>
+          <div key={`gm-${gratitude.id}`}>
+            <div ref={intersectionRef} />
+            <div style={{ marginTop: `10px` }}>
+              <GratitudeMessage gratitude={gratitude} />
+            </div>
           </div>
         ))}
       </div>
-      <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-        <Loader />
-      </div>
-      {isFetchingNextGratitudes && "TODO: display loading"}
+      {numberOfFetchedGratitudes > 0 && isFetchingNextGratitudes &&
+        <div style={{ width: "100%", display: "flex", justifyContent: "center", marginTop: "10px", height: "30px" }}>
+          <Loader />
+        </div>
+      }
     </div>
   )
 }

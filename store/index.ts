@@ -18,6 +18,7 @@ export type Gratitude = {
 const getDefaultStoreValues: () => any = () => ({
   mode: "public",
   gratitudes: [],
+  gratitudesCount: null,
   profile: null
 })
 
@@ -34,6 +35,7 @@ type Store = {
   // display mode of the gratitude messages (public, only_me, user, etc.)
   mode: string
   gratitudes: Gratitude[]
+  gratitudesCount: number | null
   getGratitudes: (userId: string | null, firstIndex?: number) => void
   removeLocalGratitude: (gratitudeIdToRemove: number) => void
   editLocalGratitude: (indexToEdit: number, newGratitudeData: Partial<Gratitude>) => void
@@ -57,6 +59,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
   reset: () => set(getDefaultStoreValues()),
   mode: getDefaultStoreValues().mode,
   gratitudes: getDefaultStoreValues().gratitudes,
+  gratitudesCount: getDefaultStoreValues().gratitudesCount,
   getGratitudes: async (userId, firstIndex = 0) => {
     const { mode } = get()
 
@@ -66,8 +69,10 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       .select(`
         *,
         profile:profiles(*)
-      `)
-      .range(firstIndex, firstIndex + 7 - 1)
+      `, {
+        count: "exact"
+      })
+      .range(firstIndex, firstIndex + 50 - 1)
 
     promise.order('created_at', { ascending: false })
 
@@ -85,7 +90,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       const userWatchedId = mode.substring(6, mode.length)
       promise.eq("user_id", userWatchedId)
     }
-    const { data, error } = await promise
+    const { data, count, error } = await promise
 
     if (error) console.error(error)
     console.log('data | IndexConnected.tsx l30', data)
@@ -103,7 +108,10 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       }
     })
 
-    set({ gratitudes: newSetOfGratitudes })
+    set({
+      gratitudes: newSetOfGratitudes,
+      gratitudesCount: count
+    })
   },
   removeLocalGratitude: (gratitudeIdToRemove) => {
     const { gratitudes } = get()
