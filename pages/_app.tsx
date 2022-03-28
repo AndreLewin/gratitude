@@ -28,26 +28,30 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const user = supabase.auth.user()
 
   useEffect(() => {
-    // if the user has already authenticated in the browser
-    const supabaseSession = supabase.auth.session()
+    const asyncFunction = async () => {
+      // if the user has already authenticated in the browser
+      const supabaseSession = supabase.auth.session()
 
-    // will be triggered when sign in with magic link, or sign out with supabase.auth.signOut
-    supabase.auth.onAuthStateChange((_event, session) => {
-      if (isNullish(session)) {
-        router.push('/')
+      // will be triggered when sign in with magic link, or sign out with supabase.auth.signOut
+      supabase.auth.onAuthStateChange((_event, session) => {
+        if (isNullish(session)) {
+          router.push('/')
+        } else {
+          router.push('/only_me')
+        }
+      })
+
+      // if already authenticated and going to /, redirect to /only_me
+      // xxx flashing of the content of "/" (router.push does not block the client-side rendering)
+      // ?! Move to own wrapper component to avoid flickering of the content of "/"
+      if (!isNullish(supabaseSession) && router.pathname === '/') {
+        await router.push('/only_me')
+        setIsInitialized(true)
       } else {
-        router.push('/only_me')
+        setIsInitialized(true)
       }
-    })
-
-    // if already authenticated and going to /, redirect to /only_me
-    // xxx flashing of the content of "/" (router.push does not block the client-side rendering)
-    // ?! Move to own wrapper component to avoid flickering of the content of "/"
-    if (!isNullish(supabaseSession) && router.pathname === '/') {
-      router.push('/only_me')
     }
-
-    setIsInitialized(true)
+    asyncFunction()
   }, [])
 
   // avoid displaying anything before eventual redirection
