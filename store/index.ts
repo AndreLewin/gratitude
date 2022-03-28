@@ -38,6 +38,7 @@ type Store = {
   gratitudesCount: number | null
   getGratitudes: (userId: string | null, firstIndex?: number) => void
   removeLocalGratitude: (gratitudeIdToRemove: number) => void
+  addLocalGratitude: (newGratitude: Gratitude) => void
   editLocalGratitude: (indexToEdit: number, newGratitudeData: Partial<Gratitude>) => void
   // profile of the connected user
   profile: Profile | null
@@ -66,10 +67,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     // const promise = supabase.rpc('get_gratitudes_with_profile')
     const promise = supabase
       .from('gratitudes')
-      .select(`
-        *,
-        profile:profiles(*)
-      `, {
+      .select(`*, profile:profiles(*)`, {
         count: "exact"
       })
       .range(firstIndex, firstIndex + 50 - 1)
@@ -118,6 +116,12 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     const indexToRemove = gratitudes.findIndex(g => g.id === gratitudeIdToRemove)
     if (indexToRemove === -1) return
     const newGratitudes = [...gratitudes.slice(0, indexToRemove), ...gratitudes.slice(indexToRemove + 1)]
+    set({ gratitudes: newGratitudes })
+  },
+  addLocalGratitude: (newGratitude) => {
+    const { gratitudes } = get()
+    let newGratitudes = JSON.parse(JSON.stringify(gratitudes))
+    newGratitudes = [newGratitude, ...newGratitudes]
     set({ gratitudes: newGratitudes })
   },
   editLocalGratitude: (gratitudeIdToEdit, newGratitudeData) => {

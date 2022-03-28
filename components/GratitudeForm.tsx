@@ -28,6 +28,8 @@ export default function GratitudeForm({ closeModal, gratitude }: { closeModal: F
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const getGratitudes = store(state => state.getGratitudes)
+  const addLocalGratitude = store(state => state.addLocalGratitude)
+
 
   const createGratitudeMessage = useCallback<any>(async () => {
     setIsLoading(true)
@@ -36,10 +38,10 @@ export default function GratitudeForm({ closeModal, gratitude }: { closeModal: F
       .insert([
         { user_id: user.id, fore, because, visibility_id: visibilityId },
       ])
+      .select(`*, profile:profiles(*)`)
+      .single()
     if (error) return console.error(error)
-    // we could also add the new gratitude message locally
-    // but if an other new message has been added by someone else, we want to display that message too
-    await getGratitudes(user.id)
+    await addLocalGratitude(data)
     closeModal()
   }, [visibilityId, fore, because])
 
@@ -50,7 +52,7 @@ export default function GratitudeForm({ closeModal, gratitude }: { closeModal: F
       .from("gratitudes")
       .update({ fore, because, visibility_id: visibilityId })
       .eq('id', gratitude?.id)
-      .select(`id, fore, because, created_at, updated_at, visibility_id, user_id`)
+      .select(`*, profile:profiles(*)`)
 
     if (error) return console.error(error)
     closeModal()
