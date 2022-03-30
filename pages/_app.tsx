@@ -46,10 +46,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       // ?! Move to own wrapper component to avoid flickering of the content of "/"
       if (!isNullish(supabaseSession) && router.pathname === '/') {
         await router.push('/only_me')
-        setIsInitialized(true)
-      } else {
-        setIsInitialized(true)
       }
+
+      setIsInitialized(true)
     }
     asyncFunction()
   }, [])
