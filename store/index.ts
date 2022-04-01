@@ -11,7 +11,8 @@ export type Gratitude = {
   because: string,
   edited_at: string | null,
   visibility_id: number,
-  profile: Profile
+  profile: Profile,
+  search: string,
 }
 
 // note: it's a factory function so the ref of arrays and objects are not kept
@@ -19,7 +20,8 @@ const getDefaultStoreValues: () => any = () => ({
   mode: "public",
   gratitudes: [],
   gratitudesCount: null,
-  profile: null
+  profile: null,
+  search: ""
 })
 
 type Store = {
@@ -42,6 +44,8 @@ type Store = {
   editLocalGratitude: (indexToEdit: number, newGratitudeData: Partial<Gratitude>) => void
   // profile of the connected user
   profile: Profile | null
+  // https://supabase.com/docs/guides/database/full-text-search
+  search: string
 }
 
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
@@ -62,15 +66,19 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
   gratitudes: getDefaultStoreValues().gratitudes,
   gratitudesCount: getDefaultStoreValues().gratitudesCount,
   getGratitudes: async (userId, firstIndex = 0) => {
-    const { mode } = get()
+    const { mode, search } = get()
+
+    const NUMBER_OF_ITEMS_TO_FETCH = 50
 
     // const promise = supabase.rpc('get_gratitudes_with_profile')
+    // search: it should be nice to ignore accents too, but since we use several columns, we are forced to use a ref
     const promise = supabase
       .from('gratitudes')
       .select(`*, profile:profiles(*)`, {
         count: "exact"
       })
-      .range(firstIndex, firstIndex + 50 - 1)
+      .or(`fore.ilike.%${search}%,because.ilike.%${search}%`)
+      .range(firstIndex, firstIndex + NUMBER_OF_ITEMS_TO_FETCH - 1)
 
     promise.order('created_at', { ascending: false })
 
@@ -106,6 +114,10 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       }
     })
 
+    // throw the result away if the filters have been changed before the result is received
+    const { search: presentSearch } = get()
+    if (search !== presentSearch) return
+
     set({
       gratitudes: newSetOfGratitudes,
       gratitudesCount: count
@@ -135,7 +147,8 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     newGratitudes[indexToEdit] = { ...newGratitudes[indexToEdit], ...newGratitudeData }
     set({ gratitudes: newGratitudes })
   },
-  profile: null
+  profile: null,
+  search: ""
 }))
 
 export default store;

@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from 'react'
 import store from 'store'
 import { supabase } from '../utils/supabaseClient'
 import GratitudeForm from './GratitudeForm'
+import SearchInput from './SearchInput'
 
 export default function Navigation({ children }: { children: JSX.Element | JSX.Element[] }) {
   // the navigation is displayed only in the user is connected
@@ -163,6 +164,9 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
               </Link>
             </Tooltip>
           </div>
+          <div style={{ display: "flex" }}>
+            <SearchInput />
+          </div>
         </div>
         <div>
           <Button
@@ -199,6 +203,7 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
 
           .left-part {
             display: flex;
+            align-items: center;
           }
 
           .left-part > * {
