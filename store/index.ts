@@ -15,6 +15,15 @@ export type Gratitude = {
   search: string,
 }
 
+export type Friendship = {
+  id: number,
+  user_id_1: string,
+  profile_1: Profile,
+  user_id_2: string,
+  profile_2: Profile,
+  is_accepted: boolean
+}
+
 // note: it's a factory function so the ref of arrays and objects are not kept
 const getDefaultStoreValues: () => any = () => ({
   mode: "public",
@@ -22,7 +31,9 @@ const getDefaultStoreValues: () => any = () => ({
   gratitudesCount: null,
   profile: null,
   search: "",
-  isLoading: true
+  isLoading: true,
+  // here "null" means "not fetched"
+  friendships: null
 })
 
 type Store = {
@@ -47,7 +58,11 @@ type Store = {
   profile: Profile | null
   // https://supabase.com/docs/guides/database/full-text-search
   search: string
-  isLoading: boolean
+  isLoading: boolean,
+  friendships: Friendship[] | null,
+  getFriendships: (userId: string) => void,
+  deleteFriendship: (id: number) => void,
+  acceptFriendship: (id: number) => void
 }
 
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
@@ -151,9 +166,40 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     newGratitudes[indexToEdit] = { ...newGratitudes[indexToEdit], ...newGratitudeData }
     set({ gratitudes: newGratitudes })
   },
-  profile: null,
-  search: "",
-  isLoading: true
+  profile: getDefaultStoreValues().profile,
+  search: getDefaultStoreValues().search,
+  isLoading: getDefaultStoreValues().isLoading,
+  friendships: getDefaultStoreValues().friendships,
+  getFriendships: async (userId) => {
+    const { data, error } = await supabase
+      .from(`friendships`)
+      .select(`*, profile_1:user_id_1(*), profile_2:user_id_2(*)`)
+    if (error) return console.error(error)
+    set({ friendships: data })
+  },
+  deleteFriendship: async (id) => {
+    const { friendships: oldFriendships } = get()
+    const { data, error } = await supabase
+      .from(`friendships`)
+      .delete()
+      .match({ id })
+    if (error) return console.error(error)
+    const friendships = (oldFriendships ?? []).filter(f => f.id !== id)
+    set({ friendships })
+  },
+  acceptFriendship: async (id) => {
+    const { friendships: oldFriendships } = get()
+    const { data, error } = await supabase
+      .from(`friendships`)
+      .update({ is_accepted: true })
+      .match({ id, is_accepted: false })
+    if (error) return console.error(error)
+    const indexOfFriendshipChanged = (oldFriendships ?? []).findIndex(f => f.id === id)
+    if (indexOfFriendshipChanged < 0) return
+    const friendships = JSON.parse(JSON.stringify(oldFriendships))
+    friendships[indexOfFriendshipChanged]["is_accepted"] = true
+    set({ friendships })
+  },
 }))
 
 export default store;

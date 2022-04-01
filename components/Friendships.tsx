@@ -1,102 +1,41 @@
 import { LoadingOverlay, Title, Text, Button } from '@mantine/core'
 import { getProfileLink } from 'helpers'
 import Link from 'next/link'
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import store, { Friendship } from 'store'
 import { supabase } from 'utils/supabaseClient'
 import { Profile } from './Settings'
-
-export type Friendship = {
-  id: number,
-  user_id_1: string,
-  profile_1: Profile,
-  user_id_2: string,
-  profile_2: Profile,
-  is_accepted: boolean
-}
 
 export default function Friendships() {
   const user = supabase.auth.user()!
 
-  const [isIncomingFriendRequestsLoading, setIsIncomingFriendRequestsLoading] = useState<boolean>(true)
-  const [isSentFriendRequestsLoading, setIsSentFriendRequestsLoading] = useState<boolean>(true)
-  const [isFriendsLoading, setIsFriendsLoading] = useState<boolean>(true)
-  const [incomingFriendRequests, setIncomingFriendRequests] = useState<Friendship[]>([])
-  const [sentFriendRequests, setSentFriendRequests] = useState<Friendship[]>([])
-  const [friends, setFriends] = useState<Friendship[]>([])
+  const friendships = store(state => state.friendships)
+  const getFriendships = store(state => state.getFriendships)
+  const deleteFriendship = store(state => state.deleteFriendship)
+  const acceptFriendship = store(state => state.acceptFriendship)
+
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    getIncomingFriendRequests()
-    getSentFriendRequests()
-    getFriends()
+    const af = async () => {
+      setIsLoading(true)
+      if (friendships === null) await getFriendships(user.id)
+      setIsLoading(false)
+    }
+    af()
   }, [])
 
-  const getIncomingFriendRequests = useCallback<any>(async () => {
-    const { data, error } = await supabase
-      .from(`friendships`)
-      .select(`*, profile_1:user_id_1(*), profile_2:user_id_2(*)`)
-      .match({
-        user_id_2: user.id,
-        is_accepted: false
-      })
-    if (error) return console.error(error)
-    setIncomingFriendRequests(data)
-    setIsIncomingFriendRequestsLoading(false)
-  }, [])
+  const incomingFriendRequests = useMemo<Friendship[]>(() => {
+    return (friendships ?? []).filter(f => f.user_id_2 === user.id && f.is_accepted === false)
+  }, [friendships])
 
-  const refuseIncomingFriendRequest = useCallback<any>(async (friendRequestId: number) => {
-    const { data, error } = await supabase
-      .from(`friendships`)
-      .delete()
-      .match({ id: friendRequestId })
-    if (error) return console.error(error)
-    setIncomingFriendRequests(incomingFriendRequests.filter(sFR => sFR.id !== friendRequestId))
-  }, [incomingFriendRequests])
+  const sentFriendRequests = useMemo<Friendship[]>(() => {
+    return (friendships ?? []).filter(f => f.user_id_1 === user.id && f.is_accepted === false)
+  }, [friendships])
 
-  const acceptIncomingFriendRequest = useCallback<any>(async (friendRequestId: number) => {
-    const { data, error } = await supabase
-      .from(`friendships`)
-      .update({ is_accepted: true })
-      .match({ id: friendRequestId, is_accepted: false })
-    if (error) return console.error(error)
-    setIncomingFriendRequests(incomingFriendRequests.filter(sFR => sFR.id !== friendRequestId))
-    getFriends()
-  }, [incomingFriendRequests])
-
-  const getSentFriendRequests = useCallback<any>(async () => {
-    const { data, error } = await supabase
-      .from(`friendships`)
-      .select(`*, profile_1:user_id_1(*), profile_2:user_id_2(*)`)
-      .match({
-        user_id_1: user.id,
-        is_accepted: false
-      })
-    if (error) return console.error(error)
-    console.log("sending | Friendships.tsx l35", data)
-    setSentFriendRequests(data)
-    setIsSentFriendRequestsLoading(false)
-  }, [])
-
-  const cancelSentFriendRequest = useCallback<any>(async (friendRequestId: number) => {
-    const { data, error } = await supabase
-      .from(`friendships`)
-      .delete()
-      .match({ id: friendRequestId })
-    if (error) return console.error(error)
-    setSentFriendRequests(sentFriendRequests.filter(sFR => sFR.id !== friendRequestId))
-  }, [sentFriendRequests])
-
-  const getFriends = useCallback<any>(async () => {
-    const { data, error } = await supabase
-      .from(`friendships`)
-      .select(`*, profile_1:user_id_1(*), profile_2:user_id_2(*)`)
-      .or(`user_id_1.eq.${user.id}, user_id_2.eq.${user.id}`)
-      .match({
-        is_accepted: true
-      })
-    if (error) return console.error(error)
-    setFriends(data)
-    setIsFriendsLoading(false)
-  }, [])
+  const friends = useMemo<Friendship[]>(() => {
+    return (friendships ?? []).filter(f => (f.user_id_1 === user.id || f.user_id_2 === user.id) && (f.is_accepted === true))
+  }, [friendships])
 
   const friendsFormatted = useMemo<{ friendId: string, friendProfile: Profile, friendshipId: number }[]>(() => {
     return friends.map(f => ({
@@ -106,18 +45,9 @@ export default function Friendships() {
     }))
   }, [friends])
 
-  const removeFriend = useCallback<any>(async (friendshipId: number) => {
-    const { data, error } = await supabase
-      .from(`friendships`)
-      .delete()
-      .match({ id: friendshipId })
-    if (error) return console.error(error)
-    getFriends()
-  }, [sentFriendRequests])
-
   return (
     <div style={{ position: "relative", padding: `20px` }}>
-      <LoadingOverlay visible={isIncomingFriendRequestsLoading || isSentFriendRequestsLoading || isFriendsLoading} />
+      <LoadingOverlay visible={isLoading} />
 
       {incomingFriendRequests.length > 0 &&
         <div>
@@ -132,14 +62,14 @@ export default function Friendships() {
                 </Link>
                 <Button
                   color="red"
-                  onClick={() => refuseIncomingFriendRequest(iFR.id)}
+                  onClick={() => deleteFriendship(iFR.id)}
                   style={{ marginLeft: `10px` }}
                 >
                   Refuse
                 </Button>
                 <Button
                   color="teal"
-                  onClick={() => acceptIncomingFriendRequest(iFR.id)}
+                  onClick={() => acceptFriendship(iFR.id)}
                   style={{ marginLeft: `10px` }}
                 >
                   Accept
@@ -164,7 +94,7 @@ export default function Friendships() {
                 <Button
                   color="red"
                   variant="outline"
-                  onClick={() => cancelSentFriendRequest(sFR.id)}
+                  onClick={() => deleteFriendship(sFR.id)}
                   style={{ marginLeft: `10px` }}
                 >
                   Cancel
@@ -188,7 +118,7 @@ export default function Friendships() {
                 </Link>
                 <Button
                   color="red"
-                  onClick={() => removeFriend(fr.friendshipId)}
+                  onClick={() => deleteFriendship(fr.friendshipId)}
                   style={{ marginLeft: `10px` }}
                 >
                   Remove
@@ -199,7 +129,7 @@ export default function Friendships() {
         </div>
       }
 
-      {!isFriendsLoading && friends.length === 0 && incomingFriendRequests.length === 0 && sentFriendRequests.length === 0 &&
+      {!isLoading && friends.length === 0 && incomingFriendRequests.length === 0 && sentFriendRequests.length === 0 &&
         <Text>You don't seem to have any friend. You can send a friend request to a user from their profile page. You can reach it by clicking on their name on their messages.</Text>
       }
 
