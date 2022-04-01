@@ -6,9 +6,8 @@ import store from 'store'
 import { useIntersection } from '@mantine/hooks'
 
 export default function GratitudeList({ mode }: { mode: string }) {
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-
   const set = store(state => state.set)
+  const isLoading = store(state => state.isLoading)
   const gratitudes = store(state => state.gratitudes)
   const getGratitudes = store(state => state.getGratitudes)
   const gratitudesCount = store(state => state.gratitudesCount)
@@ -20,10 +19,8 @@ export default function GratitudeList({ mode }: { mode: string }) {
   }, [])
 
   const fetchGratitudes = async () => {
-    setIsLoading(true)
     const user = supabase.auth.user()
     await getGratitudes(user?.id ?? null)
-    setIsLoading(false)
   }
 
   const [isFetchingNextGratitudes, setIsFetchingNextGratitudes] = useState<boolean>(false)

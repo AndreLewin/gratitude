@@ -21,7 +21,8 @@ const getDefaultStoreValues: () => any = () => ({
   gratitudes: [],
   gratitudesCount: null,
   profile: null,
-  search: ""
+  search: "",
+  isLoading: true
 })
 
 type Store = {
@@ -46,6 +47,7 @@ type Store = {
   profile: Profile | null
   // https://supabase.com/docs/guides/database/full-text-search
   search: string
+  isLoading: boolean
 }
 
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
@@ -66,6 +68,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
   gratitudes: getDefaultStoreValues().gratitudes,
   gratitudesCount: getDefaultStoreValues().gratitudesCount,
   getGratitudes: async (userId, firstIndex = 0) => {
+    set({ isLoading: true })
     const { mode, search } = get()
 
     const NUMBER_OF_ITEMS_TO_FETCH = 50
@@ -120,7 +123,8 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
 
     set({
       gratitudes: newSetOfGratitudes,
-      gratitudesCount: count
+      gratitudesCount: count,
+      isLoading: false
     })
   },
   removeLocalGratitude: (gratitudeIdToRemove) => {
@@ -148,7 +152,8 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     set({ gratitudes: newGratitudes })
   },
   profile: null,
-  search: ""
+  search: "",
+  isLoading: true
 }))
 
 export default store;
