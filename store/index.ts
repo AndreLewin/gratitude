@@ -62,7 +62,8 @@ type Store = {
   friendships: Friendship[] | null,
   getFriendships: (userId: string) => void,
   deleteFriendship: (id: number) => void,
-  acceptFriendship: (id: number) => void
+  acceptFriendship: (id: number) => void,
+  createFriendship: (userId: string, user2Id: string) => void
 }
 
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
@@ -199,6 +200,17 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     const friendships = JSON.parse(JSON.stringify(oldFriendships))
     friendships[indexOfFriendshipChanged]["is_accepted"] = true
     set({ friendships })
+  },
+  createFriendship: async (userId, user2Id) => {
+    const { friendships } = get()
+    const { data, error } = await supabase
+      .from(`friendships`)
+      .insert([
+        { user_id_1: userId, user_id_2: user2Id },
+      ])
+      .select(`*, profile_1:user_id_1(*), profile_2:user_id_2(*)`)
+    if (error) return console.error(error)
+    set({ friendships: [...(friendships ?? []), ...data] })
   },
 }))
 

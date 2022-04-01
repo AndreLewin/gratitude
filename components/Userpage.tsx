@@ -1,8 +1,8 @@
 import { LoadingOverlay, Title, Text, Button } from "@mantine/core"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import store, { Friendship } from "store"
 import { supabase } from "utils/supabaseClient"
 import { isNullish } from "utils/typeChecks"
-import { Friendship } from "./Friendships"
 import GratitudeList from "./GratitudeList"
 import { Profile } from "./Settings"
 
@@ -52,64 +52,47 @@ export default function Userpage({ userId, username }: { userId?: string, userna
 
   const user = supabase.auth.user()
 
+  const friendships = store(state => state.friendships)
+  const getFriendships = store(state => state.getFriendships)
+
   const [isCheckingFriendshipStatus, setIsCheckingFriendshipStatus] = useState<boolean>(true)
 
-  const [isFriendRequestSent, setIsFriendRequestSent] = useState<boolean>(false)
-  const [isFriendRequestIncoming, setIsFriendRequestIncoming] = useState<boolean>(false)
-  const [isFriend, setIsFriend] = useState<boolean>(false)
-
   useEffect(() => {
-    checkFriendshipStatus()
-  }, [user, profile])
+    if (user === null) return setIsCheckingFriendshipStatus(false)
+    const af = async () => {
+      if (friendships === null) {
+        await getFriendships(user.id)
+        setIsCheckingFriendshipStatus(false)
+      }
+    }
+    af()
+  }, [])
 
-  const checkFriendshipStatus = useCallback<any>(async () => {
-    if (user === null || profile == null) return
-    const { data, error } = await supabase
-      .from(`friendships`)
-      .select(`*`)
-      .or(`and(user_id_1.eq.${user.id},user_id_2.eq.${profile.id}),and(user_id_1.eq.${profile.id},user_id_2.eq.${user.id})`)
-      .limit(1)
-    if (error) return console.error(error)
+  const friendship = useMemo<Friendship | null>(() => {
+    if (user === null || profile == null) return null
+    const friendshipA = (friendships ?? []).find(f => f.user_id_1 === user.id && f.user_id_2 === profile.id)
+    const friendshipB = (friendships ?? []).find(f => f.user_id_2 === user.id && f.user_id_1 === profile.id)
+    return (friendshipA ?? friendshipB ?? null)
+  }, [friendships, user, profile])
 
-    const friendship = (data?.[0] ?? null) as Friendship | null
+  const isFriendRequestSent = useMemo<boolean>(() => {
+    if (friendship === null) return false
+    return (friendship.is_accepted === false && friendship.user_id_1 === user?.id)
+  }, [friendship, user])
 
-    setIsFriendRequestSent(friendship?.is_accepted === false && friendship?.user_id_1 === user.id)
-    setIsFriendRequestIncoming(friendship?.is_accepted === false && friendship?.user_id_2 === user.id)
-    setIsFriend(friendship?.is_accepted ?? false)
+  const isFriendRequestIncoming = useMemo<boolean>(() => {
+    if (friendship === null) return false
+    return (friendship?.is_accepted === false && friendship?.user_id_2 === user?.id)
+  }, [friendship, user])
 
-    setIsCheckingFriendshipStatus(false)
-  }, [user, profile])
+  const isFriend = useMemo<boolean>(() => {
+    if (friendship === null) return false
+    return (friendship?.is_accepted ?? false)
+  }, [friendship, user])
 
-  const createFriendRequest = useCallback<any>(async () => {
-    if (profile === null) return
-    const { error } = await supabase
-      .from(`friendships`)
-      .insert([
-        { user_id_1: user?.id, user_id_2: profile.id },
-      ], { returning: "minimal" })
-    if (error) return console.error(error)
-    checkFriendshipStatus()
-  }, [user, profile])
-
-  const deleteFriendship = useCallback<any>(async () => {
-    if (user === null || profile == null) return
-    const { error } = await supabase
-      .from(`friendships`)
-      .delete({ returning: "minimal" })
-      .or(`and(user_id_1.eq.${user.id},user_id_2.eq.${profile.id}),and(user_id_1.eq.${profile.id},user_id_2.eq.${user.id})`)
-    if (error) return console.error(error)
-    checkFriendshipStatus()
-  }, [user, profile])
-
-  const acceptFriendship = useCallback<any>(async () => {
-    if (user === null || profile == null) return
-    const { error } = await supabase
-      .from(`friendships`)
-      .update({ is_accepted: true })
-      .or(`and(user_id_1.eq.${user.id},user_id_2.eq.${profile.id}),and(user_id_1.eq.${profile.id},user_id_2.eq.${user.id})`)
-    if (error) return console.error(error)
-    checkFriendshipStatus()
-  }, [user, profile])
+  const deleteFriendship = store(state => state.deleteFriendship)
+  const acceptFriendship = store(state => state.acceptFriendship)
+  const createFriendship = store(state => state.createFriendship)
 
   return (
     <div style={{ position: "relative" }}>
@@ -126,32 +109,32 @@ export default function Userpage({ userId, username }: { userId?: string, userna
 
           {!isCheckingFriendshipStatus && (user?.id !== profile?.id) &&
             <div style={{ display: `flex` }}>
-              {!isFriendRequestSent && !isFriendRequestIncoming && !isFriend &&
-                <Button onClick={createFriendRequest}>
+              {!isFriendRequestSent && !isFriendRequestIncoming && !isFriend && user && profile &&
+                <Button onClick={() => createFriendship(user.id, profile.id)}>
                   {`Send friend request`}
                 </Button>
               }
 
-              {isFriendRequestSent &&
-                <Button variant={`outline`} onClick={deleteFriendship}>
+              {isFriendRequestSent && friendship &&
+                <Button variant={`outline`} onClick={() => deleteFriendship(friendship.id)}>
                   {`Cancel friend request`}
                 </Button>
               }
 
-              {isFriendRequestIncoming &&
-                <Button color={`red`} onClick={deleteFriendship}>
+              {isFriendRequestIncoming && friendship &&
+                <Button color={`red`} onClick={() => deleteFriendship(friendship.id)}>
                   {`Refuse friend request`}
                 </Button>
               }
 
-              {isFriendRequestIncoming &&
-                <Button color={`teal`} onClick={acceptFriendship} style={{ marginLeft: `10px` }}>
+              {isFriendRequestIncoming && friendship &&
+                <Button color={`teal`} onClick={() => acceptFriendship(friendship.id)} style={{ marginLeft: `10px` }}>
                   {`Accept friend request`}
                 </Button>
               }
 
-              {isFriend &&
-                <Button color={`red`} onClick={deleteFriendship}>
+              {isFriend && friendship &&
+                <Button color={`red`} onClick={() => deleteFriendship(friendship.id)}>
                   {`Unfriend`}
                 </Button>
               }
