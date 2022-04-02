@@ -24,6 +24,14 @@ export type Friendship = {
   is_accepted: boolean
 }
 
+export type Blocking = {
+  id: number,
+  user_id_1: string,
+  profile_1: Profile,
+  user_id_2: string,
+  profile_2: Profile,
+}
+
 // note: it's a factory function so the ref of arrays and objects are not kept
 const getDefaultStoreValues: () => any = () => ({
   mode: "public",
@@ -33,7 +41,8 @@ const getDefaultStoreValues: () => any = () => ({
   search: "",
   isLoading: true,
   // here "null" means "not fetched"
-  friendships: null
+  friendships: null,
+  blockings: null
 })
 
 type Store = {
@@ -63,7 +72,11 @@ type Store = {
   getFriendships: (userId: string) => void,
   deleteFriendship: (id: number) => void,
   acceptFriendship: (id: number) => void,
-  createFriendship: (userId: string, user2Id: string) => void
+  createFriendship: (userId: string, user2Id: string) => void,
+  blockings: Blocking[] | null,
+  getBlockings: (userId: string) => void,
+  deleteBlocking: (id: number) => void,
+  createBlocking: (userId: string, user2Id: string) => void
 }
 
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
@@ -212,6 +225,35 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     if (error) return console.error(error)
     set({ friendships: [...(friendships ?? []), ...data] })
   },
+  blockings: getDefaultStoreValues().blockings,
+  getBlockings: async (userId) => {
+    const { data, error } = await supabase
+      .from(`blockings`)
+      .select(`*, profile_1:user_id_1(*), profile_2:user_id_2(*)`)
+    if (error) return console.error(error)
+    set({ blockings: data })
+  },
+  deleteBlocking: async (id) => {
+    const { blockings: oldBlockings } = get()
+    const { data, error } = await supabase
+      .from(`blockings`)
+      .delete()
+      .match({ id })
+    if (error) return console.error(error)
+    const blockings = (oldBlockings ?? []).filter(f => f.id !== id)
+    set({ blockings })
+  },
+  createBlocking: async (userId, user2Id) => {
+    const { blockings } = get()
+    const { data, error } = await supabase
+      .from(`blockings`)
+      .insert([
+        { user_id_1: userId, user_id_2: user2Id },
+      ])
+      .select(`*, profile_1:user_id_1(*), profile_2:user_id_2(*)`)
+    if (error) return console.error(error)
+    set({ blockings: [...(blockings ?? []), ...data] })
+  }
 }))
 
 export default store;

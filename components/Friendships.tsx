@@ -45,6 +45,21 @@ export default function Friendships() {
     }))
   }, [friends])
 
+  const blockings = store(state => state.blockings)
+  const getBlockings = store(state => state.getBlockings)
+  const deleteBlocking = store(state => state.deleteBlocking)
+
+  const [isCheckingBlockings, setIsCheckingBlockings] = useState<boolean>(true)
+
+  useEffect(() => {
+    if (user === null) return setIsCheckingBlockings(false)
+    const af = async () => {
+      if (friendships === null) return await getBlockings(user.id)
+      setIsCheckingBlockings(false)
+    }
+    af()
+  }, [])
+
   return (
     <div style={{ position: "relative", padding: `20px` }}>
       <LoadingOverlay visible={isLoading} />
@@ -131,6 +146,31 @@ export default function Friendships() {
 
       {!isLoading && friends.length === 0 && incomingFriendRequests.length === 0 && sentFriendRequests.length === 0 &&
         <Text>You don't seem to have any friend. You can send a friend request to a user from their profile page. You can reach it by clicking on their name on their messages.</Text>
+      }
+
+      {!isCheckingBlockings && (blockings ?? []).length > 0 &&
+        <div>
+          <Title order={3}>Hiddens</Title>
+          {
+            (blockings ?? []).map(bl => (
+              <div key={`bl-${bl.user_id_2}`} className="bliend-request-card">
+                <Link href={getProfileLink(bl.profile_2)} passHref>
+                  <a style={{ fontWeight: 600, cursor: `pointer`, color: `#1c7ed6` }}>
+                    {bl.profile_2.username ?? "(Anonymous)"}
+                  </a>
+                </Link>
+                <Button
+                  color="red"
+                  variant="outline"
+                  onClick={() => deleteBlocking(bl.id)}
+                  style={{ marginLeft: `10px` }}
+                >
+                  Unhide messages
+                </Button>
+              </div>
+            ))
+          }
+        </div>
       }
 
       <style jsx>

@@ -1,6 +1,6 @@
 import { LoadingOverlay, Title, Text, Button } from "@mantine/core"
 import { useEffect, useMemo, useState } from "react"
-import store, { Friendship } from "store"
+import store, { Blocking, Friendship } from "store"
 import { supabase } from "utils/supabaseClient"
 import { isNullish } from "utils/typeChecks"
 import GratitudeList from "./GratitudeList"
@@ -54,6 +54,9 @@ export default function Userpage({ userId, username }: { userId?: string, userna
 
   const friendships = store(state => state.friendships)
   const getFriendships = store(state => state.getFriendships)
+  const deleteFriendship = store(state => state.deleteFriendship)
+  const acceptFriendship = store(state => state.acceptFriendship)
+  const createFriendship = store(state => state.createFriendship)
 
   const [isCheckingFriendshipStatus, setIsCheckingFriendshipStatus] = useState<boolean>(true)
 
@@ -62,8 +65,8 @@ export default function Userpage({ userId, username }: { userId?: string, userna
     const af = async () => {
       if (friendships === null) {
         await getFriendships(user.id)
-        setIsCheckingFriendshipStatus(false)
       }
+      setIsCheckingFriendshipStatus(false)
     }
     af()
   }, [])
@@ -90,9 +93,29 @@ export default function Userpage({ userId, username }: { userId?: string, userna
     return (friendship?.is_accepted ?? false)
   }, [friendship, user])
 
-  const deleteFriendship = store(state => state.deleteFriendship)
-  const acceptFriendship = store(state => state.acceptFriendship)
-  const createFriendship = store(state => state.createFriendship)
+  const blockings = store(state => state.blockings)
+  const getBlockings = store(state => state.getBlockings)
+  const deleteBlocking = store(state => state.deleteBlocking)
+  const createBlocking = store(state => state.createBlocking)
+
+  const [isCheckingBlockings, setIsCheckingBlockings] = useState<boolean>(true)
+
+  useEffect(() => {
+    if (user === null) return setIsCheckingBlockings(false)
+    const af = async () => {
+      if (friendships === null) {
+        await getBlockings(user.id)
+      }
+      setIsCheckingBlockings(false)
+    }
+    af()
+  }, [])
+
+  const blocking = useMemo<Blocking | null>(() => {
+    if (user === null || profile == null) return null
+    const blocking = (blockings ?? []).find(f => f.user_id_1 === user.id && f.user_id_2 === profile.id)
+    return blocking ?? null
+  }, [blockings, user, profile])
 
   return (
     <div style={{ position: "relative" }}>
@@ -107,7 +130,7 @@ export default function Userpage({ userId, username }: { userId?: string, userna
         <div style={{ display: `flex`, justifyContent: `space-between` }}>
           {profile?.username && <Title order={2}>{profile?.username}</Title>}
 
-          {!isCheckingFriendshipStatus && (user?.id !== profile?.id) &&
+          {!isCheckingFriendshipStatus && !isCheckingBlockings && (user?.id !== profile?.id) &&
             <div style={{ display: `flex` }}>
               {!isFriendRequestSent && !isFriendRequestIncoming && !isFriend && user && profile &&
                 <Button onClick={() => createFriendship(user.id, profile.id)}>
@@ -136,6 +159,18 @@ export default function Userpage({ userId, username }: { userId?: string, userna
               {isFriend && friendship &&
                 <Button color={`red`} onClick={() => deleteFriendship(friendship.id)}>
                   {`Unfriend`}
+                </Button>
+              }
+
+              {!blocking && user && profile &&
+                <Button color={`red`} onClick={() => createBlocking(user.id, profile.id)} style={{ marginLeft: "10px" }}>
+                  {`Hide messages`}
+                </Button>
+              }
+
+              {blocking &&
+                <Button color={`red`} variant={`outline`} onClick={() => deleteBlocking(blocking.id)} style={{ marginLeft: "10px" }}>
+                  {`Unhide messages`}
                 </Button>
               }
             </div>
