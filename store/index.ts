@@ -11,6 +11,7 @@ export type Gratitude = {
   because: string,
   edited_at: string | null,
   visibility_id: number,
+  user_id: string,
   profile: Profile,
   search: string,
 }
@@ -98,7 +99,20 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
   gratitudesCount: getDefaultStoreValues().gratitudesCount,
   getGratitudes: async (userId, firstIndex = 0) => {
     set({ isLoading: true })
-    const { mode, search } = get()
+    const { mode, search, blockings } = get()
+
+    // if the list of hidden users has not be fetched, it has to be
+    // that way the list of gratitude messages can be properly filtered
+    // TODO: it would be better to use a database function for fetching the messages
+    // so the messages of the hidden users could be directly filtered out
+    // without the need of a prior call
+    if (userId !== null && blockings === null) {
+      const { getBlockings } = get()
+      await getBlockings(userId)
+    }
+
+    const { blockings: updatedBlocking } = get()
+    const blockedUserIds = (updatedBlocking ?? []).map(b => b.user_id_2)
 
     const NUMBER_OF_ITEMS_TO_FETCH = 50
 
@@ -110,6 +124,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
         count: "exact"
       })
       .or(`fore.ilike.%${search}%,because.ilike.%${search}%`)
+      .not('user_id', 'in', `(${blockedUserIds})`)
       .range(firstIndex, firstIndex + NUMBER_OF_ITEMS_TO_FETCH - 1)
 
     promise.order('created_at', { ascending: false })
