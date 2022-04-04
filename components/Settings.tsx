@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback, useMemo, ChangeEvent } from 'react'
 import { supabase } from '../utils/supabaseClient'
 import { useDebouncedValue } from '@mantine/hooks'
 import store from 'store'
+import { useLocalStorageValue } from '@mantine/hooks'
+import { useRouter } from 'next/router'
 
 export type Profile = {
   id: string,
@@ -122,6 +124,29 @@ export default function Settings() {
     setLocalProfile({ ...localProfile!, username: event.currentTarget.value })
   }, [localProfile])
 
+  const [isDeletingAccount, setIsDeletingAccount] = useState<boolean>(false)
+  const [authToken, setAuthToken] = useLocalStorageValue<string>({ key: "supabase.auth.token", defaultValue: "" })
+  const router = useRouter()
+
+  const deleteAccount = useCallback<any>(async () => {
+    if (authToken === "") return
+    const parsedAuthToken = JSON.parse(authToken)
+    const accessToken = parsedAuthToken?.currentSession?.access_token ?? ""
+    if (accessToken === "") return
+
+    setIsDeletingAccount(true)
+    try {
+      await fetch(`/api/deleteUser`, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      })
+    } catch { }
+    notifications.showNotification({
+      message: "Your account has been deleted",
+      autoClose: 3000
+    })
+    router.push("/logout")
+  }, [authToken])
+
   return (
     <div style={{ position: "relative", margin: `20px 20px 20px 20px` }}>
       <LoadingOverlay visible={isProfileLoading} />
@@ -171,14 +196,25 @@ export default function Settings() {
         }}
       />
 
+      <div>
+        <Button
+          color="blue"
+          disabled={hasInvalidValue || !isLocalValueChanged || isCheckingIfTheUsernameIsAlreadyUsed || isUsernameAlreadyUsed}
+          onClick={updateProfile}
+          loading={isProfileUpdating}
+          style={{ marginTop: `25px` }}
+        >
+          Update
+        </Button>
+      </div>
+
       <Button
-        color="blue"
-        disabled={hasInvalidValue || !isLocalValueChanged || isCheckingIfTheUsernameIsAlreadyUsed || isUsernameAlreadyUsed}
-        onClick={updateProfile}
-        loading={isProfileUpdating}
-        style={{ marginTop: `25px` }}
+        color="red"
+        onClick={deleteAccount}
+        loading={isDeletingAccount}
+        style={{ marginTop: `15px` }}
       >
-        Update
+        Delete account
       </Button>
 
       <style jsx>
