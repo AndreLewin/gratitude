@@ -204,7 +204,7 @@ export default function Settings() {
 
       <ColorInput
         value={localProfile?.color ?? ``}
-        onChange={(value) => setLocalProfile({ ...localProfile!, color: value })}
+        onChange={(value) => setLocalProfile({ ...localProfile!, color: value === "" ? null : value })}
         label="Color"
         description={`Your color will change the background of your messages.`}
         style={{ marginTop: `10px` }}
