@@ -1,4 +1,4 @@
-import { Button, ColorInput, LoadingOverlay, Textarea } from '@mantine/core'
+import { Button, ColorInput, LoadingOverlay, Textarea, Text } from '@mantine/core'
 import { useNotifications } from '@mantine/notifications'
 import { useState, useEffect, useCallback, useMemo, ChangeEvent } from 'react'
 import { supabase } from '../utils/supabaseClient'
@@ -6,6 +6,7 @@ import { useDebouncedValue } from '@mantine/hooks'
 import store from 'store'
 import { useLocalStorageValue } from '@mantine/hooks'
 import { useRouter } from 'next/router'
+import { useModals } from '@mantine/modals'
 
 export type Profile = {
   id: string,
@@ -147,6 +148,24 @@ export default function Settings() {
     router.push("/logout")
   }, [authToken])
 
+  const modals = useModals()
+
+  const openDeleteAccountModal = async () => {
+    modals.openConfirmModal({
+      title: "Are you sure you want to delete your account?",
+      children: (
+        <Text size="sm">
+          All your data (gratitude messages, profile, friend statuses...) will be removed. This can't be undone.
+        </Text>
+      ),
+      centered: true,
+      labels: { confirm: "Delete my account", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onCancel: () => { },
+      onConfirm: async () => { await deleteAccount() }
+    });
+  }
+
   return (
     <div style={{ position: "relative", margin: `20px 20px 20px 20px` }}>
       <LoadingOverlay visible={isProfileLoading} />
@@ -210,7 +229,7 @@ export default function Settings() {
 
       <Button
         color="red"
-        onClick={deleteAccount}
+        onClick={openDeleteAccountModal}
         loading={isDeletingAccount}
         style={{ marginTop: `15px` }}
       >

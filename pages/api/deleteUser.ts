@@ -15,12 +15,9 @@ export default async function handler(
   const accessTokenJwt = req.headers.authorization?.split(" ")?.[1] ?? null
   if (accessTokenJwt === null) return res.status(401).json(null)
 
-  console.log("accessTokenJwt | deleteUser.ts l23", accessTokenJwt)
-
   // this will validate the provided jwt
   const { user, error } = await supabaseDANGER.auth.api.getUser(accessTokenJwt)
 
-  console.log("user | deleteUser.ts l29", user)
   if (error) return res.status(401).json(null)
   if (user === null) return res.status(401).json(null)
 
