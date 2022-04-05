@@ -21,7 +21,7 @@ export default function Settings() {
 
   useEffect(() => {
     setLocalProfile(JSON.parse(JSON.stringify(profile)) as Profile | null)
-  }, [])
+  }, [profile])
 
   const set = store(state => state.set)
 
