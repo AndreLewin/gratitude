@@ -152,6 +152,9 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       const userWatchedId = mode.substring(6, mode.length)
       promise.eq("user_id", userWatchedId)
     }
+
+    // TODO: mode "reported"
+
     const { data, count, error } = await promise
 
     if (error) console.error(error)

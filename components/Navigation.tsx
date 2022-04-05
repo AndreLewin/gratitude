@@ -158,6 +158,17 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
               </Link>
             </Tooltip>
           </div>
+          {(roles?.is_admin || roles?.is_moderator) &&
+            <div style={{ display: "flex" }}>
+              <Tooltip label="Moderation">
+                <Link href='/mods' passHref>
+                  <ActionIcon color="blue" component='a'>
+                    <svg viewBox="0 0 256 256"><path fill="currentColor" d="m114.2 40l-88 152A16 16 0 0 0 40 216h176a16 16 0 0 0 13.8-24l-88-152a15.9 15.9 0 0 0-27.6 0Z" opacity=".2"></path><path fill="currentColor" d="M120 144v-32a8 8 0 0 1 16 0v32a8 8 0 0 1-16 0Zm116.8 68a23.9 23.9 0 0 1-20.8 12H40a23.9 23.9 0 0 1-20.7-36l87.9-152a24 24 0 0 1 41.6 0l87.9 152a23.7 23.7 0 0 1 .1 24Zm-13.9-16l-88-152a8 8 0 0 0-13.8 0l-88 152a7.8 7.8 0 0 0 0 8a7.9 7.9 0 0 0 6.9 4h176a7.9 7.9 0 0 0 6.9-4a7.8 7.8 0 0 0 0-8ZM128 168a12 12 0 1 0 12 12a12 12 0 0 0-12-12Z"></path></svg>
+                  </ActionIcon>
+                </Link>
+              </Tooltip>
+            </div>
+          }
           <div style={{ display: "flex" }}>
             <SearchInput />
           </div>

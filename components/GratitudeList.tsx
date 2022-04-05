@@ -56,6 +56,8 @@ export default function GratitudeList({ mode }: { mode: string }) {
     if (isLoading) return ""
     if (mode === "only_me") {
       return "Write a gratitude message using the top left button!"
+    } else if (mode === "reported") {
+      return "There are no reported messages"
     } else {
       return "There is no gratitude message to display"
     }
