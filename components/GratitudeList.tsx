@@ -52,10 +52,19 @@ export default function GratitudeList({ mode }: { mode: string }) {
     fetchNextGratitudes(numberOfFetchedGratitudes)
   }, [observer?.isIntersecting, areSomeGratitudesYetToBeFetched])
 
+  const noGratitudeMessage = useMemo<string>(() => {
+    if (isLoading) return ""
+    if (mode === "only_me") {
+      return "Write a gratitude message using the top left button!"
+    } else {
+      return "There is no gratitude message to display"
+    }
+  }, [mode, isLoading])
+
   return (
     <div style={{ position: "relative" }}>
       <LoadingOverlay visible={isLoading} />
-      <div>
+      <div style={{ minHeight: "100px" }}>
         {gratitudes?.map((gratitude, index) => (
           <div key={`gm-${gratitude.id}`}>
             <div ref={intersectionRef} />
@@ -64,6 +73,12 @@ export default function GratitudeList({ mode }: { mode: string }) {
             </div>
           </div>
         ))}
+
+        {(gratitudes ?? []).length === 0 &&
+          <div style={{ padding: "20px" }}>
+            {noGratitudeMessage}
+          </div>
+        }
       </div>
       {numberOfFetchedGratitudes > 0 && isFetchingNextGratitudes &&
         <div style={{ width: "100%", display: "flex", justifyContent: "center", marginTop: "10px", height: "30px" }}>
