@@ -31,20 +31,14 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
     });
   }
 
-  useEffect(() => {
-    fetchProfile()
-  }, [])
-
-  const set = store(state => state.set)
+  const getProfile = store(state => state.getProfile)
   const profile = store(state => state.profile)
+  const getRoles = store(state => state.getRoles)
+  const roles = store(state => state.roles)
 
-  const fetchProfile = useCallback<any>(async () => {
-    const { data, error } = await supabase
-      .from(`profiles`)
-      .select(`*`)
-      .eq(`id`, user.id)
-    if (error) return console.error(error)
-    set({ profile: data?.[0] ?? null })
+  useEffect(() => {
+    if (profile === null) getProfile(user.id)
+    if (roles === null) getRoles(user.id)
   }, [])
 
   // TODO: change to button to be able to add text?

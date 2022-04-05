@@ -33,12 +33,18 @@ export type Blocking = {
   profile_2: Profile,
 }
 
+export type Roles = {
+  is_moderator?: boolean,
+  is_admin?: boolean
+}
+
 // note: it's a factory function so the ref of arrays and objects are not kept
 const getDefaultStoreValues: () => any = () => ({
   mode: "public",
   gratitudes: [],
   gratitudesCount: null,
   profile: null,
+  roles: null,
   search: "",
   isLoading: true,
   // here "null" means "not fetched"
@@ -66,6 +72,9 @@ type Store = {
   editLocalGratitude: (indexToEdit: number, newGratitudeData: Partial<Gratitude>) => void
   // profile of the connected user
   profile: Profile | null
+  getProfile: (userId: string) => void
+  roles: Roles | null
+  getRoles: (userId: string) => void
   // https://supabase.com/docs/guides/database/full-text-search
   search: string
   isLoading: boolean,
@@ -196,6 +205,23 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     set({ gratitudes: newGratitudes })
   },
   profile: getDefaultStoreValues().profile,
+  getProfile: async (userId) => {
+    const { data, error } = await supabase
+      .from(`profiles`)
+      .select(`*`)
+      .eq(`id`, userId)
+    if (error) return console.error(error)
+    set({ profile: data?.[0] ?? null })
+  },
+  roles: getDefaultStoreValues().roles,
+  getRoles: async (userId) => {
+    const { data, error } = await supabase
+      .from(`roles`)
+      .select(`*`)
+      .eq(`id`, userId)
+    if (error) return console.error(error)
+    set({ roles: data?.[0] ?? {} })
+  },
   search: getDefaultStoreValues().search,
   isLoading: getDefaultStoreValues().isLoading,
   friendships: getDefaultStoreValues().friendships,
