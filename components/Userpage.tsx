@@ -121,69 +121,71 @@ export default function Userpage({ userId, username }: { userId?: string, userna
     <div style={{ position: "relative" }}>
       <LoadingOverlay visible={isUserpageLoading} />
 
-      <div
-        style={{
-          padding: `20px`,
-          background: backgroundColor
-        }}
-      >
-        <div style={{ display: `flex`, justifyContent: `space-between` }}>
-          {profile?.username && <Title order={2}>{profile?.username}</Title>}
+      <div style={{ minHeight: "200px" }}>
+        <div
+          style={{
+            padding: `20px`,
+            background: backgroundColor,
+          }}
+        >
+          <div style={{ display: `flex`, justifyContent: `space-between` }}>
+            {profile?.username && <Title order={2}>{profile?.username}</Title>}
 
-          {!isCheckingFriendshipStatus && !isCheckingBlockings && (user?.id !== profile?.id) &&
-            <div style={{ display: `flex` }}>
-              {!isFriendRequestSent && !isFriendRequestIncoming && !isFriend && user && profile &&
-                <Button onClick={() => createFriendship(user.id, profile.id)}>
-                  {`Send friend request`}
-                </Button>
-              }
+            {!isCheckingFriendshipStatus && !isCheckingBlockings && (user?.id !== profile?.id) &&
+              <div style={{ display: `flex` }}>
+                {!isFriendRequestSent && !isFriendRequestIncoming && !isFriend && user && profile &&
+                  <Button onClick={() => createFriendship(user.id, profile.id)}>
+                    {`Send friend request`}
+                  </Button>
+                }
 
-              {isFriendRequestSent && friendship &&
-                <Button variant={`outline`} onClick={() => deleteFriendship(friendship.id)}>
-                  {`Cancel friend request`}
-                </Button>
-              }
+                {isFriendRequestSent && friendship &&
+                  <Button variant={`outline`} onClick={() => deleteFriendship(friendship.id)}>
+                    {`Cancel friend request`}
+                  </Button>
+                }
 
-              {isFriendRequestIncoming && friendship &&
-                <Button color={`red`} onClick={() => deleteFriendship(friendship.id)}>
-                  {`Refuse friend request`}
-                </Button>
-              }
+                {isFriendRequestIncoming && friendship &&
+                  <Button color={`red`} onClick={() => deleteFriendship(friendship.id)}>
+                    {`Refuse friend request`}
+                  </Button>
+                }
 
-              {isFriendRequestIncoming && friendship &&
-                <Button color={`teal`} onClick={() => acceptFriendship(friendship.id)} style={{ marginLeft: `10px` }}>
-                  {`Accept friend request`}
-                </Button>
-              }
+                {isFriendRequestIncoming && friendship &&
+                  <Button color={`teal`} onClick={() => acceptFriendship(friendship.id)} style={{ marginLeft: `10px` }}>
+                    {`Accept friend request`}
+                  </Button>
+                }
 
-              {isFriend && friendship &&
-                <Button color={`red`} onClick={() => deleteFriendship(friendship.id)}>
-                  {`Unfriend`}
-                </Button>
-              }
+                {isFriend && friendship &&
+                  <Button color={`red`} onClick={() => deleteFriendship(friendship.id)}>
+                    {`Unfriend`}
+                  </Button>
+                }
 
-              {!blocking && user && profile &&
-                <Button color={`red`} onClick={() => createBlocking(user.id, profile.id)} style={{ marginLeft: "10px" }}>
-                  {`Hide messages`}
-                </Button>
-              }
+                {!blocking && user && profile &&
+                  <Button color={`red`} onClick={() => createBlocking(user.id, profile.id)} style={{ marginLeft: "10px" }}>
+                    {`Hide messages`}
+                  </Button>
+                }
 
-              {blocking &&
-                <Button color={`red`} variant={`outline`} onClick={() => deleteBlocking(blocking.id)} style={{ marginLeft: "10px" }}>
-                  {`Unhide messages`}
-                </Button>
-              }
-            </div>
-          }
+                {blocking &&
+                  <Button color={`red`} variant={`outline`} onClick={() => deleteBlocking(blocking.id)} style={{ marginLeft: "10px" }}>
+                    {`Unhide messages`}
+                  </Button>
+                }
+              </div>
+            }
+          </div>
+
+          {profile?.bio && <Text>{profile?.bio}</Text>}
         </div>
 
-        {profile?.bio && <Text>{profile?.bio}</Text>}
+        {profile?.id &&
+          <GratitudeList mode={`user: ${profile?.id}`} />
+        }
+
       </div>
-
-      {profile?.id &&
-        <GratitudeList mode={`user: ${profile?.id}`} />
-      }
-
       <style jsx>
         {`
         `}
