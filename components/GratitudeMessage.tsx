@@ -1,5 +1,6 @@
 import { ActionIcon, Modal, Popover, Text, Tooltip } from '@mantine/core'
 import { useModals } from '@mantine/modals'
+import { useNotifications } from '@mantine/notifications'
 import format from 'date-fns/format'
 import { getProfileLink } from 'helpers'
 import Link from 'next/link'
@@ -59,6 +60,21 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
 
   const [isPopoverOpened, setIsPopoverOpened] = useState<boolean>(false)
 
+  const isMadeByUser = useMemo<boolean>(() => {
+    return gratitude.profile.id === user?.id
+  }, [gratitude.profile.id, user])
+
+  const notifications = useNotifications()
+
+  const reportMessage = useCallback<any>(() => {
+    console.log("to do")
+
+    notifications.showNotification({
+      message: "The message has been reported, it will be reviewed by moderators or admins",
+      autoClose: 3000
+    })
+  }, [])
+
   return (
     <div style={{
       background: backgroundColor,
@@ -109,7 +125,7 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
               }
             </div>
 
-            {gratitude.profile.id === user?.id &&
+            {user !== null &&
 
               <div style={{ marginLeft: "10px", display: "flex" }}>
                 <Popover
@@ -123,18 +139,30 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
                   position="bottom"
                 >
                   <div className="popover-content">
-                    <div className="action" onClick={() => { setIsUpdateGratitudeModalOpened(true), setIsPopoverOpened(false) }}>
-                      <ActionIcon>
-                        <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="m232.5 55.5l-32-32a12 12 0 0 0-17 0l-96 96A11.9 11.9 0 0 0 84 128v32a12 12 0 0 0 12 12h32a12.3 12.3 0 0 0 8.5-3.5l96-96a12 12 0 0 0 0-17ZM192 49l15 15l-11 11l-15-15Zm-69 99h-15v-15l56-56l15 15Zm105-19.4V208a20.1 20.1 0 0 1-20 20H48a20.1 20.1 0 0 1-20-20V48a20.1 20.1 0 0 1 20-20h79.4a12 12 0 0 1 0 24H52v152h152v-75.4a12 12 0 0 1 24 0Z"></path></svg>
-                      </ActionIcon>
-                      <div className="action-label">Edit</div>
-                    </div>
-                    <div className="action" onClick={() => { openDeleteModal(), setIsPopoverOpened(false) }}>
-                      <ActionIcon>
-                        <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="M216 48h-36V36a28.1 28.1 0 0 0-28-28h-48a28.1 28.1 0 0 0-28 28v12H40a12 12 0 0 0 0 24h4v136a20.1 20.1 0 0 0 20 20h128a20.1 20.1 0 0 0 20-20V72h4a12 12 0 0 0 0-24ZM100 36a4 4 0 0 1 4-4h48a4 4 0 0 1 4 4v12h-56Zm88 168H68V72h120Zm-72-100v64a12 12 0 0 1-24 0v-64a12 12 0 0 1 24 0Zm48 0v64a12 12 0 0 1-24 0v-64a12 12 0 0 1 24 0Z"></path></svg>
-                      </ActionIcon>
-                      <div className="action-label">Delete</div>
-                    </div>
+                    {isMadeByUser &&
+                      <div className="action" onClick={() => { setIsUpdateGratitudeModalOpened(true), setIsPopoverOpened(false) }}>
+                        <ActionIcon>
+                          <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="m232.5 55.5l-32-32a12 12 0 0 0-17 0l-96 96A11.9 11.9 0 0 0 84 128v32a12 12 0 0 0 12 12h32a12.3 12.3 0 0 0 8.5-3.5l96-96a12 12 0 0 0 0-17ZM192 49l15 15l-11 11l-15-15Zm-69 99h-15v-15l56-56l15 15Zm105-19.4V208a20.1 20.1 0 0 1-20 20H48a20.1 20.1 0 0 1-20-20V48a20.1 20.1 0 0 1 20-20h79.4a12 12 0 0 1 0 24H52v152h152v-75.4a12 12 0 0 1 24 0Z"></path></svg>
+                        </ActionIcon>
+                        <div className="action-label">Edit</div>
+                      </div>
+                    }
+                    {isMadeByUser &&
+                      <div className="action" onClick={() => { openDeleteModal(), setIsPopoverOpened(false) }}>
+                        <ActionIcon>
+                          <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="M216 48h-36V36a28.1 28.1 0 0 0-28-28h-48a28.1 28.1 0 0 0-28 28v12H40a12 12 0 0 0 0 24h4v136a20.1 20.1 0 0 0 20 20h128a20.1 20.1 0 0 0 20-20V72h4a12 12 0 0 0 0-24ZM100 36a4 4 0 0 1 4-4h48a4 4 0 0 1 4 4v12h-56Zm88 168H68V72h120Zm-72-100v64a12 12 0 0 1-24 0v-64a12 12 0 0 1 24 0Zm48 0v64a12 12 0 0 1-24 0v-64a12 12 0 0 1 24 0Z"></path></svg>
+                        </ActionIcon>
+                        <div className="action-label">Delete</div>
+                      </div>
+                    }
+                    {!isMadeByUser &&
+                      <div className="action" onClick={() => { reportMessage(), setIsPopoverOpened(false) }}>
+                        <ActionIcon>
+                          <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="M128 20a108 108 0 1 0 108 108A108.1 108.1 0 0 0 128 20Zm0 192a84 84 0 1 1 84-84a84.1 84.1 0 0 1-84 84Zm-12-80V80a12 12 0 0 1 24 0v52a12 12 0 0 1-24 0Zm28 40a16 16 0 1 1-16-16a16 16 0 0 1 16 16Z"></path></svg>
+                        </ActionIcon>
+                        <div className="action-label">Report</div>
+                      </div>
+                    }
                   </div>
                 </Popover>
               </div>
