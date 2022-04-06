@@ -49,7 +49,8 @@ const getDefaultStoreValues: () => any = () => ({
   isLoading: true,
   // here "null" means "not fetched"
   friendships: null,
-  blockings: null
+  blockings: null,
+  idsOfReportedMessages: null
 })
 
 type Store = {
@@ -86,7 +87,9 @@ type Store = {
   blockings: Blocking[] | null,
   getBlockings: (userId: string) => void,
   deleteBlocking: (id: number) => void,
-  createBlocking: (userId: string, user2Id: string) => void
+  createBlocking: (userId: string, user2Id: string) => void,
+  idsOfReportedMessages: number[] | null,
+  getIdsOfReportedMessages: () => void
 }
 
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
@@ -123,17 +126,22 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     const { blockings: updatedBlocking } = get()
     const blockedUserIds = (updatedBlocking ?? []).map(b => b.user_id_2)
 
+    if (mode === "reported") {
+      const { idsOfReportedMessages, getIdsOfReportedMessages } = get()
+      if (idsOfReportedMessages === null) await getIdsOfReportedMessages()
+    }
+
     const NUMBER_OF_ITEMS_TO_FETCH = 50
 
     // const promise = supabase.rpc('get_gratitudes_with_profile')
     // search: it should be nice to ignore accents too, but since we use several columns, we are forced to use a ref
     const promise = supabase
-      .from('gratitudes')
+      .from("gratitudes")
       .select(`*, profile:profiles(*)`, {
         count: "exact"
       })
       .or(`fore.ilike.%${search}%,because.ilike.%${search}%`)
-      .not('user_id', 'in', `(${blockedUserIds})`)
+      .not("user_id", "in", `(${blockedUserIds})`)
       .range(firstIndex, firstIndex + NUMBER_OF_ITEMS_TO_FETCH - 1)
 
     promise.order('created_at', { ascending: false })
@@ -151,9 +159,10 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     } else if (mode.match(/^user: /)) {
       const userWatchedId = mode.substring(6, mode.length)
       promise.eq("user_id", userWatchedId)
+    } else if (mode === "reported") {
+      const { idsOfReportedMessages } = get()
+      promise.in("id", idsOfReportedMessages ?? [])
     }
-
-    // TODO: mode "reported"
 
     const { data, count, error } = await promise
 
@@ -297,7 +306,15 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       .select(`*, profile_1:user_id_1(*), profile_2:user_id_2(*)`)
     if (error) return console.error(error)
     set({ blockings: [...(blockings ?? []), ...data] })
-  }
+  },
+  idsOfReportedMessages: getDefaultStoreValues().idsOfReportedMessages,
+  getIdsOfReportedMessages: async () => {
+    const { data, error } = await supabase
+      .from(`reports`)
+      .select(`id`)
+    if (error) return console.error(error)
+    set({ idsOfReportedMessages: (data ?? []).map(r => r.id) })
+  },
 }))
 
 export default store;
