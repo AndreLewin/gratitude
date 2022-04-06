@@ -66,8 +66,15 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
 
   const notifications = useNotifications()
 
-  const reportMessage = useCallback<any>(() => {
-    console.log("to do")
+  const reportMessage = useCallback<any>(async () => {
+    const { data, error } = await supabase
+      .from(`reports`)
+      .upsert({
+        id: gratitude.id
+      }, {
+        returning: "minimal"
+      })
+    if (error) return console.error(error)
 
     notifications.showNotification({
       message: "The message has been reported, it will be reviewed by moderators or admins",
