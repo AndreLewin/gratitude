@@ -1,4 +1,4 @@
-import { ActionIcon, Modal, Text, Tooltip } from '@mantine/core'
+import { ActionIcon, Modal, Popover, Text, Tooltip } from '@mantine/core'
 import { useModals } from '@mantine/modals'
 import format from 'date-fns/format'
 import { getProfileLink } from 'helpers'
@@ -57,6 +57,7 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
     return `rgba(${r},${g},${b}, 0.2)`
   }, [gratitude.profile.color])
 
+  const [isPopoverOpened, setIsPopoverOpened] = useState<boolean>(false)
 
   return (
     <div style={{
@@ -111,21 +112,34 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
             {gratitude.profile.id === user?.id &&
 
               <div style={{ marginLeft: "10px", display: "flex" }}>
-                <Tooltip label="Edit">
-                  <ActionIcon variant="outline" radius={16} onClick={() => setIsUpdateGratitudeModalOpened(true)}>
-                    <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="m232.5 55.5l-32-32a12 12 0 0 0-17 0l-96 96A11.9 11.9 0 0 0 84 128v32a12 12 0 0 0 12 12h32a12.3 12.3 0 0 0 8.5-3.5l96-96a12 12 0 0 0 0-17ZM192 49l15 15l-11 11l-15-15Zm-69 99h-15v-15l56-56l15 15Zm105-19.4V208a20.1 20.1 0 0 1-20 20H48a20.1 20.1 0 0 1-20-20V48a20.1 20.1 0 0 1 20-20h79.4a12 12 0 0 1 0 24H52v152h152v-75.4a12 12 0 0 1 24 0Z"></path></svg>
-                  </ActionIcon>
-                </Tooltip>
-                <div style={{ marginLeft: "6px" }} />
-                <Tooltip label="Delete">
-                  <ActionIcon variant="outline" radius={16} onClick={() => openDeleteModal()}>
-                    <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="M216 48h-36V36a28.1 28.1 0 0 0-28-28h-48a28.1 28.1 0 0 0-28 28v12H40a12 12 0 0 0 0 24h4v136a20.1 20.1 0 0 0 20 20h128a20.1 20.1 0 0 0 20-20V72h4a12 12 0 0 0 0-24ZM100 36a4 4 0 0 1 4-4h48a4 4 0 0 1 4 4v12h-56Zm88 168H68V72h120Zm-72-100v64a12 12 0 0 1-24 0v-64a12 12 0 0 1 24 0Zm48 0v64a12 12 0 0 1-24 0v-64a12 12 0 0 1 24 0Z"></path></svg>
-                  </ActionIcon>
-                </Tooltip>
+                <Popover
+                  opened={isPopoverOpened}
+                  onClose={() => setIsPopoverOpened(false)}
+                  target={
+                    <ActionIcon radius={16} onClick={() => setIsPopoverOpened((o) => !o)}>
+                      <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="M128 96a32 32 0 1 0 32 32a32.1 32.1 0 0 0-32-32Zm0 40a8 8 0 1 1 8-8a8 8 0 0 1-8 8Zm80-40a32 32 0 1 0 32 32a32.1 32.1 0 0 0-32-32Zm0 40a8 8 0 1 1 8-8a8 8 0 0 1-8 8ZM48 96a32 32 0 1 0 32 32a32.1 32.1 0 0 0-32-32Zm0 40a8 8 0 1 1 8-8a8 8 0 0 1-8 8Z"></path></svg>
+                    </ActionIcon>
+                  }
+                  position="bottom"
+                >
+                  <div className="popover-content">
+                    <div className="action" onClick={() => { setIsUpdateGratitudeModalOpened(true), setIsPopoverOpened(false) }}>
+                      <ActionIcon>
+                        <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="m232.5 55.5l-32-32a12 12 0 0 0-17 0l-96 96A11.9 11.9 0 0 0 84 128v32a12 12 0 0 0 12 12h32a12.3 12.3 0 0 0 8.5-3.5l96-96a12 12 0 0 0 0-17ZM192 49l15 15l-11 11l-15-15Zm-69 99h-15v-15l56-56l15 15Zm105-19.4V208a20.1 20.1 0 0 1-20 20H48a20.1 20.1 0 0 1-20-20V48a20.1 20.1 0 0 1 20-20h79.4a12 12 0 0 1 0 24H52v152h152v-75.4a12 12 0 0 1 24 0Z"></path></svg>
+                      </ActionIcon>
+                      <div className="action-label">Edit</div>
+                    </div>
+                    <div className="action" onClick={() => { openDeleteModal(), setIsPopoverOpened(false) }}>
+                      <ActionIcon>
+                        <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="M216 48h-36V36a28.1 28.1 0 0 0-28-28h-48a28.1 28.1 0 0 0-28 28v12H40a12 12 0 0 0 0 24h4v136a20.1 20.1 0 0 0 20 20h128a20.1 20.1 0 0 0 20-20V72h4a12 12 0 0 0 0-24ZM100 36a4 4 0 0 1 4-4h48a4 4 0 0 1 4 4v12h-56Zm88 168H68V72h120Zm-72-100v64a12 12 0 0 1-24 0v-64a12 12 0 0 1 24 0Zm48 0v64a12 12 0 0 1-24 0v-64a12 12 0 0 1 24 0Z"></path></svg>
+                      </ActionIcon>
+                      <div className="action-label">Delete</div>
+                    </div>
+                  </div>
+                </Popover>
               </div>
             }
           </div>
-
         </div>
 
         <div className="second-line"><span className='for-because-words'>I am grateful for</span> {gratitude.fore}</div>
@@ -147,6 +161,29 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
         {`
           .for-because-words {
             opacity: 0.5;
+          }
+
+          .popover-content {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .popover-content > :not(:first-child) {
+            margin-top: 10px;
+          }
+
+          .action {
+            display: flex;
+            cursor: pointer;
+          }
+
+          .action:hover {
+            background: rgb(248, 249, 250);
+          }
+
+          .action-label {
+            margin-left: 10px;
+            margin-right: 10px;
           }
         `}
       </style>
