@@ -82,6 +82,16 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
     })
   }, [])
 
+  const roles = store(state => state.roles)
+
+  const isAdmin = useMemo<boolean>(() => {
+    return roles?.is_admin ?? false
+  }, [roles])
+
+  const isModerator = useMemo<boolean>(() => {
+    return roles?.is_moderator ?? false
+  }, [roles])
+
   return (
     <div style={{
       background: backgroundColor,
@@ -154,7 +164,7 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
                         <div className="action-label">Edit</div>
                       </div>
                     }
-                    {isMadeByUser &&
+                    {(isMadeByUser || isAdmin) &&
                       <div className="action" onClick={() => { openDeleteModal(), setIsPopoverOpened(false) }}>
                         <ActionIcon>
                           <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="M216 48h-36V36a28.1 28.1 0 0 0-28-28h-48a28.1 28.1 0 0 0-28 28v12H40a12 12 0 0 0 0 24h4v136a20.1 20.1 0 0 0 20 20h128a20.1 20.1 0 0 0 20-20V72h4a12 12 0 0 0 0-24ZM100 36a4 4 0 0 1 4-4h48a4 4 0 0 1 4 4v12h-56Zm88 168H68V72h120Zm-72-100v64a12 12 0 0 1-24 0v-64a12 12 0 0 1 24 0Zm48 0v64a12 12 0 0 1-24 0v-64a12 12 0 0 1 24 0Z"></path></svg>
