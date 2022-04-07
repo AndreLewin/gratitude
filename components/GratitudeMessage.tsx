@@ -92,6 +92,14 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
     return roles?.is_moderator ?? false
   }, [roles])
 
+  const mode = store(state => state.mode)
+  const idsOfReportedMessages = store(state => state.idsOfReportedMessages)
+  const deleteReport = store(state => state.deleteReport)
+
+  const canDismissReport = useMemo<boolean>(() => {
+    return (!isMadeByUser && (isModerator || isAdmin) && (mode === "reported") && (idsOfReportedMessages ?? []).includes(gratitude.id))
+  }, [isMadeByUser, isModerator, isAdmin, mode, idsOfReportedMessages, gratitude])
+
   return (
     <div style={{
       background: backgroundColor,
@@ -178,6 +186,14 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
                           <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="M128 20a108 108 0 1 0 108 108A108.1 108.1 0 0 0 128 20Zm0 192a84 84 0 1 1 84-84a84.1 84.1 0 0 1-84 84Zm-12-80V80a12 12 0 0 1 24 0v52a12 12 0 0 1-24 0Zm28 40a16 16 0 1 1-16-16a16 16 0 0 1 16 16Z"></path></svg>
                         </ActionIcon>
                         <div className="action-label">Report</div>
+                      </div>
+                    }
+                    {canDismissReport &&
+                      <div className="action" onClick={() => { deleteReport(gratitude.id), setIsPopoverOpened(false) }}>
+                        <ActionIcon>
+                          <svg width="16px" height="16px" viewBox="0 0 256 256"><path fill="currentColor" d="M128 20a108 108 0 1 0 108 108A108.1 108.1 0 0 0 128 20Zm0 192a84 84 0 1 1 84-84a84.1 84.1 0 0 1-84 84Zm-12-80V80a12 12 0 0 1 24 0v52a12 12 0 0 1-24 0Zm28 40a16 16 0 1 1-16-16a16 16 0 0 1 16 16Z"></path></svg>
+                        </ActionIcon>
+                        <div className="action-label">Dismiss report</div>
                       </div>
                     }
                   </div>

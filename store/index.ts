@@ -89,7 +89,8 @@ type Store = {
   deleteBlocking: (id: number) => void,
   createBlocking: (userId: string, user2Id: string) => void,
   idsOfReportedMessages: number[] | null,
-  getIdsOfReportedMessages: () => void
+  getIdsOfReportedMessages: () => void,
+  deleteReport: (id: number) => void,
 }
 
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
@@ -314,6 +315,18 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       .select(`id`)
     if (error) return console.error(error)
     set({ idsOfReportedMessages: (data ?? []).map(r => r.id) })
+  },
+  deleteReport: async (id) => {
+    const { idsOfReportedMessages: oldIdsOfReportedMessages } = get()
+    const { data, error } = await supabase
+      .from(`reports`)
+      .delete()
+      .match({ id })
+    if (error) return console.error(error)
+    const idsOfReportedMessages = (oldIdsOfReportedMessages ?? []).filter(i => i !== id)
+    set({ idsOfReportedMessages })
+    const { removeLocalGratitude } = get()
+    removeLocalGratitude(id)
   },
 }))
 

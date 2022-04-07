@@ -18,6 +18,7 @@ export default function GratitudeList({ mode }: { mode: string }) {
     const af = async () => {
       set({ mode })
       set({ gratitudes: [] })
+      set({ idsOfReportedMessages: null })
       getGratitudes(user?.id ?? null)
     }
     af()
