@@ -1,34 +1,23 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) project. It uses [Typescript](https://www.typescriptlang.org/) and [Mantine](https://mantine.dev/) for some useful components (popover, modal, ...) and hooks (useViewportSize, ...). The project is hosted on [Vercel](https://vercel.com/).
 
-## Getting Started
+This website uses [Supabase](https://supabase.com/) (Back-end As A Service). It handles authentication and automatically generates a REST API based on PostgreSQL tables that I have defined. This project (the gratitude app) is largely done to test the potential of Supabase.
 
-First, run the development server:
+Supabase is used with [Row Level Security](https://www.youtube.com/watch?v=Ow_Uzedfohk) architecture. That means that the client directly communicates with the database with an anonymous key that is public. Security is achieved by writing [PostgreSQL policies](https://www.postgresql.org/docs/current/sql-createpolicy.html) directly in Supabase's user interface.
 
-```bash
-npm run dev
-# or
-yarn dev
+For example, this policy allows users to read a message from their friends if the message has the "friend only" visibility level (3)
+```sql
+((user_id IN ( SELECT f.user_id_2
+   FROM friendships f
+  WHERE (f.user_id_1 = uid())
+UNION
+ SELECT f.user_id_1
+   FROM friendships f
+  WHERE (f.user_id_2 = uid()))) AND (visibility_id = 3))
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Writing policies for all tables takes a lot of time to do it properly and safely. The [JS/TS SDK](https://supabase.com/docs/reference/javascript/supabase-client) of Supabase is quite limited. For example, it is not possible to fuzzy search on several fields at the same time. It is also not possible to return an object combining data from two different tables if the first table has no foreign key relation to the second table. The only way to bypass this limitation is by writing manually a PL/pgSQL function, that can then be invoked by the SDK. This takes time and is hard to maintain. It would rather do that in TypeScript.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+In most Next projects, when accessing the first page, data is fetched inside `getServerSideProps`. But since the back-end of the Next App (hosted by Vercel) is not located at the same place as the database (in Supabase servers) it does not provide much a difference in time if it is fetched by the back-end or the client. That's why `useEffect` is used for fetching in most cases, that way we can start rendering (and improve Time to First Draw). While the data is being fetched, a loader is displayed where the data is needed.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+In my future projects, I will still use Supabase since it is an amazing tool for authentication and for managing a SQL database quickly. However, I will NOT use the RLS architecture. Instead, I will keep the anonymous key private for the Next back-end only, and I will make api routes (in the /api/ folder) where the objects will be built to be immediately ready to use for the front-end. 
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
