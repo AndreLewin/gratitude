@@ -19,11 +19,6 @@ export default function Footer() {
             Terms & Privacy
           </a>
         </Link>
-        <Link href='/updates'>
-          <a className="link">
-            Updates
-          </a>
-        </Link>
         <Link href="mailto:063e8ewjr@mozmail.com?subject=Gratitude journaling website">
           <a className="link">
             Contact

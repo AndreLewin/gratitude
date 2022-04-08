@@ -18,7 +18,6 @@ const PAGES_WITH_FOOTER: string[] = [
   "/",
   "/terms_and_privacy",
   "/faq",
-  "/updates",
   "/login"
 ]
 
