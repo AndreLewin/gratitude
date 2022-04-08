@@ -1,4 +1,5 @@
 import { Button, Modal, Tooltip } from '@mantine/core'
+import { useViewportSize } from '@mantine/hooks'
 import { useModals } from '@mantine/modals'
 import { getProfileLink } from 'helpers'
 import Link from 'next/link'
@@ -46,9 +47,11 @@ export default function Navigation({ children }: { children: JSX.Element | JSX.E
     return (profile ? getProfileLink(profile) : null)
   }, [profile])
 
+  const { width } = useViewportSize()
+
   return (
     <div className="container">
-      <div className="navbar-container">
+      <div className="navbar-container" style={{ width: width > 600 ? "200px" : "150px", minWidth: width > 600 ? "200px" : "150px" }}>
         <div className="top-part">
           <Button
             leftIcon={<svg viewBox="0 0 256 256" width="20px" height="20px"><path fill="#FFFFFF" d="M216 204h-91l75.5-75.5l26.3-26.4a19.8 19.8 0 0 0 0-28.2l-44.7-44.7a19.9 19.9 0 0 0-28.2 0l-120 120a19.8 19.8 0 0 0-5.9 14.1V208a20.1 20.1 0 0 0 20 20h168a12 12 0 0 0 0-24ZM61 156l75-75l11 11l-75 75Zm103-47l11 11l-75 75l-11-11Zm4-60l39 39l-15 15l-39-39ZM52 181l11.5 11.5L75 204H52Z"></path></svg>}
