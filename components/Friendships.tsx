@@ -19,7 +19,7 @@ export default function Friendships() {
   useEffect(() => {
     const af = async () => {
       setIsLoading(true)
-      if (friendships === null) await getFriendships(user.id)
+      await getFriendships(user.id)
       setIsLoading(false)
     }
     af()
