@@ -54,7 +54,7 @@ export default function Settings() {
       color: "teal"
     })
 
-    set({ "profile": data?.[0] ?? null })
+    set({ "profile": (data ?? [])?.[0] ?? null })
     setIsProfileUpdating(false)
   }, [localProfile])
 
@@ -106,7 +106,7 @@ export default function Settings() {
       if (error) return console.error(error)
       if (!didCancel) {
         setIsCheckingIfTheUsernameIsAlreadyUsed(false)
-        setIsUsernameAlreadyUsed(data?.length >= 1)
+        setIsUsernameAlreadyUsed((data ?? [])?.length >= 1)
       }
     }
 

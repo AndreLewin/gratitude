@@ -25,8 +25,8 @@ export default function Notifier({ children }: { children: JSX.Element | JSX.Ele
         is_accepted: false
       })
     if (error) return console.error(error)
-    const hasIncomingFriendRequest = data.length > 0
-    const hasSeveralIncomingFriendRequests = data.length > 1
+    const hasIncomingFriendRequest = (data ?? []).length > 0
+    const hasSeveralIncomingFriendRequests = (data ?? []).length > 1
 
     let friendRequestNotificationId = ""
 

@@ -46,7 +46,7 @@ export default function GratidudeMessage({ gratitude }: { gratitude: Gratitude }
       .delete()
       .eq('id', gratitude.id)
     if (error) return console.error(error)
-    removeLocalGratitude(data?.[0]?.id ?? -1)
+    removeLocalGratitude((data ?? [])?.[0]?.id ?? -1)
   }, [])
 
   const backgroundColor = useMemo<string>(() => {

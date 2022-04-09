@@ -56,7 +56,7 @@ export default function GratitudeForm({ closeModal, gratitude }: { closeModal: F
 
     if (error) return console.error(error)
     closeModal()
-    editLocalGratitude(data?.[0]?.id ?? -1, data?.[0])
+    editLocalGratitude((data ?? [])?.[0]?.id ?? -1, (data ?? [])?.[0])
   }, [visibilityId, fore, because])
 
   return (

@@ -10,10 +10,14 @@ export const getFriendsUserIds = async (userId: string): Promise<string[]> => {
     .match({
       is_accepted: true
     })
-  data?.forEach(f => {
+
+  const friendships = data ?? []
+
+  friendships.forEach(f => {
     friendsUserIds.push(f.user_id_1)
     friendsUserIds.push(f.user_id_2)
   })
+
   // remove duplicates (should not happen)
   friendsUserIds = Array.from(new Set(friendsUserIds))
   // don't consider the user itself as a friend

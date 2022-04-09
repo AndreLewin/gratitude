@@ -168,7 +168,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     const { data, count, error } = await promise
 
     if (error) console.error(error)
-    console.log('data | IndexConnected.tsx l30', data)
+    // console.log('data | IndexConnected.tsx l30', data)
 
     // don't add gratitudes that were already fetched
     let { gratitudes: oldGratitudes } = get()
@@ -224,7 +224,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       .select(`*`)
       .eq(`id`, userId)
     if (error) return console.error(error)
-    set({ profile: data?.[0] ?? null })
+    set({ profile: (data ?? [])?.[0] ?? null })
   },
   roles: getDefaultStoreValues().roles,
   getRoles: async (userId) => {
@@ -233,7 +233,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       .select(`*`)
       .eq(`id`, userId)
     if (error) return console.error(error)
-    set({ roles: data?.[0] ?? {} })
+    set({ roles: (data ?? [])?.[0] ?? {} })
   },
   search: getDefaultStoreValues().search,
   isLoading: getDefaultStoreValues().isLoading,
@@ -277,7 +277,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       ])
       .select(`*, profile_1:user_id_1(*), profile_2:user_id_2(*)`)
     if (error) return console.error(error)
-    set({ friendships: [...(friendships ?? []), ...data] })
+    set({ friendships: [...(friendships ?? []), ...(data ?? [])] })
   },
   blockings: getDefaultStoreValues().blockings,
   getBlockings: async (userId) => {
@@ -306,7 +306,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       ])
       .select(`*, profile_1:user_id_1(*), profile_2:user_id_2(*)`)
     if (error) return console.error(error)
-    set({ blockings: [...(blockings ?? []), ...data] })
+    set({ blockings: [...(blockings ?? []), ...(data ?? [])] })
   },
   idsOfReportedMessages: getDefaultStoreValues().idsOfReportedMessages,
   getIdsOfReportedMessages: async () => {
