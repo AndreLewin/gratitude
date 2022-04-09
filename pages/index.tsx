@@ -13,7 +13,7 @@ export default function Index() {
           <div className="center-vertically">
             <div className="title">Be more satisfied in your life <span style={{ textShadow: "initial" }}>🙂</span></div>
             <div className="description">
-              <a style={{ textDecoration: "underline" }} href="https://en.wikipedia.org/wiki/Gratitude_journal" target="_blank" rel="noopener noreferrer">Gratitude journaling</a> is the act to write down what you are grateful for. It <a style={{ textDecoration: "underline" }} href="https://greatergood.berkeley.edu/pdfs/GratitudePDFs/6Emmons-BlessingsBurdens.pdf" target="_blank" rel="noopener noreferrer">has shown</a>
+              <a style={{ textDecoration: "underline" }} href="https://en.wikipedia.org/wiki/Gratitude_journal" target="_blank" rel="noopener noreferrer">Gratitude journaling</a> is the act of writing down what you are grateful for. It <a style={{ textDecoration: "underline" }} href="https://greatergood.berkeley.edu/pdfs/GratitudePDFs/6Emmons-BlessingsBurdens.pdf" target="_blank" rel="noopener noreferrer">has shown</a>
               &nbsp;to bring emotional and interpersonal benefits. It's probably the easiest way to have a more fulfilling life in the long term.
             </div>
           </div>
@@ -27,9 +27,13 @@ export default function Index() {
 
       <div className="block" style={{ background: "rgb(64,126,147)" }}>
         <div className="left" style={{ width: width > 1000 ? "50%" : "100%", height: "100%" }}>
-          TODO: Feature showcase: create gratitude message, see public messages, ask for friendship, accept friends, change visibility to friends, see friend messages
+          <img
+            src="/feature-reel.gif"
+            alt="Showcase of various features of the web app"
+            style={{ maxWidth: "800px", width: "100%", boxShadow: "1px 1px 1px black" }}
+          />
         </div>
-        <div className="right" style={{ width: width > 1000 ? "50%" : "100%" }}>
+        <div className="right" style={{ width: width > 1000 ? "50%" : "100%", marginTop: width > 1000 ? 0 : "40px" }}>
           <div className="center-vertically">
             <div className="title">Together with your friends <span style={{ textShadow: "initial" }}>🫂</span></div>
             <div className="description">
