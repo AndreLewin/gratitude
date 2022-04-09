@@ -15,7 +15,7 @@ export default function GratitudeForm({ closeModal, gratitude }: { closeModal: F
 
   // for some reason Mantine's Select only wants strings for the value
   const visibilityOptions = useMemo<{ value: string, label: string }[]>(() => {
-    const usableVisibilities = visibilities.filter(v => v.label === "only me" || v.label === "friends" || v.label === "public")
+    const usableVisibilities = visibilities.filter(v => v.label === "only me" || v.label === "only friends" || v.label === "public")
     return usableVisibilities.map(v => { return { value: `${v.id}`, label: v.label } })
   }, [])
 

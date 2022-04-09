@@ -7,7 +7,7 @@ export const visibilities = [
     label: "only me"
   }, {
     id: 3,
-    label: "friends"
+    label: "only friends"
   }, {
     id: 4,
     label: "public"
